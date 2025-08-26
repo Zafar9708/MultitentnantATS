@@ -14,6 +14,7 @@ import { CandidatesTab } from '../pages/Candidate/TotalCandidates';
 import ForgotPasswordForm from '../components/ForgotPassword';
 import RegisterForm from '../components/Register';
 import FirstLogin from '../components/FirstLogin';
+import FeedbackForm from '../pages/Interview/FeedBackForm';
 
 const AppRoutes = () => {
   return (
@@ -25,6 +26,8 @@ const AppRoutes = () => {
       <Route path="/first-login" element={<FirstLogin />} />
       <Route path="/register" element={<RegisterForm />} />
       <Route path="/jobs" element={<JobsPage />} />
+      <Route path="/feedback/:interviewId/:interviewerId" element={<FeedbackForm />} />
+
 
 
       {/* Protected role-based routes */}

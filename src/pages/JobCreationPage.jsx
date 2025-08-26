@@ -3,15 +3,11 @@
 
 import React, { useState, useEffect } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
-// import StepIndicator from "./StepIndicator";
-// import JobDescriptionForm from "./JobDescriptionForm";
-// import JobDetailsForm from "./JobDetailsForm";
-// import PublishOptionsForm from "./PublishOptionsForm";
+
 import StepIndicator from "../components/Jobs/StepIndicator";
 import JobDescriptionForm from "../components/Jobs/JobDescriptionForm";
 import JobDetailsForm from "../components/Jobs/JobDetailsForm";
 import PublishOptionsForm from "../components/Jobs/PublishOptionsForm";
-// import { createJob, updateJob, fetchJobDetails } from "../utils/api";
 import { createJob } from "../services/Jobs/jobCreationService";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";

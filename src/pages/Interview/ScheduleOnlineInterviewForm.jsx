@@ -38,7 +38,7 @@ import {
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const API_BASE = "https://hire-onboardbackend-production.up.railway.app/api";
+const API_BASE = "http://localhost:5000/api/v1";
 
 const EmailTemplateTab = ({ 
     candidate, 
@@ -424,9 +424,13 @@ const ScheduleOnlineInterviewForm = ({ open, onClose, candidate, user }) => {
 
             console.log("Submitting interview data:", requestData);
 
+
+            const token=localStorage.getItem("token")
             const response = await axios.post(`${API_BASE}/interviews/schedule`, requestData, {
                 headers: {
-                    'Content-Type': 'application/json'
+                     Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+
                 }
             });
 

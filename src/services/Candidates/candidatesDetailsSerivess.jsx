@@ -165,6 +165,6 @@ export const externalServices = {
   },
   
   getFeedback: (id) => {
-    return axios.get(`https://hire-onboardbackend-production.up.railway.app/api/feedback/candidate/${id}`);
+    return axios.get(`http://localhost:5000/api/v1/interviews/candidate/${id}/feedback`);
   },
 };
