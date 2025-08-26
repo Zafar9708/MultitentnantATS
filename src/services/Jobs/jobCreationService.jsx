@@ -21,4 +21,22 @@ export const createJob = async (jobData) => {
   }
 };
 
+// export const createJob = async (jobData) => {
+//   try {
+//     // Extract assignedRecruiters from jobData
+//     const { assignedRecruiters, ...restJobData } = jobData;
+    
+//     const response = await axios.post(API_BASE_URL, jobData,getAuthHeaders(),{
+//       ...restJobData,
+//       assignedRecruiters: assignedRecruiters || []
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error creating job:', error);
+//     throw error;
+//   }
+// };
+
+
+
 

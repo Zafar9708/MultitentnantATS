@@ -122,7 +122,7 @@ const Sidebar = () => {
         sx={{ 
           mt: 2, 
           textAlign: 'center', 
-          background: 'linear-gradient(90deg, #06b6d4, #3b82f6, #8b5cf6)', 
+          background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', 
           WebkitBackgroundClip: 'text', 
           WebkitTextFillColor: 'transparent' 
         }}

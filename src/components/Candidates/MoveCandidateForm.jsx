@@ -32,7 +32,7 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const stagesResponse = await axios.get('https://hire-onboardbackend-production.up.railway.app/api/stages/all');
+                const stagesResponse = await axios.get('http://localhost:5000/api/v1/stages');
                 setStageOptions(stagesResponse.data);
 
                 const rejectionResponse = await axios.get('https://hire-onboardbackend-production.up.railway.app/api/stages/rejection-types');

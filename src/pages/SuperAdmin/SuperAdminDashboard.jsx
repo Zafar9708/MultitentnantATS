@@ -268,11 +268,11 @@ const SuperAdminDashboard = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
         <Box>
           <Typography variant="h4" fontWeight="700" color="text.primary" sx={{ mb: 0.5 }}>
-            Tenant Management
+            Organization Management
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <BusinessIcon fontSize="small" />
-            Manage all tenant accounts and configurations
+            Manage all admin accounts and configurations
           </Typography>
         </Box>
         <Box display="flex" alignItems="center" gap={2}>
@@ -305,7 +305,7 @@ const SuperAdminDashboard = () => {
               boxShadow: theme.shadows[2]
             }}
           >
-            New Tenant
+            ADD ADMIN 
           </Button>
         </Box>
       </Box>
