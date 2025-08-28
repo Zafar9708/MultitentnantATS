@@ -127,7 +127,7 @@ const RecruiterDashboard = () => {
   const closedJobs = jobs.filter(j => j.status === 'Closed').length;
 
   const handleViewJobsPage = () => {
-    navigate('/recruiter/jobs');
+    navigate('/jobs');
   };
 
   const confirmDelete = (job) => {
@@ -146,7 +146,7 @@ const RecruiterDashboard = () => {
   };
 
   const handleAddDialogOpen = () => {
-    setAddDialogOpen(true);
+    navigate('/dashboard/jobs/createJob');
   };
 
   const handleAddDialogClose = () => {

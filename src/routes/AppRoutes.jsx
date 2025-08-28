@@ -15,6 +15,8 @@ import ForgotPasswordForm from '../components/ForgotPassword';
 import RegisterForm from '../components/Register';
 import FirstLogin from '../components/FirstLogin';
 import FeedbackForm from '../pages/Interview/FeedBackForm';
+import TotalInterviews from '../pages/Interview/TotalInterview';
+import TaskPage from '../pages/Task';
 
 const AppRoutes = () => {
   return (
@@ -107,6 +109,28 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <MainLayout userName={JSON.parse(localStorage.getItem('userData'))?.name || 'User'}>
               <CandidatesTab />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+       <Route
+        path="/total-interviews"
+        element={
+          <ProtectedRoute>
+            <MainLayout userName={JSON.parse(localStorage.getItem('userData'))?.name || 'User'}>
+              <TotalInterviews />
+            </MainLayout>
+          </ProtectedRoute>
+        }
+      />
+
+       <Route
+        path="/tasks"
+        element={
+          <ProtectedRoute>
+            <MainLayout userName={JSON.parse(localStorage.getItem('userData'))?.name || 'User'}>
+              <TaskPage />
             </MainLayout>
           </ProtectedRoute>
         }

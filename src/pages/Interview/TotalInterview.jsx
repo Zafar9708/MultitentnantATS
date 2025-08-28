@@ -23,8 +23,10 @@ import {
   Stack,
   Divider
 } from '@mui/material';
-import OnlineInterviews from './TotalOnlineInterviews';
-import OfflineInterviews from './TotalOfflineInterviews';
+// import OnlineInterviews from './TotalOnlineInterviews';
+// import OfflineInterviews from './TotalOfflineInterviews';
+import OnlineInterviews from '../../components/Interviews/onlineInterviews';
+import OfflineInterviews from '../../components/Interviews/OfflineInterviews';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import SearchIcon from '@mui/icons-material/Search';

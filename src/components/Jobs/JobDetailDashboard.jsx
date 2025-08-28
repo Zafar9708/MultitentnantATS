@@ -1170,10 +1170,15 @@ const Dashboard = () => {
 
         // Try to fetch interview data but don't fail if it's not available
         try {
+          const token= localStorage.getItem('token');
           const [onlineInterviewsRes, offlineInterviewsRes, upcomingInterviewsRes] = await Promise.all([
             axios.get('https://hire-onboardbackend-production.up.railway.app/api/interviews/schedule'),
             axios.get('https://hire-onboardbackend-production.up.railway.app/api/offline-interviews/get'),
-            axios.get('https://hire-onboardbackend-production.up.railway.app/api/interviews/upcoming')
+            axios.get('http://localhost:5000/api/v1/interviews/upcoming',{
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            })
           ]);
 
           const offlineInterviewsCount = offlineInterviewsRes.data.data ? offlineInterviewsRes.data.data.length : 0;
