@@ -81,7 +81,7 @@ export const addSource = async (name) => {
 export const getAllStages = async () => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/stages`,
+      `${API_BASE_URL}/stages/all`,
       getAuthHeader()
     );
     return response.data;

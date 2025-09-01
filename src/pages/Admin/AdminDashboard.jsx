@@ -1706,7 +1706,8 @@ const AdminDashboard = () => {
     <>
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box sx={{ 
-        p: 5, 
+        p:2, 
+       
         backgroundColor: theme.palette.background.default,
         minHeight: '100vh'
       }}>

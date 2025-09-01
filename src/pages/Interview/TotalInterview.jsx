@@ -74,7 +74,7 @@ const TotalInterviews = () => {
     <Paper
       elevation={3}
       sx={{
-        width: '100%',
+        width: '200%',
         borderRadius: 3,
         p: 3,
         backgroundColor: theme.palette.background.paper,

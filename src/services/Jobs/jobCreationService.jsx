@@ -24,51 +24,82 @@
 // services/Jobs/jobCreationService.js
 import axios from 'axios';
 
-const API_URL =  'http://localhost:5000/api';
+const API_URL = 'http://localhost:5000/api/v1';
+
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: API_URL,
+  timeout: 10000,
+});
+
+// Add request interceptor to include token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    config.headers['Content-Type'] = 'application/json';
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to handle errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('API Error:', error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
 
 export const createJob = async (jobData) => {
   try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_URL}/jobs`, jobData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    
+    console.log('Creating job with data:', jobData);
+    const response = await api.post('/job', jobData);
+    console.log('Job created successfully:', response.data);
     return response.data;
   } catch (error) {
-    throw error;
+    console.error('Error creating job:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+    throw error.response?.data || { error: 'Failed to create job' };
   }
 };
 
 export const updateJob = async (id, jobData) => {
   try {
-    const token = localStorage.getItem('token');
-    const response = await axios.put(`${API_URL}/jobs/${id}`, jobData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-    
+    console.log('Updating job:', id, jobData);
+    const response = await api.put(`/jobs/${id}`, jobData);
+    console.log('Job updated successfully:', response.data);
     return response.data;
   } catch (error) {
-    throw error;
+    console.error('Error updating job:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+    throw error.response?.data || { error: 'Failed to update job' };
   }
 };
 
 export const fetchJobDetails = async (id) => {
   try {
-    const token = localStorage.getItem('token');
-    const response = await axios.get(`${API_URL}/jobs/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    
+    console.log('Fetching job details:', id);
+    const response = await api.get(`/jobs/${id}`);
+    console.log('Job details fetched successfully:', response.data);
     return response.data;
   } catch (error) {
-    throw error;
+    console.error('Error fetching job details:', {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message
+    });
+    throw error.response?.data || { error: 'Failed to fetch job details' };
   }
 };

@@ -1,30 +1,5 @@
 
-// export const loginUser = async (credentials) => {
-//   try {
-//     const response = await fetch("http://localhost:5000/api/v1/auth/login", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(credentials),
-//     });
-
-//     const data = await response.json();
-
-//     if (!response.ok) {
-//       throw new Error(data.message || "Login failed");
-//     }
-
-//     return data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-
-//---------
-
-// src/services/authService.js
+import axios from "axios";
 const API_BASE_URL = "http://localhost:5000/api/v1";
 
 export const loginUser = async (credentials) => {
@@ -212,5 +187,68 @@ export const firstLogin = async (data) => {
     return result;
   } catch (error) {
     throw error;
+  }
+};
+
+// services/authService.js
+// services/authService.js
+export const getCurrentUser = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('No token found in localStorage');
+      return null;
+    }
+    
+    // Use the API endpoint to get user details
+    const response = await axios.get(`${API_BASE_URL}/auth/user-details`,{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    });
+    console.log('Full API response:', response.data);
+    
+    // Handle the API response structure: { status: "success", data: { user: {...} } }
+    if (response.data.status === 'success' && response.data.data && response.data.data.user) {
+      console.log('User data extracted:', response.data.data.user);
+      return response.data.data.user;
+    }
+    
+    // Fallback: try different response structures
+    if (response.data.user) {
+      console.log('User data from response.data.user:', response.data.user);
+      return response.data.user;
+    }
+    
+    if (response.data.data) {
+      console.log('User data from response.data:', response.data.data);
+      return response.data.data;
+    }
+    
+    console.log('Unexpected API response structure:', response.data);
+    return null;
+    
+  } catch (error) {
+    console.error('Error getting current user from API:', error);
+    
+    // Fallback: try to decode token if API fails
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('Fallback - decoded token payload:', payload);
+        return {
+          _id: payload.id,
+          email: payload.email,
+          role: payload.role,
+          username: payload.username,
+          tenantId: payload.tenantId
+        };
+      }
+    } catch (decodeError) {
+      console.error('Error decoding token:', decodeError);
+    }
+    
+    return null;
   }
 };

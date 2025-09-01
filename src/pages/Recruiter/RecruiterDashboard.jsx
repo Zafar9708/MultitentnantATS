@@ -204,7 +204,8 @@ const RecruiterDashboard = () => {
     <Box sx={{ 
       p: 5, 
       height: '100%', 
-      minHeight: '100vh', 
+      minHeight: '100vh',
+   
     //   backgroundColor: theme.palette.background.default,
       backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))'
     }}>
