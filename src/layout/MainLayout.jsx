@@ -134,7 +134,6 @@ import AtsChatbot from '../components/ChatBoat';
 const drawerWidth = 100;
 
 const LayoutContent = ({ children }) => {
-  console.log(children,"color ui")
   const { currentThemeName } = useAppTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -179,10 +178,14 @@ const LayoutContent = ({ children }) => {
           <Drawer
             variant="permanent"
             sx={{
-              display: { xs: 'none', sm: 'block' },
+              display: { xs: 'none', sm: 'block', position: 'fixed' },
               '& .MuiDrawer-paper': {
                 boxSizing: 'border-box',
                 width: drawerWidth,
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                height: '100vh',
               },
             }}
             open
@@ -194,11 +197,11 @@ const LayoutContent = ({ children }) => {
         {/* Main Content */}
         <Box sx={{ 
           flexGrow: 1, 
-          // ml: { sm: `${drawerWidth}px` },
+          ml: { sm: `${drawerWidth}px` },
           display: 'flex',
           flexDirection: 'column',
-          height: '100vh',
-          overflow: 'hidden',
+          minHeight: '100vh',
+          width: `calc(100% - ${drawerWidth}px)`,
           position: 'relative'
         }}>
           <Header onMenuClick={handleDrawerToggle} />
@@ -207,14 +210,16 @@ const LayoutContent = ({ children }) => {
             sx={{ 
               flex: 1,
               mt: '64px', 
-              p: 3, 
-              height: 'calc(100vh - 64px)', 
+              p: 0,
+              minHeight: 'calc(100vh - 64px)',
               overflow: 'auto',
               scrollbarWidth: 'none',
               '&::-webkit-scrollbar': {
                 display: 'none',
               },
               msOverflowStyle: 'none',
+              width: '100%',
+              maxWidth: '100%',
             }}
           >
             {children}

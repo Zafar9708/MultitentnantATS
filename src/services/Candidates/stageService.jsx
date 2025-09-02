@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const STAGE_API_URL = 'http://localhost:5000/api/v1/stages';
+const STAGE_API_URL = 'http://192.168.0.128:5000/api/v1/stages';
 
 const stageApi = axios.create({
   baseURL: STAGE_API_URL,

@@ -1,4 +1,3 @@
-// src/components/Candidates/BulkUploadDialog.js
 import React, { useState } from 'react';
 import {
   Dialog,

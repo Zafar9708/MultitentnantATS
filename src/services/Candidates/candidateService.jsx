@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const CANDIDATE_API_URL = 'http://localhost:5000/api/v1/candidates';
+const CANDIDATE_API_URL = 'http://192.168.0.128:5000/api/v1/candidates';
 
 const candidateApi = axios.create({
   baseURL: CANDIDATE_API_URL,

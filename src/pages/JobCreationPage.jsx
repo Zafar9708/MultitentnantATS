@@ -209,7 +209,7 @@
 
 //   return (
 //     <MainLayout>
-//     <Box sx={{ padding: 3, minHeight: "100vh" ,ml:14 }}>
+//     <Box sx={{ padding: 3, minHeight: "100vh" ,ml:4 }}>
 //       {/* <Box sx={{ position: 'absolute', top: 70, right: 20, bgcolor: 'info.main', color: 'white', p: 1, borderRadius: 1 }}>
 //         <Typography variant="caption">
 //           User: {currentUser?.email} | Role: {currentUser?.role} | Is Admin: {currentUser?.role === 'admin' ? 'YES' : 'NO'}
@@ -281,43 +281,59 @@
 
 //-----
 
+// src/pages/JobCreationPage.jsx
+// src/pages/JobCreationPage.jsx
 import React, { useState, useEffect } from "react";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Backdrop,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import StepIndicator from "../components/Jobs/StepIndicator";
 import JobDescriptionForm from "../components/Jobs/JobDescriptionForm";
 import JobDetailsForm from "../components/Jobs/JobDetailsForm";
 import PublishOptionsForm from "../components/Jobs/PublishOptionsForm";
-import { createJob, updateJob, fetchJobDetails } from "../services/Jobs/jobCreationService";
+import {
+  createJob,
+  updateJob,
+  fetchJobDetails,
+} from "../services/Jobs/jobCreationService";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import adminService from "../services/adminService";
-import { useUser } from "../contexts/UserContext"; // Import UserContext
+import { useUser } from "../contexts/UserContext"; // ✅ use context instead of API
 
 const JobCreationPage = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, loading: userLoading } = useUser(); // Get user from context
+  const { user: currentUser } = useUser(); // ✅ get user from context
+
   const [step, setStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // only for initial page data
+  const [submitting, setSubmitting] = useState(false); // ✅ loader while saving
+  const [successMessage, setSuccessMessage] = useState(""); // ✅ success snackbar
   const [recruiters, setRecruiters] = useState([]);
   const [selectedRecruiters, setSelectedRecruiters] = useState([]);
-  
+
   const [formData, setFormData] = useState({
-    jobTitle: '',
-    department: '',
-    experience: '',
-    jobDesc: '',
-    BusinessUnit: '',
-    Client: '',
-    jobType: '',
-    location: '',
-    openings: '',
+    jobTitle: "",
+    department: "",
+    experience: "",
+    jobDesc: "",
+    BusinessUnit: "",
+    Client: "",
+    jobType: "",
+    location: "",
+    openings: "",
     targetHireDate: null,
-    currency: '',
-    amount: '',
+    currency: "",
+    amount: "",
     allowReapply: false,
     reapplyDate: null,
     markPriority: false,
@@ -325,36 +341,31 @@ const JobCreationPage = () => {
     careerSite: false,
     internalEmployees: false,
     referToEmployees: false,
-    SalesPerson: '',
-    recruitingPerson: '',
-    assignedRecruiters: []
+    SalesPerson: "",
+    recruitingPerson: "",
+    assignedRecruiters: [],
   });
 
   useEffect(() => {
     const initializePage = async () => {
       try {
-        // Wait for user context to load
-        if (userLoading) return;
-        
-        // Fetch recruiters only if user is admin
-        if (user && user.role === 'admin') {
+        if (currentUser?.role === "admin") {
           await fetchRecruiters();
         }
-        
-        // Load job data if in edit mode
         if (id) {
           await loadJobData();
         }
       } catch (error) {
-        console.error('Error initializing page:', error);
-        alert('Failed to load page data');
+        console.error("Error initializing page:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    initializePage();
-  }, [id, user, userLoading]);
+    if (currentUser) {
+      initializePage();
+    }
+  }, [id, currentUser]);
 
   const fetchRecruiters = async () => {
     try {
@@ -367,7 +378,7 @@ const JobCreationPage = () => {
         setRecruiters([]);
       }
     } catch (err) {
-      console.error('Error fetching recruiters:', err);
+      console.error("Error fetching recruiters:", err);
       setRecruiters([]);
     }
   };
@@ -381,52 +392,57 @@ const JobCreationPage = () => {
         const response = await fetchJobDetails(id);
         jobData = response.job;
       }
-      
+
       setFormData({
-        jobTitle: jobData.jobTitle || '',
-        department: jobData.department || '',
-        experience: jobData.experience || '',
-        jobDesc: jobData.jobDesc || '',
-        BusinessUnit: jobData.jobFormId?.BusinessUnit || '',
-        Client: jobData.jobFormId?.Client || '',
-        jobType: jobData.jobFormId?.jobType || '',
-        location: jobData.jobFormId?.location || '',
-        openings: jobData.jobFormId?.openings || '',
+        jobTitle: jobData.jobTitle || "",
+        department: jobData.department || "",
+        experience: jobData.experience || "",
+        jobDesc: jobData.jobDesc || "",
+        BusinessUnit: jobData.jobFormId?.BusinessUnit || "",
+        Client: jobData.jobFormId?.Client || "",
+        jobType: jobData.jobFormId?.jobType || "",
+        location: jobData.jobFormId?.location || "",
+        openings: jobData.jobFormId?.openings || "",
         targetHireDate: jobData.jobFormId?.targetHireDate || null,
-        currency: jobData.jobFormId?.currency || '',
-        amount: jobData.jobFormId?.amount || '',
+        currency: jobData.jobFormId?.currency || "",
+        amount: jobData.jobFormId?.amount || "",
         allowReapply: jobData.jobFormId?.allowReapply || false,
         reapplyDate: jobData.jobFormId?.reapplyDate || null,
         markPriority: jobData.jobFormId?.markPriority || false,
-        hiringFlow: jobData.jobFormId?.hiringFlow || ["Technical Round", "Manager Interview", "HR Round"],
+        hiringFlow: jobData.jobFormId?.hiringFlow || [
+          "Technical Round",
+          "Manager Interview",
+          "HR Round",
+        ],
         careerSite: jobData.careerSite || false,
         internalEmployees: jobData.internalEmployees || false,
         referToEmployees: jobData.referToEmployees || false,
-        SalesPerson: jobData.jobFormId?.SalesPerson || '',
-        recruitingPerson: jobData.jobFormId?.recruitingPerson || '',
-        assignedRecruiters: jobData.assignedRecruiters || []
+        SalesPerson: jobData.jobFormId?.SalesPerson || "",
+        recruitingPerson: jobData.jobFormId?.recruitingPerson || "",
+        assignedRecruiters: jobData.assignedRecruiters || [],
       });
 
-      // Set selected recruiters if editing and user is admin
-      if (jobData.assignedRecruiters && Array.isArray(jobData.assignedRecruiters) && user?.role === 'admin') {
-        // Convert IDs to recruiter objects
-        const assignedRecruiters = recruiters.filter(recruiter => 
-          jobData.assignedRecruiters.includes(recruiter._id)
+      if (
+        jobData.assignedRecruiters &&
+        Array.isArray(jobData.assignedRecruiters) &&
+        currentUser?.role === "admin"
+      ) {
+        const assignedRecruiters = recruiters.filter((r) =>
+          jobData.assignedRecruiters.includes(r._id)
         );
         setSelectedRecruiters(assignedRecruiters);
       }
-      
+
       setIsEditMode(true);
     } catch (error) {
       console.error("Error loading job data:", error);
-      alert("Failed to load job data");
     }
   };
 
   const handleJobDescriptionSubmit = (data) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      ...data
+      ...data,
     }));
     setCompletedSteps((prev) => [...new Set([...prev, 0])]);
     setStep(1);
@@ -436,9 +452,9 @@ const JobCreationPage = () => {
     if (action === "back") {
       setStep(0);
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        ...data
+        ...data,
       }));
       setCompletedSteps((prev) => [...new Set([...prev, 1])]);
       setStep(2);
@@ -453,63 +469,75 @@ const JobCreationPage = () => {
     const finalData = {
       ...formData,
       ...options,
-      // Only include assignedRecruiters if user is admin
-      ...(user?.role === 'admin' && {
-        assignedRecruiters: selectedRecruiters.map(recruiter => recruiter._id)
-      })
+      ...(currentUser?.role === "admin" && {
+        assignedRecruiters: selectedRecruiters.map((r) => r._id),
+      }),
     };
-    
+
     try {
-      setLoading(true);
+      setSubmitting(true);
       if (isEditMode) {
         await updateJob(id, finalData);
-        alert("Job Updated Successfully ✅");
+        setSuccessMessage("Job updated successfully!");
       } else {
         await createJob(finalData);
-        alert("Job Published Successfully ✅");
+        setSuccessMessage("Job created successfully!");
       }
-      navigate("/jobs");
+
+      // redirect after 2s
+      setTimeout(() => {
+        navigate("/jobs");
+      }, 2000);
     } catch (error) {
       console.error("Error submitting job:", error);
-      alert(error.response?.data?.error || "Failed to publish job. Please try again.");
-    } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
-  if (userLoading || loading) {
+  if (loading) {
+    // ✅ show ONLY one loader (initial page load)
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="60vh"
+        flexDirection="column"
+      >
         <CircularProgress size={60} thickness={4} />
-        <Typography sx={{ ml: 2 }}>Loading...</Typography>
+        <Typography sx={{ mt: 2 }}>Loading...</Typography>
       </Box>
     );
   }
 
   return (
     <MainLayout>
-      <Box sx={{ padding: 3, minHeight: "100vh", ml: 14 }}>
-        <Typography variant="h4" sx={{ color: "#1976d2", fontWeight: "bold" }} align="center">
+      <Box sx={{ padding: 3, minHeight: "100vh" }}>
+        <Typography
+          variant="h4"
+          sx={{ color: "#1976d2", fontWeight: "bold" }}
+          align="center"
+        >
           {isEditMode ? "Update Job Posting" : "Create a New Job"}
         </Typography>
 
         <StepIndicator activeStep={step} completedSteps={completedSteps} />
 
         {step === 0 && (
-          <JobDescriptionForm 
-            onContinue={handleJobDescriptionSubmit} 
+          <JobDescriptionForm
+            onContinue={handleJobDescriptionSubmit}
             initialData={{
               jobTitle: formData.jobTitle,
               department: formData.department,
               experience: formData.experience,
-              jobDesc: formData.jobDesc
+              jobDesc: formData.jobDesc,
             }}
           />
         )}
 
         {step === 1 && (
-          <JobDetailsForm 
-            onContinue={handleJobDetailsSubmit} 
+          <JobDetailsForm
+            onContinue={handleJobDetailsSubmit}
             initialData={{
               BusinessUnit: formData.BusinessUnit,
               Client: formData.Client,
@@ -529,23 +557,52 @@ const JobCreationPage = () => {
           />
         )}
 
-        {step === 2 && user && (
+        {step === 2 && currentUser && (
           <PublishOptionsForm
             onBack={handlePublishBack}
             onPublish={handlePublish}
             initialOptions={{
               careerSite: formData.careerSite,
               internalEmployees: formData.internalEmployees,
-              referToEmployees: formData.referToEmployees
+              referToEmployees: formData.referToEmployees,
             }}
             isEditMode={isEditMode}
-            recruiters={user.role === 'admin' ? recruiters : []}
-            selectedRecruiters={user.role === 'admin' ? selectedRecruiters : []}
-            setSelectedRecruiters={user.role === 'admin' ? setSelectedRecruiters : () => {}}
-            isAdmin={user.role === 'admin'}
+            recruiters={currentUser.role === "admin" ? recruiters : []}
+            selectedRecruiters={
+              currentUser.role === "admin" ? selectedRecruiters : []
+            }
+            setSelectedRecruiters={
+              currentUser.role === "admin" ? setSelectedRecruiters : () => {}
+            }
+            isAdmin={currentUser.role === "admin"}
           />
         )}
       </Box>
+
+      {/* ✅ Fullscreen loader only while submitting */}
+      <Backdrop
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          flexDirection: "column",
+        }}
+        open={submitting && !successMessage} // hide loader when success shown
+      >
+        <CircularProgress color="inherit" size={70} />
+        <Typography sx={{ mt: 2, fontWeight: "bold" }}>
+          {isEditMode ? "Updating Job..." : "Publishing Job..."}
+        </Typography>
+      </Backdrop>
+
+      {/* ✅ Beautiful success snackbar */}
+      <Snackbar
+        open={Boolean(successMessage)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert severity="success" sx={{ fontSize: "1rem", fontWeight: "bold" }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </MainLayout>
   );
 };

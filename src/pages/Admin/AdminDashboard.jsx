@@ -66,9 +66,11 @@
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 // import adminService from '../../services/adminService';
+// import { useNavigate } from 'react-router-dom';
 
 // const AdminDashboard = () => {
 //   const theme = useTheme();
+//   const navigate = useNavigate();
 //   const [recruiters, setRecruiters] = useState([]);
 //   const [jobs, setJobs] = useState([]);
 //   const [loading, setLoading] = useState(true);
@@ -95,6 +97,38 @@
 //   const [profilePreview, setProfilePreview] = useState(null);
 //   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
 //   const [newRecruiterLink, setNewRecruiterLink] = useState('');
+//   const [recruiterActivityData, setRecruiterActivityData] = useState([]);
+
+//   // Calculate recruiter activity data
+//   useEffect(() => {
+//     if (recruiters.length > 0) {
+//       // Group by month and count added recruiters
+//       const monthlyData = {};
+      
+//       recruiters.forEach(recruiter => {
+//         const date = new Date(recruiter.createdAt);
+//         const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
+        
+//         if (!monthlyData[monthYear]) {
+//           monthlyData[monthYear] = { name: monthYear, added: 0, active: 0 };
+//         }
+        
+//         monthlyData[monthYear].added++;
+//         if (recruiter.isActive) {
+//           monthlyData[monthYear].active++;
+//         }
+//       });
+      
+//       // Convert to array format for the chart and sort by date
+//       const activityData = Object.values(monthlyData).sort((a, b) => {
+//         const dateA = new Date(a.name);
+//         const dateB = new Date(b.name);
+//         return dateA - dateB;
+//       });
+      
+//       setRecruiterActivityData(activityData.slice(-6)); // Last 6 months
+//     }
+//   }, [recruiters]);
 
 //   // Filter jobs based on status and target hire date
 //   const activeJobs = jobs.filter(job => {
@@ -108,16 +142,7 @@
 //     ? (jobs.length / recruiters.length).toFixed(1) 
 //     : 0;
 
-//   // Sample data for charts
-//   const recruiterActivityData = [
-//     { name: 'Jan', added: 2, deleted: 0 },
-//     { name: 'Feb', added: 3, deleted: 1 },
-//     { name: 'Mar', added: 5, deleted: 0 },
-//     { name: 'Apr', added: 1, deleted: 0 },
-//     { name: 'May', added: 4, deleted: 1 },
-//     { name: 'Jun', added: 2, deleted: 0 },
-//   ];
-
+//   // Job status data for pie chart
 //   const jobStatusData = [
 //     { name: 'Active', value: activeJobs.length },
 //     { name: 'Closed', value: jobs.filter(j => j.status === 'Closed').length },
@@ -329,17 +354,18 @@
 
 //   const filteredRecruiters = recruiters.filter(
 //     (r) => r.email.toLowerCase().includes(searchRecruiter.toLowerCase()) ||
-//            r.username.toLowerCase().includes(searchRecruiter.toLowerCase())
+//            r.username?.toLowerCase().includes(searchRecruiter.toLowerCase())
 //   );
 
 //   const filteredJobs = jobs.filter(job => {
 //     // Search filter
 //     const matchesSearch = 
-//       job.jobTitle.toLowerCase().includes(searchJob.toLowerCase()) ||
-//       job.department.toLowerCase().includes(searchJob.toLowerCase()) ||
+//       job.jobName?.toLowerCase().includes(searchJob.toLowerCase()) ||
+//       job.jobTitle?.toLowerCase().includes(searchJob.toLowerCase()) ||
+//       job.department?.toLowerCase().includes(searchJob.toLowerCase()) ||
 //       (job.jobFormId?.recruitingPerson?.some(email => 
-//         email.toLowerCase().includes(searchJob.toLowerCase())) ||
-//       job.jobName.toLowerCase().includes(searchJob.toLowerCase()));
+//         email?.toLowerCase().includes(searchJob.toLowerCase())) 
+//       );
 
 //     // Time filter
 //     const jobDate = new Date(job.createdAt);
@@ -364,6 +390,12 @@
 //     return matchesSearch && matchesTime;
 //   });
 
+//   // Function to get recruiter name from tenant ID
+//   const getRecruiterName = (tenantId) => {
+//     const recruiter = recruiters.find(r => r._id === tenantId);
+//     return recruiter ? recruiter.username || recruiter.email : 'Unknown';
+//   };
+
 //   if (loading && !refreshing) {
 //     return (
 //       <Box
@@ -383,9 +415,10 @@
 //     <>
 //     <LocalizationProvider dateAdapter={AdapterDateFns}>
 //       <Box sx={{ 
-//         p: 5, 
+//         p:0, 
 //         backgroundColor: theme.palette.background.default,
 //         minHeight: '100vh'
+        
 //       }}>
 //         {/* Header */}
 //         <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
@@ -416,37 +449,37 @@
 //             </FormControl>
 
 //             {timeFilter === 'custom' && (
-//   <Box display="flex" gap={1} alignItems="center">
-//     <DatePicker
-//       label="Start Date"
-//       value={startDate}
-//       onChange={(newValue) => setStartDate(newValue)}
-//       renderInput={(params) => <TextField {...params} size="small" sx={{ width: 150 }} />}
-//     />
-//     <Typography>-</Typography>
-//     <DatePicker
-//       label="End Date"
-//       value={endDate}
-//       onChange={(newValue) => setEndDate(newValue)}
-//       renderInput={(params) => <TextField {...params} size="small" sx={{ width: 150 }} />}
-//     />
-//   </Box>
-// )}
+//               <Box display="flex" gap={1} alignItems="center">
+//                 <DatePicker
+//                   label="Start Date"
+//                   value={startDate}
+//                   onChange={(newValue) => setStartDate(newValue)}
+//                   renderInput={(params) => <TextField {...params} size="small" sx={{ width: 150 }} />}
+//                 />
+//                 <Typography>-</Typography>
+//                 <DatePicker
+//                   label="End Date"
+//                   value={endDate}
+//                   onChange={(newValue) => setEndDate(newValue)}
+//                   renderInput={(params) => <TextField {...params} size="small" sx={{ width: 150 }} />}
+//                 />
+//               </Box>
+//             )}
 
-// <Tooltip title="Refresh Data">
-//   <IconButton
-//     onClick={handleRefresh}
-//     disabled={refreshing}
-//     sx={{
-//       backgroundColor: theme.palette.action.hover,
-//       '&:hover': {
-//         backgroundColor: theme.palette.grey[300]
-//       }
-//     }}
-//   >
-//     <RefreshIcon />
-//   </IconButton>
-// </Tooltip>
+//             <Tooltip title="Refresh Data">
+//               <IconButton
+//                 onClick={handleRefresh}
+//                 disabled={refreshing}
+//                 sx={{
+//                   backgroundColor: theme.palette.action.hover,
+//                   '&:hover': {
+//                     backgroundColor: theme.palette.grey[300]
+//                   }
+//                 }}
+//               >
+//                 <RefreshIcon />
+//               </IconButton>
+//             </Tooltip>
 //             <Button
 //               variant="contained"
 //               startIcon={<AddIcon />}
@@ -461,10 +494,29 @@
 //                 boxShadow: theme.shadows[2],
 //                 borderRadius: 2,
 //                 px: 3,
-//                 py: 1
+//                 py: 1,
+//                 mr: 1
 //               }}
 //             >
 //               Add Recruiter
+//             </Button>
+//             <Button
+//               variant="outlined"
+//               startIcon={<WorkIcon />}
+//               onClick={() => navigate('/dashboard/jobs/createJob')}
+//               sx={{
+//                 color: theme.palette.primary.main,
+//                 borderColor: theme.palette.primary.main,
+//                 '&:hover': {
+//                   backgroundColor: theme.palette.primary.light,
+//                   borderColor: theme.palette.primary.dark
+//                 },
+//                 borderRadius: 2,
+//                 px: 3,
+//                 py: 1
+//               }}
+//             >
+//               Create Job
 //             </Button>
 //           </Box>
 //         </Box>
@@ -473,10 +525,9 @@
 //         <Grid container spacing={3} sx={{ mb: 4 }}>
 //           <Grid item xs={12} sm={6} md={3}>
 //             <Card sx={{ 
-//               p: 5, 
+//               p: 3, 
 //               height: '100%', 
 //               borderRadius: 3,
-//               width:250,
 //               background: `linear-gradient(195deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})`,
 //               color: 'white',
 //               boxShadow: theme.shadows[4],
@@ -493,8 +544,8 @@
 //                 background: 'rgba(255,255,255,0.1)'
 //               }
 //             }}>
-//               <Box position="relative" zIndex={1} ml={4}>
-//                 <Typography variant="body2" sx={{ opacity: 0.8, }}>Total Recruiters</Typography>
+//               <Box position="relative" zIndex={1}>
+//                 <Typography variant="body2" sx={{ opacity: 0.8 }}>Total Recruiters</Typography>
 //                 <Typography variant="h3" fontWeight="700" sx={{ mt: 1, mb: 2 }}>{recruiters.length}</Typography>
 //                 <Box display="flex" alignItems="center">
 //                   <TrendingUpIcon sx={{ mr: 1 }} />
@@ -508,7 +559,6 @@
 //               p: 3, 
 //               height: '100%', 
 //               borderRadius: 3,
-//               width:250,
 //               background: `linear-gradient(195deg, ${theme.palette.success.main}, ${theme.palette.success.dark})`,
 //               color: 'white',
 //               boxShadow: theme.shadows[4],
@@ -522,10 +572,10 @@
 //                 width: '120px',
 //                 height: '120px',
 //                 borderRadius: '50%',
-//                 background: 'rgba(255,255,255,0.1)'
+//                 background: 'rgala(255,255,255,0.1)'
 //               }
 //             }}>
-//               <Box position="relative" zIndex={1} ml={4} mt={2}>
+//               <Box position="relative" zIndex={1}>
 //                 <Typography variant="body2" sx={{ opacity: 0.8 }}>Total Jobs</Typography>
 //                 <Typography variant="h3" fontWeight="700" sx={{ mt: 1, mb: 2 }}>{jobs.length}</Typography>
 //                 <Box display="flex" alignItems="center">
@@ -539,7 +589,6 @@
 //             <Card sx={{ 
 //               p: 3, 
 //               height: '100%',
-//               width:250,
 //               borderRadius: 3,
 //               background: `linear-gradient(195deg, ${theme.palette.info.main}, ${theme.palette.info.dark})`,
 //               color: 'white',
@@ -557,7 +606,7 @@
 //                 background: 'rgba(255,255,255,0.1)'
 //               }
 //             }}>
-//               <Box position="relative" zIndex={1} ml={4} mt={2}>
+//               <Box position="relative" zIndex={1}>
 //                 <Typography variant="body2" sx={{ opacity: 0.8 }}>Active Jobs</Typography>
 //                 <Typography variant="h3" fontWeight="700" sx={{ mt: 1, mb: 2 }}>
 //                   {activeJobs.length}
@@ -576,7 +625,6 @@
 //               p: 3, 
 //               height: '100%', 
 //               borderRadius: 3,
-//               width:250,
 //               background: `linear-gradient(195deg, ${theme.palette.warning.main}, ${theme.palette.warning.dark})`,
 //               color: 'white',
 //               boxShadow: theme.shadows[4],
@@ -590,10 +638,10 @@
 //                 width: '120px',
 //                 height: '120px',
 //                 borderRadius: '50%',
-//                 background: 'rgba(255,255,255,0.1)'
+//                 background: 'rgala(255,255,255,0.1)'
 //               }
 //             }}>
-//               <Box position="relative" zIndex={1} ml={4} mt={2}>
+//               <Box position="relative" zIndex={1}>
 //                 <Typography variant="body2" sx={{ opacity: 0.8 }}>Avg Jobs/Recruiter</Typography>
 //                 <Typography variant="h3" fontWeight="700" sx={{ mt: 1, mb: 2 }}>
 //                   {avgJobsPerRecruiter}
@@ -608,18 +656,17 @@
 //         </Grid>
 
 //         {/* Charts Section */}
-//         <Grid container spacing={30} sx={{ mt: 3 }}>
+//         <Grid container spacing={3} sx={{ mb: 4 }}>
 //           <Grid item xs={12} md={6}>
 //             <Card sx={{ 
-//               p: 4, 
-//               height: '95%', 
-//               width:"180%",
+//               p: 3, 
+//               height: '100%', 
 //               borderRadius: 3,
 //               boxShadow: theme.shadows[1],
 //               backgroundColor: theme.palette.background.paper
 //             }}>
-//               <Typography variant="h6" fontWeight="600" ml={5} gutterBottom>
-//                 Recruiter Activity
+//               <Typography variant="h6" fontWeight="600" gutterBottom sx={{ mb: 3 }}>
+//                 Recruiter Activity (Last 6 Months)
 //               </Typography>
 //               <ResponsiveContainer width="100%" height={300}>
 //                 <BarChart data={recruiterActivityData}>
@@ -635,51 +682,59 @@
 //                     }}
 //                   />
 //                   <Legend />
-//                   <Bar dataKey="added" name="Added" fill={theme.palette.success.main} radius={[4, 4, 0, 0]} />
-//                   <Bar dataKey="deleted" name="Deleted" fill={theme.palette.error.main} radius={[4, 4, 0, 0]} />
+//                   <Bar dataKey="added" name="Recruiters Added" fill={theme.palette.success.main} radius={[4, 4, 0, 0]} />
+//                   <Bar dataKey="active" name="Active Recruiters" fill={theme.palette.info.main} radius={[4, 4, 0, 0]} />
 //                 </BarChart>
 //               </ResponsiveContainer>
 //             </Card>
 //           </Grid>
 //           <Grid item xs={12} md={6}>
 //             <Card sx={{ 
-//               p: 4, 
-//               height: '95%', 
-//               width:"180%",
+//               p: 3, 
+//               height: '100%', 
 //               borderRadius: 3,
 //               boxShadow: theme.shadows[1],
 //               backgroundColor: theme.palette.background.paper
 //             }}>
-//               <Typography variant="h6" fontWeight="600" ml={5} gutterBottom>
+//               <Typography variant="h6" fontWeight="600" gutterBottom sx={{ mb: 3 }}>
 //                 Job Status Distribution
 //               </Typography>
-//               <ResponsiveContainer width="100%" height={300}>
-//                 <PieChart>
-//                   <Pie
-//                     data={jobStatusData}
-//                     cx="50%"
-//                     cy="50%"
-//                     labelLine={false}
-//                     outerRadius={80}
-//                     fill="#8884d8"
-//                     dataKey="value"
-//                     label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-//                   >
-//                     {jobStatusData.map((entry, index) => (
-//                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-//                     ))}
-//                   </Pie>
-//                   <ChartTooltip 
-//                     contentStyle={{
-//                       borderRadius: 8,
-//                       backgroundColor: theme.palette.background.paper,
-//                       border: `1px solid ${theme.palette.divider}`,
-//                       boxShadow: theme.shadows[2]
-//                     }}
-//                   />
-//                   <Legend />
-//                 </PieChart>
-//               </ResponsiveContainer>
+//               <Box sx={{ height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+//                 {jobStatusData.some(item => item.value > 0) ? (
+//                   <ResponsiveContainer width="100%" height="100%">
+//                     <PieChart>
+//                       <Pie
+//                         data={jobStatusData}
+//                         cx="50%"
+//                         cy="50%"
+//                         labelLine={false}
+//                         outerRadius={80}
+//                         fill="#8884d8"
+//                         dataKey="value"
+//                         label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+//                       >
+//                         {jobStatusData.map((entry, index) => (
+//                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+//                         ))}
+//                       </Pie>
+//                       <ChartTooltip 
+//                         formatter={(value, name) => [`${value} jobs`, name]}
+//                         contentStyle={{
+//                           borderRadius: 8,
+//                           backgroundColor: theme.palette.background.paper,
+//                           border: `1px solid ${theme.palette.divider}`,
+//                           boxShadow: theme.shadows[2]
+//                         }}
+//                       />
+//                       <Legend />
+//                     </PieChart>
+//                   </ResponsiveContainer>
+//                 ) : (
+//                   <Typography variant="body2" color="text.secondary">
+//                     No job data available
+//                   </Typography>
+//                 )}
+//               </Box>
 //             </Card>
 //           </Grid>
 //         </Grid>
@@ -724,11 +779,13 @@
 //                   sx={{ width: 300 }}
 //                 />
 //               </Box>
-//               <TableContainer>
-//                 <Table>
+//               <TableContainer sx={{ maxHeight: 'calc(100vh - 400px)' }}>
+//                 <Table stickyHeader>
 //                   <TableHead sx={{ backgroundColor: theme.palette.background.default }}>
 //                     <TableRow>
-//                       <TableCell sx={{ fontWeight: 600 }}>Recruiter</TableCell>
+//                       <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+//                       <TableCell sx={{ fontWeight: 600 }}>Email</TableCell>
+//                       <TableCell sx={{ fontWeight: 600 }}>Phone</TableCell>
 //                       <TableCell sx={{ fontWeight: 600 }}>Experience</TableCell>
 //                       <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
 //                       <TableCell sx={{ fontWeight: 600 }} align="right">Actions</TableCell>
@@ -768,18 +825,19 @@
 //                                 </Avatar>
 //                               )}
 //                               <Box>
-//                                 <Typography fontWeight="500">{recruiter.username || recruiter.email}</Typography>
-//                                 <Typography variant="body2" color="text.secondary">
-//                                   {recruiter.email}
-//                                 </Typography>
-//                                 {recruiter.phoneNumber && (
-//                                   <Typography variant="caption" color="text.secondary" display="flex" alignItems="center">
-//                                     <PhoneIcon sx={{ fontSize: 14, mr: 0.5 }} />
-//                                     {recruiter.phoneNumber}
-//                                   </Typography>
-//                                 )}
+//                                 <Typography fontWeight="500">{recruiter.username || 'No Name'}</Typography>
 //                               </Box>
 //                             </Box>
+//                           </TableCell>
+//                           <TableCell>
+//                             <Typography variant="body2" color="text.secondary">
+//                               {recruiter.email}
+//                             </Typography>
+//                           </TableCell>
+//                           <TableCell>
+//                             <Typography variant="body2" color="text.secondary">
+//                               {recruiter.phoneNumber || 'N/A'}
+//                             </Typography>
 //                           </TableCell>
 //                           <TableCell>
 //                             <Chip
@@ -860,7 +918,7 @@
 //                       ))
 //                     ) : (
 //                       <TableRow>
-//                         <TableCell colSpan={4} align="center" sx={{ py: 4 }}>
+//                         <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
 //                           <Typography variant="body1" color="text.secondary">
 //                             No recruiters found
 //                           </Typography>
@@ -928,47 +986,80 @@
 //                         : 'Not set';
 //                       const isActive = job.status === 'Active' && 
 //                         (!job.jobFormId?.targetHireDate || new Date(job.jobFormId.targetHireDate) >= new Date());
+//                       const recruiterName = getRecruiterName(job.userId);
 
 //                       return (
 //                         <Grid item xs={12} key={job._id}>
 //                           <Card sx={{ 
-//                             p: 2,
+//                             p: 2.5,
+//                             borderRadius: 2,
 //                             borderLeft: `4px solid ${isActive ? theme.palette.success.main : theme.palette.error.main}`,
 //                             '&:hover': {
-//                               boxShadow: theme.shadows[2],
+//                               boxShadow: theme.shadows[4],
 //                               transform: 'translateY(-2px)'
 //                             },
-//                             transition: 'all 0.2s'
+//                             transition: 'all 0.2s',
+//                             height: '100%',
+//                             display: 'flex',
+//                             flexDirection: 'column',
+//                             justifyContent: 'space-between'
 //                           }}>
-//                             <Box display="flex" justifyContent="space-between">
-//                               <Box>
-//                                 <Typography variant="h6" fontWeight="600">{job.jobTitle}</Typography>
+//                             <Box>
+//                               <Typography variant="h6" fontWeight="600" gutterBottom>
+//                                 {job.jobTitle}
+//                               </Typography>
+                              
+//                               <Box display="flex" alignItems="center" flexWrap="wrap" gap={1} mb={1.5}>
+//                                 <Chip
+//                                   label={job.department}
+//                                   size="small"
+//                                   variant="outlined"
+//                                   sx={{ 
+//                                     borderColor: theme.palette.primary.main,
+//                                     color: theme.palette.primary.dark
+//                                   }}
+//                                 />
+//                                 <Chip
+//                                   label={job.jobFormId?.jobType || 'Full-time'}
+//                                   size="small"
+//                                   variant="outlined"
+//                                   sx={{ 
+//                                     borderColor: theme.palette.secondary.main,
+//                                     color: theme.palette.secondary.dark
+//                                   }}
+//                                 />
+//                                 <Chip
+//                                   label={job.status}
+//                                   size="small"
+//                                   sx={{ 
+//                                     backgroundColor: isActive ? theme.palette.success.light : theme.palette.error.light,
+//                                     color: isActive ? theme.palette.success.dark : theme.palette.error.dark,
+//                                     fontWeight: 500
+//                                   }}
+//                                 />
+//                               </Box>
+                              
+//                               <Box display="flex" flexDirection="column" gap={0.8} mt={1.5}>
 //                                 <Typography variant="body2" color="text.secondary">
-//                                   {job.department} • {job.jobFormId?.jobType || 'Full-time'}
+//                                   <Box component="span" fontWeight="500">Job ID:</Box> {job.jobName}
 //                                 </Typography>
-//                                 <Box display="flex" alignItems="center" mt={1} gap={1}>
-//                                   <Chip
-//                                     label={job.status}
-//                                     size="small"
-//                                     sx={{ 
-//                                       backgroundColor: isActive ? theme.palette.success.light : theme.palette.error.light,
-//                                       color: isActive ? theme.palette.success.dark : theme.palette.error.dark,
-//                                       fontWeight: 500
-//                                     }}
-//                                   />
-//                                   <Typography variant="caption" color="text.secondary">
-//                                     Target Hire: {targetHireDate}
-//                                   </Typography>
-//                                 </Box>
+//                                 <Typography variant="body2" color="text.secondary">
+//                                   <Box component="span" fontWeight="500">Openings:</Box> {job.jobFormId?.openings || 0}
+//                                 </Typography>
+//                                 <Typography variant="body2" color="text.secondary">
+//                                   <Box component="span" fontWeight="500">Target Hire:</Box> {targetHireDate}
+//                                 </Typography>
+//                                 <Typography variant="body2" color="text.secondary">
+//                                   <Box component="span" fontWeight="500">Created by:</Box> {recruiterName}
+//                                 </Typography>
+                                
 //                               </Box>
-//                               <Box textAlign="right">
-//                                 <Typography variant="body2" fontWeight="500">
-//                                   {job.jobFormId?.openings || 0} openings
-//                                 </Typography>
-//                                 <Typography variant="caption" color="text.secondary">
-//                                   {job.jobName}
-//                                 </Typography>
-//                               </Box>
+//                             </Box> 
+                            
+//                             <Box textAlign="right" mt={2}>
+//                               <Typography variant="caption" color="text.secondary">
+//                                 Created: {new Date(job.createdAt).toLocaleDateString()}
+//                               </Typography>
 //                             </Box>
 //                           </Card>
 //                         </Grid>
@@ -1021,12 +1112,12 @@
 //               <Avatar
 //                 src={profilePreview}
 //                 sx={{ 
-//                   width: 80, 
-//                   height: 80, 
-//                   mr: 2,
-//                   backgroundColor: theme.palette.grey[200]
+//                     width: 80, 
+//                     height: 80, 
+//                     mr: 2,
+//                     backgroundColor: theme.palette.grey[200]
 //                 }}
-//               >
+//               > 
 //                 {!profilePreview && <PersonIcon sx={{ fontSize: 40 }} />}
 //               </Avatar>
 //               <Button
@@ -1289,7 +1380,12 @@
 //   );
 // };
 
+
 // export default AdminDashboard;
+
+
+//---shikha code
+
 
 import React, { useEffect, useState } from 'react';
 import {
@@ -1707,7 +1803,6 @@ const AdminDashboard = () => {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box sx={{ 
         p:2, 
-       
         backgroundColor: theme.palette.background.default,
         minHeight: '100vh'
       }}>
@@ -1814,7 +1909,7 @@ const AdminDashboard = () => {
 
         {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3} width={'25%'}>
             <Card sx={{ 
               p: 3, 
               height: '100%', 
@@ -1845,7 +1940,7 @@ const AdminDashboard = () => {
               </Box>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3} width={'22%'}>
             <Card sx={{ 
               p: 3, 
               height: '100%', 
@@ -1876,7 +1971,7 @@ const AdminDashboard = () => {
               </Box>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3} width={'22%'}>
             <Card sx={{ 
               p: 3, 
               height: '100%',
@@ -1911,7 +2006,7 @@ const AdminDashboard = () => {
               </Box>
             </Card>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={3} width={'22%'}>
             <Card sx={{ 
               p: 3, 
               height: '100%', 
@@ -1947,8 +2042,8 @@ const AdminDashboard = () => {
         </Grid>
 
         {/* Charts Section */}
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} md={6}>
+        <Grid container spacing={3} sx={{ mb: 4,  }} >
+          <Grid item xs={12} md={6} width={'47%'}>
             <Card sx={{ 
               p: 3, 
               height: '100%', 
@@ -1979,7 +2074,7 @@ const AdminDashboard = () => {
               </ResponsiveContainer>
             </Card>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} width={'47%'}>
             <Card sx={{ 
               p: 3, 
               height: '100%', 
@@ -2031,9 +2126,9 @@ const AdminDashboard = () => {
         </Grid>
 
         {/* Horizontal Layout */}
-        <Grid container spacing={3}>
+        <Grid container spacing={3} >
           {/* Left Column - Recruiters */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} width={'100%'}>
             <Card sx={{ 
               height: '100%',
               borderRadius: 3,
@@ -2231,7 +2326,7 @@ const AdminDashboard = () => {
           </Grid>
 
           {/* Right Column - Jobs */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} >
             <Card sx={{ 
               height: '100%',
               borderRadius: 3,
@@ -2280,7 +2375,7 @@ const AdminDashboard = () => {
                       const recruiterName = getRecruiterName(job.userId);
 
                       return (
-                        <Grid item xs={12} key={job._id}>
+                        <Grid item xs={12} key={job._id} width={'20%'} ml={'40px'}>
                           <Card sx={{ 
                             p: 2.5,
                             borderRadius: 2,

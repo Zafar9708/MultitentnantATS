@@ -63,7 +63,12 @@ const OfflineInterviews = ({ searchTerm, statusFilter, selectedDate }) => {
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
-        const response = await axios.get('https://hire-onboardbackend-production.up.railway.app/api/offline-interviews/get');
+        const token=localStorage.getItem("token")
+        const response = await axios.get('http://192.168.0.128:5000/api/v1/offline/interviews',{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        });
         setInterviews(response.data.data);
       } catch (err) {
         setError('Failed to fetch offline interviews. Please try again.');

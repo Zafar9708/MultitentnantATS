@@ -43,7 +43,7 @@ const FeedbackForm = () => {
             try {
                 setLoading(true);
                 const token=localStorage.getItem("token")
-                const response = await axios.get(`http://localhost:5000/api/v1/interviews/${interviewId}`,{
+                const response = await axios.get(`http://192.168.0.128:5000/api/v1/interviews/${interviewId}`,{
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -93,7 +93,7 @@ const FeedbackForm = () => {
         
         try {
             const response = await axios.post(
-                `http://localhost:5000/api/v1/interviews/${interviewId}/feedback/${interviewerId}`,
+                `http://192.168.0.128:5000/api/v1/interviews/${interviewId}/feedback/${interviewerId}`,
                 formData,
                 {
                     headers: {

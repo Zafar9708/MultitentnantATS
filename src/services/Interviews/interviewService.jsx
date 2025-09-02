@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000/api/v1/job';
+const API_BASE_URL = 'http://192.168.0.128:5000/api/v1/job';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');

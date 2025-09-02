@@ -700,7 +700,7 @@ const CandidatesTab = () => {
     }
 
     return (
-        <Box sx={{ p: 0 }}>
+        <Box sx={{ p: 0}}>
             <Snackbar
                 open={snackbar.open}
                 autoHideDuration={6000}
@@ -713,7 +713,7 @@ const CandidatesTab = () => {
             </Snackbar>
 
             {/* Header */}
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 ,  width: "100%",}}>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 ,  width: "100%"}}>
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
                     All Candidates
                 </Typography>
