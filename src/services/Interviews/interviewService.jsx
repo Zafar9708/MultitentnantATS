@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://9dd19b59bdc6.ngrok-free.app/api/v1/job';
+const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/job';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');

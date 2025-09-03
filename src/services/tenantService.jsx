@@ -1,7 +1,7 @@
 // // src/services/tenantService.js
 // import axios from 'axios';
 
-// const API_URL = 'https://9dd19b59bdc6.ngrok-free.app/api/v1';
+// const API_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1';
 
 // const getTenants = async () => {
 //   const token = localStorage.getItem('token');
@@ -19,7 +19,7 @@
 
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://9dd19b59bdc6.ngrok-free.app/api/v1/tenants';
+// const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/tenants';
 
 // const getAuthHeaders = () => {
 //   const token = localStorage.getItem('token');
@@ -77,7 +77,7 @@
 // services/tenantService.js
 import axios from 'axios';
 
-const API_URL = 'https://9dd19b59bdc6.ngrok-free.app/api/v1/tenants';
+const API_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/tenants';
 
 const getToken = () => localStorage.getItem('token');
 

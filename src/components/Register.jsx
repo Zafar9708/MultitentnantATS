@@ -50,7 +50,7 @@ const RegisterForm = () => {
     setSuccessMessage("");
 
     try {
-      const response = await fetch("https://9dd19b59bdc6.ngrok-free.app/api/v1/auth/setup", {
+      const response = await fetch("https://ab84e28a52f5.ngrok-free.app/api/v1/auth/setup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

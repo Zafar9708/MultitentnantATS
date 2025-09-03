@@ -64,7 +64,7 @@ const OfflineInterviews = ({ searchTerm, statusFilter, selectedDate }) => {
     const fetchInterviews = async () => {
       try {
         const token=localStorage.getItem("token")
-        const response = await axios.get('https://9dd19b59bdc6.ngrok-free.app/api/v1/offline/interviews',{
+        const response = await axios.get('https://ab84e28a52f5.ngrok-free.app/api/v1/offline/interviews',{
             headers:{
                 Authorization:`Bearer ${token}`
             }

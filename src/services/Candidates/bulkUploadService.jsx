@@ -1,7 +1,7 @@
 // // src/services/Candidates/bulkUploadService.js
 // import axios from 'axios';
 
-// const API_URL = "https://9dd19b59bdc6.ngrok-free.app";
+// const API_URL = "https://ab84e28a52f5.ngrok-free.app";
 
 // // Download Excel template
 // export const downloadTemplate = async () => {
@@ -77,7 +77,7 @@
 // src/services/Candidates/bulkUploadService.js
 import axios from 'axios';
 
-const API_URL = "https://9dd19b59bdc6.ngrok-free.app";
+const API_URL = "https://ab84e28a52f5.ngrok-free.app";
 
 // Download Excel template
 export const downloadTemplate = async () => {

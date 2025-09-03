@@ -200,7 +200,7 @@
 //   const token = localStorage.getItem("token");
 
 //   const response = await axios.get(
-//     `https://9dd19b59bdc6.ngrok-free.app/api/v1/candidates/${id}`,
+//     `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -215,7 +215,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://9dd19b59bdc6.ngrok-free.app/api/v1/candidates/${id}/stage-history`,
+//     `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/${id}/stage-history`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -263,7 +263,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://9dd19b59bdc6.ngrok-free.app/api/v1/candidates/download-resume/${id}`,
+//     `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/download-resume/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -279,7 +279,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://9dd19b59bdc6.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
+//     `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -883,7 +883,7 @@
 //                         </Box>
 //                       ) : (
 //                         <iframe
-//                           src={`https://9dd19b59bdc6.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
+//                           src={`https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
 //                           style={{ width: '100%', height: '100%', border: 'none' }}
 //                           title="Resume Viewer"
 //                         />
@@ -1988,7 +1988,7 @@ const CandidateDetailsPage = () => {
       return;
     }
 
-    const resumeUrl = `https://9dd19b59bdc6.ngrok-free.app/api/v1/candidates/preview-resume/${id}`;
+    const resumeUrl = `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/preview-resume/${id}`;
 
     try {
       if (method === 'native' && navigator.share) {
@@ -2566,7 +2566,7 @@ const CandidateDetailsPage = () => {
                         </Box>
                       ) : (
                         <iframe
-                          src={`https://9dd19b59bdc6.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
+                          src={`https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
                           style={{ width: '100%', height: '100%', border: 'none' }}
                           title="Resume Viewer"
                         />
