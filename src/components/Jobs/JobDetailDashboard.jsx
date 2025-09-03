@@ -122,7 +122,7 @@
 //     await fetchNotes();
 
 //     if (jobId) {
-//       const jobResponse = await axios.get(`http://192.168.0.128:5000/api/v1/job/${jobId}`, {
+//       const jobResponse = await axios.get(`https://1a9a0cdf7ba0.ngrok-free.app/api/v1/job/${jobId}`, {
 //         headers: {
 //           'Authorization': `Bearer ${token}`
 //         }
@@ -1122,7 +1122,7 @@
 //         if (jobId) {
 //           // Fetch job details
 //           try {
-//             const jobResponse = await axios.get(`http://192.168.0.128:5000/api/v1/job/${jobId}`, {
+//             const jobResponse = await axios.get(`https://1a9a0cdf7ba0.ngrok-free.app/api/v1/job/${jobId}`, {
 //               headers: {
 //                 'Authorization': `Bearer ${token}`
 //               }
@@ -1134,7 +1134,7 @@
 
 //           // Fetch total candidates for this job
 //           try {
-//             const candidatesResponse = await axios.get(`http://192.168.0.128:5000/api/v1/candidates/job/${jobId}`, {
+//             const candidatesResponse = await axios.get(`https://1a9a0cdf7ba0.ngrok-free.app/api/v1/candidates/job/${jobId}`, {
 //               headers: {
 //                 'Authorization': `Bearer ${token}`
 //               }
@@ -1172,17 +1172,17 @@
 //         try {
 //           const token= localStorage.getItem('token');
 //           const [onlineInterviewsRes, offlineInterviewsRes, upcomingInterviewsRes] = await Promise.all([
-//             axios.get('http://192.168.0.128:5000/api/v1/interviews/upcoming',{
+//             axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/interviews/upcoming',{
 //               headers:{
 //                 Authorization:`Bearer ${token}`
 //               }
 //             }),
-//             axios.get('http://192.168.0.128:5000/api/v1/offline/interviews/upcoming',{
+//             axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/offline/interviews/upcoming',{
 //               headers:{
 //                 Authorization:`Bearer ${token}`
 //               }
 //             }),
-//             axios.get('http://192.168.0.128:5000/api/v1/interviews/upcoming',{
+//             axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/interviews/upcoming',{
 //               headers: {
 //                 Authorization: `Bearer ${token}`
 //               }
@@ -2117,7 +2117,7 @@ const Dashboard = () => {
         if (jobId) {
           // Fetch job details
           try {
-            const jobResponse = await axios.get(`http://192.168.0.128:5000/api/v1/job/${jobId}`, {
+            const jobResponse = await axios.get(`https://1a9a0cdf7ba0.ngrok-free.app/api/v1/job/${jobId}`, {
               headers: {
                 'Authorization': `Bearer ${token}`
               }
@@ -2129,7 +2129,7 @@ const Dashboard = () => {
 
           // Fetch total candidates for this job
           try {
-            const candidatesResponse = await axios.get(`http://192.168.0.128:5000/api/v1/candidates/job/${jobId}`, {
+            const candidatesResponse = await axios.get(`https://1a9a0cdf7ba0.ngrok-free.app/api/v1/candidates/job/${jobId}`, {
               headers: {
                 'Authorization': `Bearer ${token}`
               }
@@ -2167,12 +2167,12 @@ const Dashboard = () => {
         try {
           const token = localStorage.getItem('token');
           const [onlineInterviewsRes, offlineInterviewsRes] = await Promise.all([
-            axios.get('http://192.168.0.128:5000/api/v1/interviews/upcoming', {
+            axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/interviews/upcoming', {
               headers: {
                 Authorization: `Bearer ${token}`
               }
             }),
-            axios.get('http://192.168.0.128:5000/api/v1/offline/interviews/upcoming', {
+            axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/offline/interviews/upcoming', {
               headers: {
                 Authorization: `Bearer ${token}`
               }

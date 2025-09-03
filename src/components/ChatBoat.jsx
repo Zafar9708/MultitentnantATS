@@ -63,7 +63,7 @@
 //     try {
 //       setIsLoading(true);
 //       const token=localStorage.getItem('token');
-//       const response = await axios.get('http://192.168.0.128:5000/api/v1/job',{
+//       const response = await axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/job',{
 //         headers:{
 //             Authorization:`Bearer ${token}`
 //         }
@@ -86,7 +86,7 @@
 //   try {
 //     setIsLoading(true);
 //     const token = localStorage.getItem('token');
-//     const response = await axios.get('http://192.168.0.128:5000/api/v1/candidates', {
+//     const response = await axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/candidates', {
 //       headers: {
 //         Authorization: `Bearer ${token}`
 //       }
@@ -110,7 +110,7 @@
 //   try {
 //     setIsLoading(true);
 //     const token = localStorage.getItem('token');
-//     const response = await axios.get('http://192.168.0.128:5000/api/v1/interviews/interviews/schedule', {
+//     const response = await axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/interviews/interviews/schedule', {
 //       headers: {
 //         Authorization: `Bearer ${token}`
 //       }
@@ -606,7 +606,7 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://192.168.0.128:5000/api/v1/job', {
+      const response = await axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/job', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -629,7 +629,7 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://192.168.0.128:5000/api/v1/candidates', {
+      const response = await axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/candidates', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -651,7 +651,7 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://192.168.0.128:5000/api/v1/interviews/interviews/schedule', {
+      const response = await axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/interviews/interviews/schedule', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -673,7 +673,7 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://192.168.0.128:5000/api/v1/offline/interviews', {
+      const response = await axios.get('https://1a9a0cdf7ba0.ngrok-free.app/api/v1/offline/interviews', {
         headers: {
           Authorization: `Bearer ${token}`
         }

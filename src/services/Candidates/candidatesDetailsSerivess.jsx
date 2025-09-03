@@ -1,7 +1,7 @@
 // // services/candidateService.js
 // import axios from 'axios';
 
-// const API_BASE_URL = 'http://192.168.0.128:5000/api/v1';
+// const API_BASE_URL = 'https://1a9a0cdf7ba0.ngrok-free.app/api/v1';
 
 // // Create axios instance with default config
 // const apiClient = axios.create({
@@ -87,7 +87,7 @@
 // services/candidateService.js
 import axios from 'axios';
 
-const API_BASE_URL = 'http://192.168.0.128:5000/api/v1';
+const API_BASE_URL = 'https://1a9a0cdf7ba0.ngrok-free.app/api/v1';
 
 // Create axios instance with default config
 const apiClient = axios.create({
@@ -165,6 +165,6 @@ export const externalServices = {
   },
   
   getFeedback: (id) => {
-    return axios.get(`http://192.168.0.128:5000/api/v1/interviews/candidate/${id}/feedback`);
+    return axios.get(`https://1a9a0cdf7ba0.ngrok-free.app/api/v1/interviews/candidate/${id}/feedback`);
   },
 };
