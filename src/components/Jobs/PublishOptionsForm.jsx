@@ -294,13 +294,19 @@ const PublishOptionsForm = ({
             </Typography>
             
             <Autocomplete
+              // multiple
+              // options={recruiters}
+              // value={selectedRecruiters}
+              // onChange={(event, newValue) => {
+              //   setSelectedRecruiters(newValue);
+              // }}
+              // getOptionLabel={(option) => option.username || option.email}
+
               multiple
-              options={recruiters}
-              value={selectedRecruiters}
-              onChange={(event, newValue) => {
-                setSelectedRecruiters(newValue);
-              }}
-              getOptionLabel={(option) => option.username || option.email}
+  options={Array.isArray(recruiters) ? recruiters : []}
+  value={Array.isArray(selectedRecruiters) ? selectedRecruiters : []}
+  onChange={(event, newValue) => setSelectedRecruiters(newValue)}
+  getOptionLabel={(option) => option.username || option.email || "Unknown"}
               renderInput={(params) => (
                 <TextField
                   {...params}
