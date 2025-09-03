@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const STAGE_API_URL = 'https://1a9a0cdf7ba0.ngrok-free.app/api/v1/stages';
+const STAGE_API_URL = 'https://9dd19b59bdc6.ngrok-free.app/api/v1/stages';
 
 const stageApi = axios.create({
   baseURL: STAGE_API_URL,

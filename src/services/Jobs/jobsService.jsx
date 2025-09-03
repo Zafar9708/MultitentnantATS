@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://1a9a0cdf7ba0.ngrok-free.app/api/v1/job';
+const API_BASE_URL = 'https://9dd19b59bdc6.ngrok-free.app/api/v1/job';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
@@ -38,7 +38,7 @@ export const getJobById = async (jobId) => {
 
 export const fetchNotesByJob = async (jobId) => {
   try {
-    const response = await axios.get(`https://1a9a0cdf7ba0.ngrok-free.app/api/v1/notes/${jobId}`, getAuthHeaders());
+    const response = await axios.get(`https://9dd19b59bdc6.ngrok-free.app/api/v1/notes/${jobId}`, getAuthHeaders());
     return response.data;
   } catch (error) {
     console.error('Error fetching notes:', error.response || error);
@@ -49,7 +49,7 @@ export const fetchNotesByJob = async (jobId) => {
 export const createNote = async (jobId, content) => {
   try {
     const response = await axios.post(
-      `https://1a9a0cdf7ba0.ngrok-free.app/api/v1/notes/${jobId}`,
+      `https://9dd19b59bdc6.ngrok-free.app/api/v1/notes/${jobId}`,
       { content },
       getAuthHeaders()
     );
@@ -63,7 +63,7 @@ export const createNote = async (jobId, content) => {
 export const updateNote = async (noteId, content) => {
   try {
     const response = await axios.put(
-      `https://1a9a0cdf7ba0.ngrok-free.app/api/v1/notes/${noteId}`,
+      `https://9dd19b59bdc6.ngrok-free.app/api/v1/notes/${noteId}`,
       { content },
       getAuthHeaders()
     );
@@ -77,7 +77,7 @@ export const updateNote = async (noteId, content) => {
 export const deleteNote = async (noteId) => {
   try {
     const response = await axios.delete(
-      `https://1a9a0cdf7ba0.ngrok-free.app/api/v1/notes/${noteId}`,
+      `https://9dd19b59bdc6.ngrok-free.app/api/v1/notes/${noteId}`,
       getAuthHeaders()
     );
     return response.data;
