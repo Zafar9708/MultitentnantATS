@@ -99,7 +99,7 @@ const LoginForm = () => {
           alignItems: "center",
           justifyContent: "center",
           py: 4,
-          ml:42
+          ml:36
         }}
       >
         <Container component="main" maxWidth="sm">
