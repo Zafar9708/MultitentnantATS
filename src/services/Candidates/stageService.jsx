@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-const STAGE_API_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/stages';
+const STAGE_API_URL = 'https://f0937721124b.ngrok-free.app/api/v1/stages';
 
 const stageApi = axios.create({
   baseURL: STAGE_API_URL,
   headers: {
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true'
   },
 });
 

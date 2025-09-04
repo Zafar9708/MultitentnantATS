@@ -1,7 +1,7 @@
 // // services/candidateService.js
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1';
+// const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1';
 
 // // Create axios instance with default config
 // const apiClient = axios.create({
@@ -87,7 +87,7 @@
 // services/candidateService.js
 import axios from 'axios';
 
-const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1';
+const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1';
 
 // Create axios instance with default config
 const apiClient = axios.create({
@@ -100,6 +100,7 @@ apiClient.interceptors.request.use(
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      
     }
     return config;
   },
@@ -111,60 +112,108 @@ apiClient.interceptors.request.use(
 export const candidateService = {
   // Get candidate by ID
   getCandidate: (id) => {
-    return apiClient.get(`/candidates/${id}`);
+    return apiClient.get(`/candidates/${id}`,{
+        headers:{
+            'ngrok-skip-browser-warning': 'true'
+
+        }
+    });
   },
 
   // Get candidate stage history
   getStageHistory: (id) => {
-    return apiClient.get(`/candidates/${id}/stage-history`);
+    return apiClient.get(`/candidates/${id}/stage-history`,{
+        headers:{
+                    'ngrok-skip-browser-warning': 'true'
+
+        }
+    });
   },
 
   // Download resume
   downloadResume: (id) => {
-    return apiClient.get(`/candidates/download-resume/${id}`, {
+    return apiClient.get(`/candidates/download-resume/${id}`,{
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    } ,{
       responseType: 'blob'
     });
   },
 
   // Preview resume
   previewResume: (id) => {
-    return apiClient.get(`/candidates/preview-resume/${id}`, {
+    return apiClient.get(`/candidates/preview-resume/${id}`,{
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    }, {
       responseType: 'blob'
     });
   },
 
   // Get candidate notes
   getNotes: (id) => {
-    return apiClient.get(`/candidatesnotes/candidate/${id}`);
+    return apiClient.get(`/candidatesnotes/candidate/${id}`,{
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    });
   },
 
   // Create candidate note
   createNote: (noteData) => {
-    return apiClient.post(`/candidatesnotes`, noteData);
+    return apiClient.post(`/candidatesnotes`,{
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    }, noteData);
   },
 
   // Update candidate note
   updateNote: (id, noteData) => {
-    return apiClient.put(`/candidatesnotes/${id}`, noteData);
+    return apiClient.put(`/candidatesnotes/${id}`,{
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    }, noteData);
   },
 
   // Delete candidate note
   deleteNote: (id) => {
-    return apiClient.delete(`/candidatesnotes/${id}`);
+    return apiClient.delete(`/candidatesnotes/${id}`,{
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    });
   },
 };
 
 export const externalServices = {
   // External APIs (from your existing code)
   getMessages: (id) => {
-    return axios.get(`https://hire-onboardbackend-production.up.railway.app/api/messages/${id}`);
+    return axios.get(`https://hire-onboardbackend-production.up.railway.app/api/messages/${id}`,{
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    });
   },
   
   getRemarks: (id) => {
-    return axios.get(`https://hire-onboardbackend-production.up.railway.app/api/candidate-comments/${id}`);
+    return axios.get(`https://hire-onboardbackend-production.up.railway.app/api/candidate-comments/${id}`,
+        {
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    }
+    );
   },
   
   getFeedback: (id) => {
-    return axios.get(`https://ab84e28a52f5.ngrok-free.app/api/v1/interviews/candidate/${id}/feedback`);
+    return axios.get(`https://f0937721124b.ngrok-free.app/api/v1/interviews/candidate/${id}/feedback`,{
+       headers: {'ngrok-skip-browser-warning': 'true'
+       }
+
+    });
   },
 };

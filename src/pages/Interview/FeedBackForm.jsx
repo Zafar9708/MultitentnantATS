@@ -46,6 +46,8 @@ const FeedbackForm = () => {
                 const response = await axios.get(`http://192.168.0.128:5000/api/v1/interviews/${interviewId}`,{
                     headers: {
                         Authorization: `Bearer ${token}`,
+                        'ngrok-skip-browser-warning': 'true'
+
                     }
                 });
                 
@@ -98,6 +100,8 @@ const FeedbackForm = () => {
                 {
                     headers: {
                         'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true'
+
                         // 'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 }

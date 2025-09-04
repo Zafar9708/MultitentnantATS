@@ -1,7 +1,7 @@
 // // src/services/Candidates/bulkUploadService.js
 // import axios from 'axios';
 
-// const API_URL = "https://ab84e28a52f5.ngrok-free.app";
+// const API_URL = "https://f0937721124b.ngrok-free.app";
 
 // // Download Excel template
 // export const downloadTemplate = async () => {
@@ -77,7 +77,7 @@
 // src/services/Candidates/bulkUploadService.js
 import axios from 'axios';
 
-const API_URL = "https://ab84e28a52f5.ngrok-free.app";
+const API_URL = "https://f0937721124b.ngrok-free.app";
 
 // Download Excel template
 export const downloadTemplate = async () => {
@@ -129,7 +129,9 @@ export const bulkUploadCandidates = async (file, jobId = null) => {
     const response = await axios.post(`${API_URL}/api/v1/candidates/bulk-upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+                'ngrok-skip-browser-warning': 'true'
+
       },
     });
 
@@ -146,7 +148,9 @@ export const getBulkUploadStatus = async (uploadId) => {
     const token = localStorage.getItem('token');
     const response = await axios.get(`${API_URL}/api/v1/candidates/upload-status/${uploadId}`, {
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+                'ngrok-skip-browser-warning': 'true'
+
       }
     });
     return response.data;

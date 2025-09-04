@@ -1,19 +1,24 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/options';
+const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/options';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
   return {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'true'
     }
   };
 };
 
 export const fetchJobFormOptions = async () => {
   try {
-    const response = await axios.get(API_BASE_URL, getAuthHeaders());
+    const response = await axios.get(API_BASE_URL,{
+      headers:{
+        'ngrok-skip-browser-warning': 'true'
+      }
+    }, getAuthHeaders());
     return response.data;
   } catch (err) {
     throw new Error(err.response?.data?.error || err.message);

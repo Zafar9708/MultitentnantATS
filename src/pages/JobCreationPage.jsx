@@ -1,5 +1,3 @@
-
-
 // import React, { useState, useEffect } from "react";
 // import { Box, Typography, CircularProgress } from "@mui/material";
 // import StepIndicator from "../components/Jobs/StepIndicator";
@@ -19,7 +17,7 @@
 //   const [step, setStep] = useState(0);
 //   const [completedSteps, setCompletedSteps] = useState([]);
 //   const [isEditMode, setIsEditMode] = useState(false);
-//   const [loading, setLoading] = useState(true); // Start with loading true
+//   const [loading, setLoading] = useState(true);
 //   const [recruiters, setRecruiters] = useState([]);
 //   const [selectedRecruiters, setSelectedRecruiters] = useState([]);
 //   const [currentUser, setCurrentUser] = useState(null);
@@ -33,6 +31,7 @@
 //     Client: '',
 //     jobType: '',
 //     location: '',
+//     locations: [],
 //     openings: '',
 //     targetHireDate: null,
 //     currency: '',
@@ -44,7 +43,7 @@
 //     careerSite: false,
 //     internalEmployees: false,
 //     referToEmployees: false,
-//     SalesPerson: '',
+//     salesPerson: '',
 //     recruitingPerson: '',
 //     assignedRecruiters: []
 //   });
@@ -52,17 +51,14 @@
 //   useEffect(() => {
 //     const initializePage = async () => {
 //       try {
-//         // Get current user from API
 //         const user = await getCurrentUser();
 //         console.log('Fetched user:', user);
 //         setCurrentUser(user);
         
-//         // Fetch recruiters only if user is admin
 //         if (user && user.role === 'admin') {
 //           await fetchRecruiters();
 //         }
         
-//         // Load job data if in edit mode
 //         if (id) {
 //           await loadJobData();
 //         }
@@ -80,11 +76,17 @@
 //   const fetchRecruiters = async () => {
 //     try {
 //       const response = await adminService.getRecruiters();
+//       console.log('Recruiters response:', response);
+      
+//       // Handle different response structures
 //       if (response.recruiters && Array.isArray(response.recruiters)) {
 //         setRecruiters(response.recruiters);
 //       } else if (response.recuiter && Array.isArray(response.recuiter)) {
 //         setRecruiters(response.recuiter);
+//       } else if (Array.isArray(response)) {
+//         setRecruiters(response);
 //       } else {
+//         console.error('Unexpected recruiters response format:', response);
 //         setRecruiters([]);
 //       }
 //     } catch (err) {
@@ -112,6 +114,7 @@
 //         Client: jobData.jobFormId?.Client || '',
 //         jobType: jobData.jobFormId?.jobType || '',
 //         location: jobData.jobFormId?.location || '',
+//         locations: jobData.jobFormId?.locations || [],
 //         openings: jobData.jobFormId?.openings || '',
 //         targetHireDate: jobData.jobFormId?.targetHireDate || null,
 //         currency: jobData.jobFormId?.currency || '',
@@ -123,18 +126,20 @@
 //         careerSite: jobData.careerSite || false,
 //         internalEmployees: jobData.internalEmployees || false,
 //         referToEmployees: jobData.referToEmployees || false,
-//         SalesPerson: jobData.jobFormId?.SalesPerson || '',
+//         salesPerson: jobData.jobFormId?.salesPerson || '',
 //         recruitingPerson: jobData.jobFormId?.recruitingPerson || '',
 //         assignedRecruiters: jobData.assignedRecruiters || []
 //       });
 
-//       // Set selected recruiters if editing and user is admin
-//       if (jobData.assignedRecruiters && Array.isArray(jobData.assignedRecruiters) && currentUser?.role === 'admin') {
-//         // Convert IDs to recruiter objects
-//         const assignedRecruiters = recruiters.filter(recruiter => 
-//           jobData.assignedRecruiters.includes(recruiter._id)
-//         );
-//         setSelectedRecruiters(assignedRecruiters);
+//       // Set selected recruiters if in edit mode
+//       if (jobData.assignedRecruiters && Array.isArray(jobData.assignedRecruiters)) {
+//         // Wait for recruiters to be loaded first
+//         if (recruiters.length > 0) {
+//           const assignedRecruiters = recruiters.filter(recruiter => 
+//             jobData.assignedRecruiters.includes(recruiter._id)
+//           );
+//           setSelectedRecruiters(assignedRecruiters);
+//         }
 //       }
       
 //       setIsEditMode(true);
@@ -143,6 +148,16 @@
 //       alert("Failed to load job data");
 //     }
 //   };
+
+//   // Update selected recruiters when recruiters data changes in edit mode
+//   useEffect(() => {
+//     if (isEditMode && recruiters.length > 0 && formData.assignedRecruiters.length > 0) {
+//       const assignedRecruiters = recruiters.filter(recruiter => 
+//         formData.assignedRecruiters.includes(recruiter._id)
+//       );
+//       setSelectedRecruiters(assignedRecruiters);
+//     }
+//   }, [recruiters, isEditMode, formData.assignedRecruiters]);
 
 //   const handleJobDescriptionSubmit = (data) => {
 //     setFormData(prev => ({
@@ -171,14 +186,42 @@
 //   };
 
 //   const handlePublish = async (options) => {
+//     // Create the final data object with proper structure
 //     const finalData = {
-//       ...formData,
-//       ...options,
-//       // Only include assignedRecruiters if user is admin
+//       // Job Description fields
+//       jobTitle: formData.jobTitle,
+//       department: formData.department,
+//       experience: formData.experience,
+//       jobDesc: formData.jobDesc,
+      
+//       // Job Details fields
+//       jobType: formData.jobType,
+//       locations: formData.locations,
+//       openings: formData.openings,
+//       targetHireDate: formData.targetHireDate,
+//       currency: formData.currency,
+//       amount: formData.amount,
+//       allowReapply: formData.allowReapply,
+//       reapplyDate: formData.reapplyDate,
+//       markPriority: formData.markPriority,
+//       hiringFlow: formData.hiringFlow,
+//       BusinessUnit: formData.BusinessUnit,
+//       Client: formData.Client,
+//       salesPerson: formData.salesPerson,
+//       recruitingPerson: formData.recruitingPerson,
+      
+//       // Publish Options
+//       careerSite: options.careerSite,
+//       internalEmployees: options.internalEmployees,
+//       referToEmployees: options.referToEmployees,
+      
+//       // Recruiter assignment
 //       ...(currentUser?.role === 'admin' && {
 //         assignedRecruiters: selectedRecruiters.map(recruiter => recruiter._id)
 //       })
 //     };
+    
+//     console.log("Final data being sent:", JSON.stringify(finalData, null, 2));
     
 //     try {
 //       setLoading(true);
@@ -209,131 +252,114 @@
 
 //   return (
 //     <MainLayout>
-//     <Box sx={{ padding: 3, minHeight: "100vh" ,ml:4 }}>
-//       {/* <Box sx={{ position: 'absolute', top: 70, right: 20, bgcolor: 'info.main', color: 'white', p: 1, borderRadius: 1 }}>
-//         <Typography variant="caption">
-//           User: {currentUser?.email} | Role: {currentUser?.role} | Is Admin: {currentUser?.role === 'admin' ? 'YES' : 'NO'}
+//       <Box sx={{ padding: 3, minHeight: "100vh", ml: 4 }}>
+//         <Typography variant="h4" sx={{ color: "#1976d2", fontWeight: "bold" }} align="center">
+//           {isEditMode ? "Update Job Posting" : "Create a New Job"}
 //         </Typography>
-//       </Box> */}
 
-//       <Typography variant="h4" sx={{ color: "#1976d2", fontWeight: "bold" }} align="center">
-//         {isEditMode ? "Update Job Posting" : "Create a New Job"}
-//       </Typography>
+//         <StepIndicator activeStep={step} completedSteps={completedSteps} />
 
-//       <StepIndicator activeStep={step} completedSteps={completedSteps} />
+//         {step === 0 && (
+//           <JobDescriptionForm 
+//             onContinue={handleJobDescriptionSubmit} 
+//             initialData={{
+//               jobTitle: formData.jobTitle,
+//               department: formData.department,
+//               experience: formData.experience,
+//               jobDesc: formData.jobDesc
+//             }}
+//           />
+//         )}
 
-//       {step === 0 && (
-//         <JobDescriptionForm 
-//           onContinue={handleJobDescriptionSubmit} 
-//           initialData={{
-//             jobTitle: formData.jobTitle,
-//             department: formData.department,
-//             experience: formData.experience,
-//             jobDesc: formData.jobDesc
-//           }}
-//         />
-//       )}
+//         {step === 1 && (
+//           <JobDetailsForm 
+//             onContinue={handleJobDetailsSubmit} 
+//             initialData={{
+//               BusinessUnit: formData.BusinessUnit,
+//               Client: formData.Client,
+//               jobType: formData.jobType,
+//               locations: formData.locations,
+//               openings: formData.openings,
+//               targetHireDate: formData.targetHireDate,
+//               currency: formData.currency,
+//               amount: formData.amount,
+//               allowReapply: formData.allowReapply,
+//               reapplyDate: formData.reapplyDate,
+//               markPriority: formData.markPriority,
+//               hiringFlow: formData.hiringFlow,
+//               salesPerson: formData.salesPerson,
+//               recruitingPerson: formData.recruitingPerson,
+//             }}
+//           />
+//         )}
 
-//       {step === 1 && (
-//         <JobDetailsForm 
-//           onContinue={handleJobDetailsSubmit} 
-//           initialData={{
-//             BusinessUnit: formData.BusinessUnit,
-//             Client: formData.Client,
-//             jobType: formData.jobType,
-//             location: formData.location,
-//             openings: formData.openings,
-//             targetHireDate: formData.targetHireDate,
-//             currency: formData.currency,
-//             amount: formData.amount,
-//             allowReapply: formData.allowReapply,
-//             reapplyDate: formData.reapplyDate,
-//             markPriority: formData.markPriority,
-//             hiringFlow: formData.hiringFlow,
-//             SalesPerson: formData.SalesPerson,
-//             recruitingPerson: formData.recruitingPerson,
-//           }}
-//         />
-//       )}
-
-//       {step === 2 && currentUser && (
-//         <PublishOptionsForm
-//           onBack={handlePublishBack}
-//           onPublish={handlePublish}
-//           initialOptions={{
-//             careerSite: formData.careerSite,
-//             internalEmployees: formData.internalEmployees,
-//             referToEmployees: formData.referToEmployees
-//           }}
-//           isEditMode={isEditMode}
-//           recruiters={currentUser.role === 'admin' ? recruiters : []}
-//           selectedRecruiters={currentUser.role === 'admin' ? selectedRecruiters : []}
-//           setSelectedRecruiters={currentUser.role === 'admin' ? setSelectedRecruiters : () => {}}
-//           isAdmin={currentUser.role === 'admin'}
-//         />
-//       )}
-//     </Box>
+//         {step === 2 && currentUser && (
+//           <PublishOptionsForm
+//             onBack={handlePublishBack}
+//             onPublish={handlePublish}
+//             initialOptions={{
+//               careerSite: formData.careerSite,
+//               internalEmployees: formData.internalEmployees,
+//               referToEmployees: formData.referToEmployees
+//             }}
+//             isEditMode={isEditMode}
+//             recruiters={recruiters} // Pass the recruiters from state
+//             selectedRecruiters={selectedRecruiters}
+//             setSelectedRecruiters={setSelectedRecruiters}
+//             isAdmin={currentUser.role === 'admin'}
+//             loading={loading}
+//           />
+//         )}
+//       </Box>
 //     </MainLayout>
 //   );
 // };
 
 // export default JobCreationPage;
 
-//-----
+//---------
 
-// src/pages/JobCreationPage.jsx
-// src/pages/JobCreationPage.jsx
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  Backdrop,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Box, Typography, CircularProgress, Snackbar, Alert } from "@mui/material";
 import StepIndicator from "../components/Jobs/StepIndicator";
 import JobDescriptionForm from "../components/Jobs/JobDescriptionForm";
 import JobDetailsForm from "../components/Jobs/JobDetailsForm";
 import PublishOptionsForm from "../components/Jobs/PublishOptionsForm";
-import {
-  createJob,
-  updateJob,
-  fetchJobDetails,
-} from "../services/Jobs/jobCreationService";
+import { createJob, updateJob, fetchJobDetails } from "../services/Jobs/jobCreationService";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import adminService from "../services/adminService";
-import { useUser } from "../contexts/UserContext"; // ✅ use context instead of API
+import { getCurrentUser } from "../services/authService";
 
 const JobCreationPage = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { user: currentUser } = useUser(); // ✅ get user from context
-
   const [step, setStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([]);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [loading, setLoading] = useState(true); // only for initial page data
-  const [submitting, setSubmitting] = useState(false); // ✅ loader while saving
-  const [successMessage, setSuccessMessage] = useState(""); // ✅ success snackbar
+  const [loading, setLoading] = useState(true);
+  const [publishLoading, setPublishLoading] = useState(false);
   const [recruiters, setRecruiters] = useState([]);
   const [selectedRecruiters, setSelectedRecruiters] = useState([]);
-
+  const [currentUser, setCurrentUser] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  
   const [formData, setFormData] = useState({
-    jobTitle: "",
-    department: "",
-    experience: "",
-    jobDesc: "",
-    BusinessUnit: "",
-    Client: "",
-    jobType: "",
-    location: "",
-    openings: "",
+    jobTitle: '',
+    department: '',
+    experience: '',
+    jobDesc: '',
+    BusinessUnit: '',
+    Client: '',
+    jobType: '',
+    location: '',
+    locations: [],
+    openings: '',
     targetHireDate: null,
-    currency: "",
-    amount: "",
+    currency: '',
+    amount: '',
     allowReapply: false,
     reapplyDate: null,
     markPriority: false,
@@ -341,44 +367,54 @@ const JobCreationPage = () => {
     careerSite: false,
     internalEmployees: false,
     referToEmployees: false,
-    SalesPerson: "",
-    recruitingPerson: "",
-    assignedRecruiters: [],
+    salesPerson: '',
+    recruitingPerson: '',
+    assignedRecruiters: []
   });
 
   useEffect(() => {
     const initializePage = async () => {
       try {
-        if (currentUser?.role === "admin") {
+        const user = await getCurrentUser();
+        console.log('Fetched user:', user);
+        setCurrentUser(user);
+        
+        if (user && user.role === 'admin') {
           await fetchRecruiters();
         }
+        
         if (id) {
           await loadJobData();
         }
       } catch (error) {
-        console.error("Error initializing page:", error);
+        console.error('Error initializing page:', error);
+        setErrorMessage('Failed to load page data');
       } finally {
         setLoading(false);
       }
     };
 
-    if (currentUser) {
-      initializePage();
-    }
-  }, [id, currentUser]);
+    initializePage();
+  }, [id]);
 
   const fetchRecruiters = async () => {
     try {
       const response = await adminService.getRecruiters();
+      console.log('Recruiters response:', response);
+      
+      // Handle different response structures
       if (response.recruiters && Array.isArray(response.recruiters)) {
         setRecruiters(response.recruiters);
       } else if (response.recuiter && Array.isArray(response.recuiter)) {
         setRecruiters(response.recuiter);
+      } else if (Array.isArray(response)) {
+        setRecruiters(response);
       } else {
+        console.error('Unexpected recruiters response format:', response);
         setRecruiters([]);
       }
     } catch (err) {
-      console.error("Error fetching recruiters:", err);
+      console.error('Error fetching recruiters:', err);
       setRecruiters([]);
     }
   };
@@ -392,57 +428,65 @@ const JobCreationPage = () => {
         const response = await fetchJobDetails(id);
         jobData = response.job;
       }
-
+      
       setFormData({
-        jobTitle: jobData.jobTitle || "",
-        department: jobData.department || "",
-        experience: jobData.experience || "",
-        jobDesc: jobData.jobDesc || "",
-        BusinessUnit: jobData.jobFormId?.BusinessUnit || "",
-        Client: jobData.jobFormId?.Client || "",
-        jobType: jobData.jobFormId?.jobType || "",
-        location: jobData.jobFormId?.location || "",
-        openings: jobData.jobFormId?.openings || "",
+        jobTitle: jobData.jobTitle || '',
+        department: jobData.department || '',
+        experience: jobData.experience || '',
+        jobDesc: jobData.jobDesc || '',
+        BusinessUnit: jobData.jobFormId?.BusinessUnit || '',
+        Client: jobData.jobFormId?.Client || '',
+        jobType: jobData.jobFormId?.jobType || '',
+        location: jobData.jobFormId?.location || '',
+        locations: jobData.jobFormId?.locations || [],
+        openings: jobData.jobFormId?.openings || '',
         targetHireDate: jobData.jobFormId?.targetHireDate || null,
-        currency: jobData.jobFormId?.currency || "",
-        amount: jobData.jobFormId?.amount || "",
+        currency: jobData.jobFormId?.currency || '',
+        amount: jobData.jobFormId?.amount || '',
         allowReapply: jobData.jobFormId?.allowReapply || false,
         reapplyDate: jobData.jobFormId?.reapplyDate || null,
         markPriority: jobData.jobFormId?.markPriority || false,
-        hiringFlow: jobData.jobFormId?.hiringFlow || [
-          "Technical Round",
-          "Manager Interview",
-          "HR Round",
-        ],
+        hiringFlow: jobData.jobFormId?.hiringFlow || ["Technical Round", "Manager Interview", "HR Round"],
         careerSite: jobData.careerSite || false,
         internalEmployees: jobData.internalEmployees || false,
         referToEmployees: jobData.referToEmployees || false,
-        SalesPerson: jobData.jobFormId?.SalesPerson || "",
-        recruitingPerson: jobData.jobFormId?.recruitingPerson || "",
-        assignedRecruiters: jobData.assignedRecruiters || [],
+        salesPerson: jobData.jobFormId?.salesPerson || '',
+        recruitingPerson: jobData.jobFormId?.recruitingPerson || '',
+        assignedRecruiters: jobData.assignedRecruiters || []
       });
 
-      if (
-        jobData.assignedRecruiters &&
-        Array.isArray(jobData.assignedRecruiters) &&
-        currentUser?.role === "admin"
-      ) {
-        const assignedRecruiters = recruiters.filter((r) =>
-          jobData.assignedRecruiters.includes(r._id)
-        );
-        setSelectedRecruiters(assignedRecruiters);
+      // Set selected recruiters if in edit mode
+      if (jobData.assignedRecruiters && Array.isArray(jobData.assignedRecruiters)) {
+        // Wait for recruiters to be loaded first
+        if (recruiters.length > 0) {
+          const assignedRecruiters = recruiters.filter(recruiter => 
+            jobData.assignedRecruiters.includes(recruiter._id)
+          );
+          setSelectedRecruiters(assignedRecruiters);
+        }
       }
-
+      
       setIsEditMode(true);
     } catch (error) {
       console.error("Error loading job data:", error);
+      setErrorMessage("Failed to load job data");
     }
   };
 
+  // Update selected recruiters when recruiters data changes in edit mode
+  useEffect(() => {
+    if (isEditMode && recruiters.length > 0 && formData.assignedRecruiters.length > 0) {
+      const assignedRecruiters = recruiters.filter(recruiter => 
+        formData.assignedRecruiters.includes(recruiter._id)
+      );
+      setSelectedRecruiters(assignedRecruiters);
+    }
+  }, [recruiters, isEditMode, formData.assignedRecruiters]);
+
   const handleJobDescriptionSubmit = (data) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      ...data,
+      ...data
     }));
     setCompletedSteps((prev) => [...new Set([...prev, 0])]);
     setStep(1);
@@ -452,9 +496,9 @@ const JobCreationPage = () => {
     if (action === "back") {
       setStep(0);
     } else {
-      setFormData((prev) => ({
+      setFormData(prev => ({
         ...prev,
-        ...data,
+        ...data
       }));
       setCompletedSteps((prev) => [...new Set([...prev, 1])]);
       setStep(2);
@@ -465,84 +509,109 @@ const JobCreationPage = () => {
     setStep(1);
   };
 
-  const handlePublish = async (options) => {
-    const finalData = {
-      ...formData,
-      ...options,
-      ...(currentUser?.role === "admin" && {
-        assignedRecruiters: selectedRecruiters.map((r) => r._id),
-      }),
-    };
+  const handleCloseSnackbar = () => {
+    setSuccessMessage("");
+    setErrorMessage("");
+  };
 
+  const handlePublish = async (options) => {
+    // Create the final data object with proper structure
+    const finalData = {
+      // Job Description fields
+      jobTitle: formData.jobTitle,
+      department: formData.department,
+      experience: formData.experience,
+      jobDesc: formData.jobDesc,
+      
+      // Job Details fields
+      jobType: formData.jobType,
+      locations: formData.locations,
+      openings: formData.openings,
+      targetHireDate: formData.targetHireDate,
+      currency: formData.currency,
+      amount: formData.amount,
+      allowReapply: formData.allowReapply,
+      reapplyDate: formData.reapplyDate,
+      markPriority: formData.markPriority,
+      hiringFlow: formData.hiringFlow,
+      BusinessUnit: formData.BusinessUnit,
+      Client: formData.Client,
+      salesPerson: formData.salesPerson,
+      recruitingPerson: formData.recruitingPerson,
+      
+      // Publish Options
+      careerSite: options.careerSite,
+      internalEmployees: options.internalEmployees,
+      referToEmployees: options.referToEmployees,
+      
+      // Recruiter assignment
+      ...(currentUser?.role === 'admin' && {
+        assignedRecruiters: selectedRecruiters.map(recruiter => recruiter._id)
+      })
+    };
+    
+    console.log("Final data being sent:", JSON.stringify(finalData, null, 2));
+    
     try {
-      setSubmitting(true);
+      setPublishLoading(true);
       if (isEditMode) {
         await updateJob(id, finalData);
-        setSuccessMessage("Job updated successfully!");
+        setSuccessMessage("Job Updated Successfully ✅");
       } else {
         await createJob(finalData);
-        setSuccessMessage("Job created successfully!");
+        setSuccessMessage("Job Published Successfully ✅");
       }
-
-      // redirect after 2s
+      
+      // Wait for 2 seconds before navigating to jobs page
       setTimeout(() => {
         navigate("/jobs");
       }, 2000);
+      
     } catch (error) {
       console.error("Error submitting job:", error);
-      setSubmitting(false);
+      setErrorMessage(error.response?.data?.error || "Failed to publish job. Please try again.");
+      setPublishLoading(false);
     }
   };
 
   if (loading) {
-    // ✅ show ONLY one loader (initial page load)
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="60vh"
-        flexDirection="column"
-      >
+      <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
         <CircularProgress size={60} thickness={4} />
-        <Typography sx={{ mt: 2 }}>Loading...</Typography>
+        <Typography sx={{ ml: 2 }}>Loading...</Typography>
       </Box>
     );
   }
 
   return (
     <MainLayout>
-      <Box sx={{ padding: 3, minHeight: "100vh" }}>
-        <Typography
-          variant="h4"
-          sx={{ color: "#1976d2", fontWeight: "bold" }}
-          align="center"
-        >
+      <Box sx={{ padding: 3, minHeight: "100vh", ml: 4 }}>
+        <Typography variant="h4" sx={{ color: "#1976d2", fontWeight: "bold" }} align="center">
           {isEditMode ? "Update Job Posting" : "Create a New Job"}
         </Typography>
 
         <StepIndicator activeStep={step} completedSteps={completedSteps} />
 
         {step === 0 && (
-          <JobDescriptionForm
-            onContinue={handleJobDescriptionSubmit}
+          <JobDescriptionForm 
+            onContinue={handleJobDescriptionSubmit} 
             initialData={{
               jobTitle: formData.jobTitle,
               department: formData.department,
               experience: formData.experience,
-              jobDesc: formData.jobDesc,
+              jobDesc: formData.jobDesc
             }}
           />
         )}
 
         {step === 1 && (
-          <JobDetailsForm
-            onContinue={handleJobDetailsSubmit}
+          <JobDetailsForm 
+            onContinue={handleJobDetailsSubmit} 
             initialData={{
               BusinessUnit: formData.BusinessUnit,
               Client: formData.Client,
               jobType: formData.jobType,
-              location: formData.location,
+              locations: formData.locations,
               openings: formData.openings,
               targetHireDate: formData.targetHireDate,
               currency: formData.currency,
@@ -551,7 +620,7 @@ const JobCreationPage = () => {
               reapplyDate: formData.reapplyDate,
               markPriority: formData.markPriority,
               hiringFlow: formData.hiringFlow,
-              SalesPerson: formData.SalesPerson,
+              salesPerson: formData.salesPerson,
               recruitingPerson: formData.recruitingPerson,
             }}
           />
@@ -564,45 +633,41 @@ const JobCreationPage = () => {
             initialOptions={{
               careerSite: formData.careerSite,
               internalEmployees: formData.internalEmployees,
-              referToEmployees: formData.referToEmployees,
+              referToEmployees: formData.referToEmployees
             }}
             isEditMode={isEditMode}
-            recruiters={currentUser.role === "admin" ? recruiters : []}
-            selectedRecruiters={
-              currentUser.role === "admin" ? selectedRecruiters : []
-            }
-            setSelectedRecruiters={
-              currentUser.role === "admin" ? setSelectedRecruiters : () => {}
-            }
-            isAdmin={currentUser.role === "admin"}
+            recruiters={recruiters}
+            selectedRecruiters={selectedRecruiters}
+            setSelectedRecruiters={setSelectedRecruiters}
+            isAdmin={currentUser.role === 'admin'}
+            loading={publishLoading}
           />
         )}
+
+        {/* Success Message Snackbar */}
+        <Snackbar
+          open={!!successMessage}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+            {successMessage}
+          </Alert>
+        </Snackbar>
+
+        {/* Error Message Snackbar */}
+        <Snackbar
+          open={!!errorMessage}
+          autoHideDuration={5000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%' }}>
+            {errorMessage}
+          </Alert>
+        </Snackbar>
       </Box>
-
-      {/* ✅ Fullscreen loader only while submitting */}
-      <Backdrop
-        sx={{
-          color: "#fff",
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          flexDirection: "column",
-        }}
-        open={submitting && !successMessage} // hide loader when success shown
-      >
-        <CircularProgress color="inherit" size={70} />
-        <Typography sx={{ mt: 2, fontWeight: "bold" }}>
-          {isEditMode ? "Updating Job..." : "Publishing Job..."}
-        </Typography>
-      </Backdrop>
-
-      {/* ✅ Beautiful success snackbar */}
-      <Snackbar
-        open={Boolean(successMessage)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert severity="success" sx={{ fontSize: "1rem", fontWeight: "bold" }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
     </MainLayout>
   );
 };

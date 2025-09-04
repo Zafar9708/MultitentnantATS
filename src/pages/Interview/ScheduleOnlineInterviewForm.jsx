@@ -38,7 +38,7 @@ import {
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-const API_BASE = "https://ab84e28a52f5.ngrok-free.app/api/v1";
+const API_BASE = "https://f0937721124b.ngrok-free.app/api/v1";
 
 const EmailTemplateTab = ({ 
     candidate, 
@@ -266,7 +266,12 @@ const ScheduleOnlineInterviewForm = ({ open, onClose, candidate, user }) => {
 
                     const fetchDurations = async () => {
                         try {
-                            const res = await axios.get(`${API_BASE}/interviews/durations`);
+                            const res = await axios.get(`${API_BASE}/interviews/durations`,{
+                                headers:{
+                                            'ngrok-skip-browser-warning': 'true'
+
+                                }
+                            });
                             return res.data;
                         } catch (error) {
                             console.error("Error fetching durations:", error);
@@ -276,7 +281,12 @@ const ScheduleOnlineInterviewForm = ({ open, onClose, candidate, user }) => {
 
                     const fetchInterviewers = async () => {
                         try {
-                            const res = await axios.get(`${API_BASE}/interviewers`);
+                            const res = await axios.get(`${API_BASE}/interviewers`,{
+                                headers:{
+                                            'ngrok-skip-browser-warning': 'true'
+
+                                }
+                            });
                             return res.data;
                         } catch (error) {
                             console.error("Error fetching interviewers:", error);
@@ -286,7 +296,12 @@ const ScheduleOnlineInterviewForm = ({ open, onClose, candidate, user }) => {
 
                     const fetchTemplates = async () => {
                         try {
-                            const res = await axios.get(`${API_BASE}/email-templates`);
+                            const res = await axios.get(`${API_BASE}/email-templates`,{
+                                headers:{
+                                            'ngrok-skip-browser-warning': 'true'
+
+                                }
+                            });
                             return res.data;
                         } catch (error) {
                             console.error("Error fetching templates:", error);
@@ -343,7 +358,12 @@ const ScheduleOnlineInterviewForm = ({ open, onClose, candidate, user }) => {
 
         try {
             setLoading(true);
-            const response = await axios.post(`${API_BASE}/interviewers`, newInterviewer);
+            const response = await axios.post(`${API_BASE}/interviewers`,{
+                headers:{
+                            'ngrok-skip-browser-warning': 'true'
+
+                }
+            }, newInterviewer);
             
             setInterviewers([...interviewers, response.data]);
             setSelectedInterviewers([...selectedInterviewers, response.data._id]);

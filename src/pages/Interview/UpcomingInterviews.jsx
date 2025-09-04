@@ -66,7 +66,12 @@ const UpcomingInterviews = () => {
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
-        const response = await axios.get('https://hire-onboardbackend-production.up.railway.app/api/interviews/upcoming');
+        const response = await axios.get('https://hire-onboardbackend-production.up.railway.app/api/interviews/upcoming',{
+          headers:{
+                    'ngrok-skip-browser-warning': 'true'
+
+          }
+        });
         setInterviews(response.data.data);
       } catch (err) {
         setError('Failed to fetch upcoming interviews. Please try again.');
@@ -92,7 +97,10 @@ const UpcomingInterviews = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get('https://hire-onboardbackend-production.up.railway.app/api/interviews/upcoming');
+      const response = await axios.get('https://hire-onboardbackend-production.up.railway.app/api/interviews/upcoming',{
+                'ngrok-skip-browser-warning': 'true'
+
+      });
       setInterviews(response.data.data);
     } catch (err) {
       setError('Failed to refresh upcoming interviews.');

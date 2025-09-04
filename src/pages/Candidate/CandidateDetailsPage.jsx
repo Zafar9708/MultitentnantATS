@@ -200,7 +200,7 @@
 //   const token = localStorage.getItem("token");
 
 //   const response = await axios.get(
-//     `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/${id}`,
+//     `https://f0937721124b.ngrok-free.app/api/v1/candidates/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -215,7 +215,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/${id}/stage-history`,
+//     `https://f0937721124b.ngrok-free.app/api/v1/candidates/${id}/stage-history`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -263,7 +263,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/download-resume/${id}`,
+//     `https://f0937721124b.ngrok-free.app/api/v1/candidates/download-resume/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -279,7 +279,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
+//     `https://f0937721124b.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -883,7 +883,7 @@
 //                         </Box>
 //                       ) : (
 //                         <iframe
-//                           src={`https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
+//                           src={`https://f0937721124b.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
 //                           style={{ width: '100%', height: '100%', border: 'none' }}
 //                           title="Resume Viewer"
 //                         />
@@ -1948,29 +1948,49 @@ const CandidateDetailsPage = () => {
     }
   };
 
-  const handlePreviewResume = async () => {
-    if (!candidate?.resume) {
-      setSnackbarMessage('No resume available to preview');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return;
-    }
+ const handlePreviewResume = async () => {
+  if (!candidate?.resume) {
+    setSnackbarMessage('No resume available to preview');
+    setSnackbarSeverity('error');
+    setSnackbarOpen(true);
+    return;
+  }
 
-    setIsResumeLoading(true);
-    try {
-      const response = await previewCandidateResume(id);
-      const blob = new Blob([response.data], { type: 'application/pdf' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
-    } catch (error) {
-      console.error('Preview error:', error);
-      setSnackbarMessage(error.response?.data?.error || 'Failed to preview resume');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    } finally {
-      setIsResumeLoading(false);
-    }
-  };
+  setIsResumeLoading(true);
+  try {
+    const response = await candidateService.previewResume(id, {
+      headers: {
+        'ngrok-skip-browser-warning': 'true'
+      }
+    });
+    
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+    
+    // Open in new tab with proper headers
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(`
+      <html>
+        <head><title>${candidate.firstName}'s Resume</title></head>
+        <body style="margin: 0;">
+          <embed 
+            width="100%" 
+            height="100%" 
+            src="${url}#toolbar=1&navpanes=1&scrollbar=1" 
+            type="application/pdf"
+          />
+        </body>
+      </html>
+    `);
+  } catch (error) {
+    console.error('Preview error:', error);
+    setSnackbarMessage(error.response?.data?.error || 'Failed to preview resume');
+    setSnackbarSeverity('error');
+    setSnackbarOpen(true);
+  } finally {
+    setIsResumeLoading(false);
+  }
+};
 
   const handleShareClick = () => {
     setShareDialogOpen(true);
@@ -1988,7 +2008,7 @@ const CandidateDetailsPage = () => {
       return;
     }
 
-    const resumeUrl = `https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/preview-resume/${id}`;
+    const resumeUrl = `https://f0937721124b.ngrok-free.app/api/v1/candidates/preview-resume/${id}`;
 
     try {
       if (method === 'native' && navigator.share) {
@@ -2494,98 +2514,112 @@ const CandidateDetailsPage = () => {
             </Box>
           )}
 
-          {tabValue === 1 && (
-            <Card>
-              <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                  <Typography variant="h6" fontWeight="bold">Resume</Typography>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Button
-                      variant="contained"
-                      startIcon={<DownloadIcon />}
-                      onClick={handleDownloadResume}
-                      disabled={!candidate?.resume || isResumeLoading}
-                    >
-                      {isResumeLoading ? 'Loading...' : 'Download'}
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      startIcon={<ShareIcon />}
-                      onClick={handleShareClick}
-                      disabled={!candidate?.resume}
-                    >
-                      Share
-                    </Button>
-                  </Box>
-                </Box>
+         {tabValue === 1 && (
+  <Card>
+    <CardContent>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+        <Typography variant="h6" fontWeight="bold">Resume</Typography>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="contained"
+            startIcon={<DownloadIcon />}
+            onClick={handleDownloadResume}
+            disabled={!candidate?.resume || isResumeLoading}
+          >
+            {isResumeLoading ? 'Loading...' : 'Download'}
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<ShareIcon />}
+            onClick={handleShareClick}
+            disabled={!candidate?.resume}
+          >
+            Share
+          </Button>
+        </Box>
+      </Box>
 
-                <ResumeViewer>
-                  <ResumeToolbar>
-                    <Box sx={{ display: 'flex', gap: 1 }}>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        startIcon={<FileIcon />}
-                        onClick={handleDownloadResume}
-                        disabled={!candidate?.resume || isResumeLoading}
-                      >
-                        {isResumeLoading ? 'Loading...' : 'Download'}
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        startIcon={<PdfIcon />}
-                        onClick={handlePreviewResume}
-                        disabled={!candidate?.resume || isResumeLoading}
-                      >
-                        {isResumeLoading ? 'Loading...' : 'Preview'}
-                      </Button>
-                    </Box>
-                    <Box sx={{ display: 'flex', gap: 1 }}>
-                      <IconButton
-                        size="small"
-                        onClick={handleDownloadResume}
-                        disabled={!candidate?.resume || isResumeLoading}
-                      >
-                        <DownloadIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton
-                        size="small"
-                        onClick={handleShareClick}
-                        disabled={!candidate?.resume}
-                      >
-                        <ShareIcon fontSize="small" />
-                      </IconButton>
-                    </Box>
-                  </ResumeToolbar>
-                  <ResumeContent>
-                    {candidate?.resume ? (
-                      isResumeLoading ? (
-                        <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-                          <CircularProgress />
-                        </Box>
-                      ) : (
-                        <iframe
-                          src={`https://ab84e28a52f5.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
-                          style={{ width: '100%', height: '100%', border: 'none' }}
-                          title="Resume Viewer"
-                        />
-                      )
-                    ) : (
-                      <Box textAlign="center" pt={4}>
-                        <Typography variant="h6" color="textSecondary">
-                          No resume available for this candidate
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" mt={2}>
-                          Upload a resume to view it here
-                        </Typography>
-                      </Box>
-                    )}
-                  </ResumeContent>
-                </ResumeViewer>
-              </CardContent>
-            </Card>
+      <ResumeViewer>
+        <ResumeToolbar>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<FileIcon />}
+              onClick={handleDownloadResume}
+              disabled={!candidate?.resume || isResumeLoading}
+            >
+              {isResumeLoading ? 'Loading...' : 'Download'}
+            </Button>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<PdfIcon />}
+              onClick={handlePreviewResume}
+              disabled={!candidate?.resume || isResumeLoading}
+            >
+              {isResumeLoading ? 'Loading...' : 'Preview'}
+            </Button>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <IconButton
+              size="small"
+              onClick={handleDownloadResume}
+              disabled={!candidate?.resume || isResumeLoading}
+            >
+              <DownloadIcon fontSize="small" />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={handleShareClick}
+              disabled={!candidate?.resume}
+            >
+              <ShareIcon fontSize="small" />
+            </IconButton>
+          </Box>
+        </ResumeToolbar>
+        <ResumeContent>
+          {candidate?.resume ? (
+            isResumeLoading ? (
+              <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+                <CircularProgress />
+              </Box>
+            ) : (
+              // Use object tag instead of iframe for better PDF handling
+              <object
+                data={`https://f0937721124b.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}#toolbar=1&navpanes=0&scrollbar=1`}
+                type="application/pdf"
+                style={{ width: '100%', height: '100%' }}
+              >
+                <Box textAlign="center" pt={4}>
+                  <Typography variant="h6" color="textSecondary">
+                    Unable to display PDF
+                  </Typography>
+                  <Button 
+                    variant="contained" 
+                    onClick={handlePreviewResume}
+                    sx={{ mt: 2 }}
+                  >
+                    Open in New Tab
+                  </Button>
+                </Box>
+              </object>
+            )
+          ) : (
+            <Box textAlign="center" pt={4}>
+              <Typography variant="h6" color="textSecondary">
+                No resume available for this candidate
+              </Typography>
+              <Typography variant="body2" color="textSecondary" mt={2}>
+                Upload a resume to view it here
+              </Typography>
+            </Box>
           )}
+        </ResumeContent>
+      </ResumeViewer>
+    </CardContent>
+  </Card>
+)}
 
           {tabValue === 2 && (
             <Card>

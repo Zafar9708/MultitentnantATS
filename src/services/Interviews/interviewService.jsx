@@ -1,11 +1,12 @@
-const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/job';
+const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/job';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
   return {
     headers: {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
     }
   };
 };
@@ -14,9 +15,21 @@ const getAuthHeaders = () => {
 export const fetchInterviewData = async () => {
   try {
     const [onlineInterviews, offlineInterviews, upcomingInterviews] = await Promise.all([
-      axios.get(`${API_BASE_URL}/interviews/schedule`, getAuthHeaders()),
-      axios.get(`${API_BASE_URL}/offline-interviews/get`, getAuthHeaders()),
-      axios.get(`${API_BASE_URL}/interviews/upcoming`, getAuthHeaders())
+      axios.get(`${API_BASE_URL}/interviews/schedule`,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      }, getAuthHeaders()),
+      axios.get(`${API_BASE_URL}/offline-interviews/get`,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      }, getAuthHeaders()),
+      axios.get(`${API_BASE_URL}/interviews/upcoming`,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      }, getAuthHeaders())
     ]);
 
     return {

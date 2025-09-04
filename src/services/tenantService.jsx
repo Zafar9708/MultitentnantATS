@@ -1,7 +1,7 @@
 // // src/services/tenantService.js
 // import axios from 'axios';
 
-// const API_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1';
+// const API_URL = 'https://f0937721124b.ngrok-free.app/api/v1';
 
 // const getTenants = async () => {
 //   const token = localStorage.getItem('token');
@@ -19,7 +19,7 @@
 
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/tenants';
+// const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/tenants';
 
 // const getAuthHeaders = () => {
 //   const token = localStorage.getItem('token');
@@ -77,14 +77,14 @@
 // services/tenantService.js
 import axios from 'axios';
 
-const API_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/tenants';
+const API_URL = 'https://f0937721124b.ngrok-free.app/api/v1/tenants';
 
 const getToken = () => localStorage.getItem('token');
 
 // Get all tenants
 export const getTenants = async () => {
   const response = await axios.get(API_URL, {
-    headers: { Authorization: `Bearer ${getToken()}` },
+    headers: { Authorization: `Bearer ${getToken()}`,'ngrok-skip-browser-warning': 'true' },
   });
   return response.data;
 };
@@ -94,7 +94,8 @@ export const createTenant = async (tenantData) => {
   const response = await axios.post(API_URL, tenantData, {
     headers: { 
       Authorization: `Bearer ${getToken()}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'true'
     },
   });
   return response.data;

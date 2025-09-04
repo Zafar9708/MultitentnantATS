@@ -1,6 +1,6 @@
 
 import axios from "axios";
-const API_BASE_URL = "https://ab84e28a52f5.ngrok-free.app/api/v1";
+const API_BASE_URL = "https://f0937721124b.ngrok-free.app/api/v1";
 
 export const loginUser = async (credentials) => {
   try {
@@ -8,6 +8,7 @@ export const loginUser = async (credentials) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'ngrok-skip-browser-warning': 'true'
       },
       body: JSON.stringify(credentials),
     });
@@ -30,6 +31,7 @@ export const forgotPassword = async (emailData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'ngrok-skip-browser-warning': 'true'
       },
       body: JSON.stringify(emailData),
     });
@@ -52,6 +54,7 @@ export const verifyOTP = async (otpData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'ngrok-skip-browser-warning': 'true'
       },
       body: JSON.stringify(otpData),
     });
@@ -74,6 +77,7 @@ export const resetPassword = async (token, passwords) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
+        'ngrok-skip-browser-warning': 'true'
       },
       body: JSON.stringify(passwords),
     });
@@ -99,7 +103,8 @@ export const registerUser = async (userData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
       },
       body: JSON.stringify(userData),
     });
@@ -124,7 +129,8 @@ export const getUserDetails = async () => {
     const response = await fetch(`${API_BASE_URL}/auth/me`, {
       method: "GET",
       headers: {
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
       },
     });
 
@@ -146,6 +152,7 @@ export const validateFirstLoginToken = async (tokenData) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'ngrok-skip-browser-warning': 'true'
       },
       body: JSON.stringify(tokenData),
     });
@@ -174,6 +181,7 @@ export const firstLogin = async (data) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'ngrok-skip-browser-warning': 'true'
       },
       body: JSON.stringify(data),
     });
@@ -203,7 +211,8 @@ export const getCurrentUser = async () => {
     // Use the API endpoint to get user details
     const response = await axios.get(`${API_BASE_URL}/auth/user-details`,{
       headers:{
-        Authorization:`Bearer ${token}`
+         Authorization:`Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
       }
     });
     console.log('Full API response:', response.data);

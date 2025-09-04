@@ -63,7 +63,7 @@
 //     try {
 //       setIsLoading(true);
 //       const token=localStorage.getItem('token');
-//       const response = await axios.get('https://ab84e28a52f5.ngrok-free.app/api/v1/job',{
+//       const response = await axios.get('https://f0937721124b.ngrok-free.app/api/v1/job',{
 //         headers:{
 //             Authorization:`Bearer ${token}`
 //         }
@@ -86,7 +86,7 @@
 //   try {
 //     setIsLoading(true);
 //     const token = localStorage.getItem('token');
-//     const response = await axios.get('https://ab84e28a52f5.ngrok-free.app/api/v1/candidates', {
+//     const response = await axios.get('https://f0937721124b.ngrok-free.app/api/v1/candidates', {
 //       headers: {
 //         Authorization: `Bearer ${token}`
 //       }
@@ -110,7 +110,7 @@
 //   try {
 //     setIsLoading(true);
 //     const token = localStorage.getItem('token');
-//     const response = await axios.get('https://ab84e28a52f5.ngrok-free.app/api/v1/interviews/interviews/schedule', {
+//     const response = await axios.get('https://f0937721124b.ngrok-free.app/api/v1/interviews/interviews/schedule', {
 //       headers: {
 //         Authorization: `Bearer ${token}`
 //       }
@@ -606,9 +606,11 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://ab84e28a52f5.ngrok-free.app/api/v1/job', {
+      const response = await axios.get('https://f0937721124b.ngrok-free.app/api/v1/job', {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+         'ngrok-skip-browser-warning': 'true'
+
         }
       });
       if (response.data && response.data.jobs) {
@@ -629,9 +631,11 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://ab84e28a52f5.ngrok-free.app/api/v1/candidates', {
+      const response = await axios.get('https://f0937721124b.ngrok-free.app/api/v1/candidates', {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+         'ngrok-skip-browser-warning': 'true'
+
         }
       });
       if (response.data && response.data.candidates) {
@@ -651,9 +655,11 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://ab84e28a52f5.ngrok-free.app/api/v1/interviews/interviews/schedule', {
+      const response = await axios.get('https://f0937721124b.ngrok-free.app/api/v1/interviews/interviews/schedule', {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
+
         }
       });
       if (response.data && response.data.data) {
@@ -673,9 +679,11 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://ab84e28a52f5.ngrok-free.app/api/v1/offline/interviews', {
+      const response = await axios.get('https://f0937721124b.ngrok-free.app/api/v1/offline/interviews', {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+                  'ngrok-skip-browser-warning': 'true'
+
         }
       });
       if (response.data && response.data.data) {

@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-const CANDIDATE_API_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/candidates';
+const CANDIDATE_API_URL = 'https://f0937721124b.ngrok-free.app/api/v1/candidates';
 
 const candidateApi = axios.create({
   baseURL: CANDIDATE_API_URL,
   headers: {
     'Content-Type': 'application/json',
-  },
+      'ngrok-skip-browser-warning': 'true'
+    
+  }
 });
 
 // Add auth interceptor
@@ -69,6 +71,7 @@ export default {
       const response = await candidateApi.post('/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'ngrok-skip-browser-warning': 'true'
         },
       });
       return response.data;
@@ -91,6 +94,7 @@ export default {
       const response = await candidateApi.put(`/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'ngrok-skip-browser-warning': 'true'
         },
       });
       return response.data;
@@ -112,7 +116,11 @@ export default {
   // Get candidate stage history
   async getCandidateStageHistory(id) {
     try {
-      const response = await candidateApi.get(`/${id}/stage-history`);
+      const response = await candidateApi.get(`/${id}/stage-history`,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      });
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to fetch stage history');
@@ -122,7 +130,11 @@ export default {
   // Get resume analysis
   async fetchResumeAnalysis(id) {
     try {
-      const response = await candidateApi.get(`/${id}/resume-analysis`);
+      const response = await candidateApi.get(`/${id}/resume-analysis`,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      });
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to fetch resume analysis');
@@ -132,7 +144,11 @@ export default {
   // Send bulk emails
   async sendBulkEmails({ recipients, subject, body }) {
     try {
-      const response = await candidateApi.post('/bulk-email', {
+      const response = await candidateApi.post('/bulk-email',{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      }, {
         recipients,
         subject,
         body,
@@ -146,7 +162,12 @@ export default {
   // Schedule interview
   async scheduleInterview(interviewData) {
     try {
-      const response = await candidateApi.post('/schedule-interview', interviewData);
+      const response = await candidateApi.post('/schedule-interview',{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+
+      }, interviewData);
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to schedule interview');
@@ -155,7 +176,11 @@ export default {
 
 async getPipelineData(jobId) {
     try {
-      const response = await candidateApi.get(`/job/${jobId}/pipeline`);
+      const response = await candidateApi.get(`/job/${jobId}/pipeline`,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      },);
       return response.data || [];
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to fetch pipeline data');
@@ -166,7 +191,11 @@ async getPipelineData(jobId) {
   // Update candidate stage
   async updateCandidateStage(candidateId, stageId, rejectionReason = null) {
     try {
-      const response = await candidateApi.put(`/${candidateId}/stage`, {
+      const response = await candidateApi.put(`/${candidateId}/stage`,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      }, {
         stageId,
         rejectionReason
       });
@@ -178,7 +207,11 @@ async getPipelineData(jobId) {
 
   async getResumeAnalysis(candidateId) {
   try {
-    const response = await candidateApi.get(`/${candidateId}/resume-analysis`);
+    const response = await candidateApi.get(`/${candidateId}/resume-analysis`,{
+      headers:{
+        'ngrok-skip-browser-warning': 'true'
+      }
+    });
     return response.data;
   } catch (error) {
     console.error('Detailed error:', {
@@ -200,7 +233,11 @@ async getPipelineData(jobId) {
   // In candidateService.js
 async downloadResume(candidateId) {
   try {
-    const response = await candidateApi.get(`/download-resume/${candidateId}`, {
+    const response = await candidateApi.get(`/download-resume/${candidateId}`,{
+      headers:{
+        'ngrok-skip-browser-warning': 'true'
+      }
+    }, {
       responseType: 'blob',
     });
     return response.data;
@@ -212,7 +249,11 @@ async downloadResume(candidateId) {
 
 async previewResume(candidateId) {
   try {
-    const response = await candidateApi.get(`/preview-resume/${candidateId}`, {
+    const response = await candidateApi.get(`/preview-resume/${candidateId}`,{
+      headers:{
+        'ngrok-skip-browser-warning': 'true'
+      }
+    } ,{
       responseType: 'blob',
     });
     return response.data;

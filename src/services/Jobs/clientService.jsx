@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/clients';
+// const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/clients';
 
 // export const fetchClients = async () => {
 //   try {
@@ -36,11 +36,15 @@
 // services/Jobs/clientService.js
 import axios from 'axios';
 
-const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/clients';
+const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/clients';
 
 export const fetchClients = async () => {
   try {
-    const response = await axios.get(API_BASE_URL);
+    const response = await axios.get(API_BASE_URL,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      });
     return response.data.clients || []; // Return the clients array directly
   } catch (error) {
     console.error('Error Fetching Clients', error);
@@ -50,7 +54,9 @@ export const fetchClients = async () => {
 
 export const createClient = async (name) => {
   try {
-    const response = await axios.post(API_BASE_URL, { name });
+    const response = await axios.post(API_BASE_URL, { name }, 
+           { headers: { 'ngrok-skip-browser-warning': 'true' } }
+);
     return {
       success: response.data.success,
       client: response.data.client // Return the created client object
@@ -63,7 +69,11 @@ export const createClient = async (name) => {
 
 export const deleteClient = async (clientId) => {
   try {
-    await axios.delete(`${API_BASE_URL}/${clientId}`);
+    await axios.delete(`${API_BASE_URL}/${clientId}`,{
+        headers:{
+          'ngrok-skip-browser-warning': 'true'
+        }
+      });
     return { success: true };
   } catch (error) {
     console.error('Error deleting client:', error);

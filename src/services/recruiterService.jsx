@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/job';
+// const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/job';
 
 // const getAuthHeaders = () => {
 //   const token = localStorage.getItem('token');
@@ -40,26 +40,28 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/job'; // Adjust endpoint path
+const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/job'; // Adjust endpoint path
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
-  return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+  return {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '',
+      'ngrok-skip-browser-warning': 'true',
+    },
+  };
 };
 
 export const getJobs = async () => {
   try {
     console.log('Authorization header:', getAuthHeaders());
     const response = await axios.get(API_BASE_URL, getAuthHeaders());
-    // Adjust according to your response shape, here it's assumed to be response.data.jobs
     return response.data.jobs || [];
   } catch (error) {
     console.error('Fetch jobs error:', error.response || error.message);
     throw new Error(error.response?.data?.message || 'Failed to fetch jobs');
   }
 };
-
-// Similarly for createJob and deleteJob, ensure correct usage
 
 export const createJob = async (jobData) => {
   try {

@@ -1,6 +1,6 @@
 // import axios from "axios";
 
-// const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/location';
+// const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/location';
 
 // const getAuthHeaders = () => {
 //   const token = localStorage.getItem('token');
@@ -34,12 +34,13 @@
 // services/Jobs/locationService.js
 import axios from 'axios';
 
-const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/location';
+const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/location';
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
   return {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
+      'ngrok-skip-browser-warning': 'true'
     }
   };
 };

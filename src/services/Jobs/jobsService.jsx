@@ -1,13 +1,16 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1/job';
+const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/job';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
   return {
     headers: {
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+       'ngrok-skip-browser-warning': 'true'
+    
+   
     }
   };
 };
@@ -28,7 +31,7 @@ export const getJobs = async () => {
 
 export const getJobById = async (jobId) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/${jobId}`, getAuthHeaders());
+    const response = await axios.get(`${API_BASE_URL}/${jobId}`,getAuthHeaders());
     return response.data;
   } catch (error) {
     console.error('Error fetching job:', error.response || error);
@@ -38,7 +41,12 @@ export const getJobById = async (jobId) => {
 
 export const fetchNotesByJob = async (jobId) => {
   try {
-    const response = await axios.get(`https://ab84e28a52f5.ngrok-free.app/api/v1/notes/${jobId}`, getAuthHeaders());
+    const response = await axios.get(`https://f0937721124b.ngrok-free.app/api/v1/notes/${jobId}`,{
+      headers:{
+           'ngrok-skip-browser-warning': 'true'
+      }
+
+    }, getAuthHeaders());
     return response.data;
   } catch (error) {
     console.error('Error fetching notes:', error.response || error);
@@ -49,7 +57,11 @@ export const fetchNotesByJob = async (jobId) => {
 export const createNote = async (jobId, content) => {
   try {
     const response = await axios.post(
-      `https://ab84e28a52f5.ngrok-free.app/api/v1/notes/${jobId}`,
+      `https://f0937721124b.ngrok-free.app/api/v1/notes/${jobId}`,{
+        headers:{
+                'ngrok-skip-browser-warning': 'true'
+        }
+      },
       { content },
       getAuthHeaders()
     );
@@ -63,7 +75,11 @@ export const createNote = async (jobId, content) => {
 export const updateNote = async (noteId, content) => {
   try {
     const response = await axios.put(
-      `https://ab84e28a52f5.ngrok-free.app/api/v1/notes/${noteId}`,
+      `https://f0937721124b.ngrok-free.app/api/v1/notes/${noteId}`,{
+        headers:{
+                'ngrok-skip-browser-warning': 'true'
+        }
+      },
       { content },
       getAuthHeaders()
     );
@@ -77,7 +93,12 @@ export const updateNote = async (noteId, content) => {
 export const deleteNote = async (noteId) => {
   try {
     const response = await axios.delete(
-      `https://ab84e28a52f5.ngrok-free.app/api/v1/notes/${noteId}`,
+      `https://f0937721124b.ngrok-free.app/api/v1/notes/${noteId}`,
+      {
+        headers:{
+                'ngrok-skip-browser-warning': 'true'
+        }
+      },
       getAuthHeaders()
     );
     return response.data;
@@ -92,6 +113,11 @@ export const fetchPipelineData = async (jobId) => {
   try {
     const response = await axios.get(
       `${API_BASE_URL}/stages/by-job/${jobId}`,
+      {
+        headers:{
+                'ngrok-skip-browser-warning': 'true'
+        }
+      },
       getAuthHeaders()
     );
     return response.data;

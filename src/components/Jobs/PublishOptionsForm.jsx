@@ -1,6 +1,5 @@
 
 
-
 // import React, { useState } from "react";
 // import {
 //   Box,
@@ -10,7 +9,10 @@
 //   Button,
 //   Avatar,
 //   CircularProgress,
-//   Fade
+//   Autocomplete,
+//   TextField,
+//   Alert,
+//   Chip
 // } from "@mui/material";
 
 // const jobBoards = [
@@ -31,7 +33,17 @@
 //   },
 // ];
 
-// const PublishOptionsForm = ({ onBack, onPublish, initialOptions, isEditMode }) => {
+// const PublishOptionsForm = ({ 
+//   onBack, 
+//   onPublish, 
+//   initialOptions, 
+//   isEditMode, 
+//   recruiters, 
+//   selectedRecruiters, 
+//   setSelectedRecruiters,
+//   isAdmin,
+//   loading: parentLoading
+// }) => {
 //   const [publishOptions, setPublishOptions] = useState({
 //     careerSite: initialOptions.careerSite || false,
 //     internalEmployees: initialOptions.internalEmployees || false,
@@ -48,6 +60,8 @@
 //     }
 //   };
 
+//   const isLoading = loading || parentLoading;
+
 //   return (
 //     <Box sx={{ 
 //       maxWidth: 600, 
@@ -56,12 +70,11 @@
 //       p: 3,
 //       position: "relative",
 //       overflow: "hidden",
-//       minHeight: "400px",
+//       minHeight: "500px",
 //       display: "flex",
 //       flexDirection: "column"
 //     }}>
-//       {/* Loading Overlay */}
-//       {loading && (
+//       {isLoading && (
 //         <Box
 //           sx={{
 //             position: "absolute",
@@ -85,11 +98,66 @@
 //         </Box>
 //       )}
 
-//       <Typography variant="h6" gutterBottom>
+//       <Typography variant="h6" gutterBottom sx={{ color: 'primary.main', fontWeight: 600 }}>
 //         {isEditMode ? "Update Options" : "Step 3: Publish Options"}
 //       </Typography>
 
 //       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, flex: 1 }}>
+//         {isAdmin ? (
+//           <>
+//             <Typography variant="subtitle1" sx={{ mt: 2, fontWeight: 500, color: 'primary.main' }}>
+//               Assign to Recruiters
+//             </Typography>
+            
+//             {recruiters.length > 0 ? (
+//               <Autocomplete
+//                 multiple
+//                 options={recruiters}
+//                 value={selectedRecruiters}
+//                 onChange={(event, newValue) => {
+//                   setSelectedRecruiters(newValue);
+//                 }}
+//                 getOptionLabel={(option) => option.username || option.email || option.name || ''}
+//                 isOptionEqualToValue={(option, value) => option._id === value._id}
+//                 renderInput={(params) => (
+//                   <TextField
+//                     {...params}
+//                     label="Select Recruiters"
+//                     placeholder="Choose recruiters to assign this job"
+//                   />
+//                 )}
+//                 renderTags={(value, getTagProps) =>
+//                   value.map((option, index) => (
+//                     <Chip
+//                       label={option.username || option.email || option.name}
+//                       {...getTagProps({ index })}
+//                       key={option._id || index}
+//                       sx={{ margin: 0.5 }}
+//                     />
+//                   ))
+//                 }
+//               />
+//             ) : (
+//               <Typography variant="body2" color="text.secondary">
+//                 No recruiters available. Please add recruiters first.
+//               </Typography>
+//             )}
+//             <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
+//               Select one or more recruiters to assign this job. They will receive email notifications.
+//             </Typography>
+//           </>
+//         ) : (
+//           <Alert severity="info" sx={{ mt: 2 }}>
+//             <Typography variant="body2">
+//               This job will be automatically assigned to you. You will be responsible for managing applications.
+//             </Typography>
+//           </Alert>
+//         )}
+
+//         <Typography variant="subtitle1" sx={{ mt: 3, fontWeight: 500, color: 'primary.main' }}>
+//           Publishing Options
+//         </Typography>
+
 //         <FormControlLabel
 //           control={
 //             <Switch
@@ -97,7 +165,7 @@
 //               onChange={(e) =>
 //                 setPublishOptions({ ...publishOptions, careerSite: e.target.checked })
 //               }
-//               disabled={loading}
+//               disabled={isLoading}
 //             />
 //           }
 //           label="Publish this job on career site"
@@ -110,7 +178,7 @@
 //               onChange={(e) =>
 //                 setPublishOptions({ ...publishOptions, internalEmployees: e.target.checked })
 //               }
-//               disabled={loading}
+//               disabled={isLoading}
 //             />
 //           }
 //           label="Post this job for internal employees"
@@ -123,14 +191,14 @@
 //               onChange={(e) =>
 //                 setPublishOptions({ ...publishOptions, referToEmployees: e.target.checked })
 //               }
-//               disabled={loading}
+//               disabled={isLoading}
 //             />
 //           }
 //           label="Refer this job to employees"
 //         />
 
 //         <Box sx={{ mt: 4, textAlign: "center" }}>
-//           <Typography variant="subtitle1" sx={{ mb: 2 }}>
+//           <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 500 }}>
 //             Share this job on:
 //           </Typography>
 
@@ -148,7 +216,7 @@
 //                 <Avatar
 //                   alt={board.name}
 //                   src={board.logo}
-//                   sx={{ width: 64, height: 64 }}
+//                   sx={{ width: 64, height: 64, border: '1px solid #ddd' }}
 //                 />
 //               </a>
 //             ))}
@@ -156,29 +224,28 @@
 //         </Box>
 
 //         <Box sx={{ mt: "auto", pt: 3, display: "flex", justifyContent: "space-between" }}>
-//           <Button variant="outlined" onClick={onBack} disabled={loading}>
+//           <Button variant="outlined" onClick={onBack} disabled={isLoading}>
 //             Back
 //           </Button>
 //           <Button 
 //             variant="contained" 
 //             color="primary" 
 //             onClick={handlePublish}
-//             disabled={loading}
-//             sx={{ minWidth: 120 }}
+//             disabled={isLoading || (isAdmin && selectedRecruiters.length === 0 && !isEditMode)}
+//             sx={{ minWidth: 120, fontWeight: 600 }}
 //           >
 //             {isEditMode ? "Update Changes" : "Publish"}
 //           </Button>
 //         </Box>
 //       </Box>
 //     </Box>
-//   );
-// };
+//   );  
+// }; 
 
 // export default PublishOptionsForm;
 
-//------------------
 
-
+//----------
 
 import React, { useState } from "react";
 import {
@@ -189,11 +256,10 @@ import {
   Button,
   Avatar,
   CircularProgress,
-  Fade,
-  Chip,
   Autocomplete,
   TextField,
-  Alert
+  Alert,
+  Chip
 } from "@mui/material";
 
 const jobBoards = [
@@ -222,26 +288,17 @@ const PublishOptionsForm = ({
   recruiters, 
   selectedRecruiters, 
   setSelectedRecruiters,
-  isAdmin 
+  isAdmin,
+  loading
 }) => {
   const [publishOptions, setPublishOptions] = useState({
     careerSite: initialOptions.careerSite || false,
     internalEmployees: initialOptions.internalEmployees || false,
     referToEmployees: initialOptions.referToEmployees || false
   });
-  const [loading, setLoading] = useState(false);
-
-  console.log('PublishOptionsForm - isAdmin:', isAdmin);
-  console.log('PublishOptionsForm - recruiters:', recruiters);
-  console.log('PublishOptionsForm - selectedRecruiters:', selectedRecruiters);
 
   const handlePublish = async () => {
-    setLoading(true);
-    try {
-      await onPublish(publishOptions);
-    } finally {
-      setLoading(false);
-    }
+    await onPublish(publishOptions);
   };
 
   return (
@@ -256,7 +313,6 @@ const PublishOptionsForm = ({
       display: "flex",
       flexDirection: "column"
     }}>
-      {/* Loading Overlay */}
       {loading && (
         <Box
           sx={{
@@ -278,6 +334,9 @@ const PublishOptionsForm = ({
           <Typography variant="h6" color="primary">
             {isEditMode ? "Updating Job..." : "Publishing Job..."}
           </Typography>
+          <Typography variant="body2">
+            You will be redirected to jobs page in a moment
+          </Typography>
         </Box>
       )}
 
@@ -286,52 +345,50 @@ const PublishOptionsForm = ({
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, flex: 1 }}>
-        {/* Recruiter Assignment Section - ONLY FOR ADMIN */}
         {isAdmin ? (
           <>
             <Typography variant="subtitle1" sx={{ mt: 2, fontWeight: 500, color: 'primary.main' }}>
               Assign to Recruiters
             </Typography>
             
-            <Autocomplete
-              // multiple
-              // options={recruiters}
-              // value={selectedRecruiters}
-              // onChange={(event, newValue) => {
-              //   setSelectedRecruiters(newValue);
-              // }}
-              // getOptionLabel={(option) => option.username || option.email}
-
-              multiple
-  options={Array.isArray(recruiters) ? recruiters : []}
-  value={Array.isArray(selectedRecruiters) ? selectedRecruiters : []}
-  onChange={(event, newValue) => setSelectedRecruiters(newValue)}
-  getOptionLabel={(option) => option.username || option.email || "Unknown"}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select Recruiters"
-                  placeholder="Choose recruiters to assign this job"
-                  required
-                />
-              )}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip
-                    label={option.username || option.email}
-                    {...getTagProps({ index })}
-                    key={option._id}
-                    sx={{ margin: 0.5 }}
+            {recruiters.length > 0 ? (
+              <Autocomplete
+                multiple
+                options={recruiters}
+                value={selectedRecruiters}
+                onChange={(event, newValue) => {
+                  setSelectedRecruiters(newValue);
+                }}
+                getOptionLabel={(option) => option.username || option.email || option.name || ''}
+                isOptionEqualToValue={(option, value) => option._id === value._id}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Select Recruiters"
+                    placeholder="Choose recruiters to assign this job"
                   />
-                ))
-              }
-            />
+                )}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      label={option.username || option.email || option.name}
+                      {...getTagProps({ index })}
+                      key={option._id || index}
+                      sx={{ margin: 0.5 }}
+                    />
+                  ))
+                }
+              />
+            ) : (
+              <Typography variant="body2" color="text.secondary">
+                No recruiters available. Please add recruiters first.
+              </Typography>
+            )}
             <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
               Select one or more recruiters to assign this job. They will receive email notifications.
             </Typography>
           </>
         ) : (
-          /* For Recruiters - Show info message */
           <Alert severity="info" sx={{ mt: 2 }}>
             <Typography variant="body2">
               This job will be automatically assigned to you. You will be responsible for managing applications.
@@ -416,7 +473,7 @@ const PublishOptionsForm = ({
             variant="contained" 
             color="primary" 
             onClick={handlePublish}
-            disabled={loading || (isAdmin && selectedRecruiters.length === 0)}
+            disabled={loading || (isAdmin && selectedRecruiters.length === 0 && !isEditMode)}
             sx={{ minWidth: 120, fontWeight: 600 }}
           >
             {isEditMode ? "Update Changes" : "Publish"}
@@ -425,6 +482,6 @@ const PublishOptionsForm = ({
       </Box>
     </Box>
   );  
-};
+}; 
 
 export default PublishOptionsForm;

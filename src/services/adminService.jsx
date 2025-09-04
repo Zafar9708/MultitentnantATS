@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-// const API_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1';
+// const API_URL = 'https://f0937721124b.ngrok-free.app/api/v1';
 
 // const getToken = () => localStorage.getItem('token');
 
@@ -57,26 +57,33 @@
 
 import axios from 'axios';
 
-const API_URL = 'https://ab84e28a52f5.ngrok-free.app/api/v1';
+const API_URL = 'https://f0937721124b.ngrok-free.app/api/v1';
 
 const getToken = () => localStorage.getItem('token');
 
-// Get all recruiters
+
 const getRecruiters = async () => {
   const response = await axios.get(`${API_URL}/admin/recruiters`, {
-    headers: { Authorization: `Bearer ${getToken()}` },
+    headers: { 
+       Authorization: `Bearer ${getToken()}`,
+      'ngrok-skip-browser-warning': 'true' 
+    },
   });
-  return response.data;
+  
+  return response.data; // ✅ return array directly
 };
+
 
 // Add recruiter
 const addRecruiter = async (data) => {
   const response = await axios.post(`${API_URL}/admin/recruiters`, data, {
     headers: { 
       Authorization: `Bearer ${getToken()}`,
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data',
+      'ngrok-skip-browser-warning': 'true'
     },
   });
+  console.log("recuiter name",response)
   return response.data;
 };
 
@@ -85,7 +92,8 @@ const updateRecruiter = async (id, data) => {
   const response = await axios.put(`${API_URL}/admin/recruiters/${id}`, data, {
     headers: { 
       Authorization: `Bearer ${getToken()}`,
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data',
+      'ngrok-skip-browser-warning': 'true'
     },
   });
   return response.data;
@@ -94,7 +102,7 @@ const updateRecruiter = async (id, data) => {
 // Delete recruiter
 const deleteRecruiter = async (id) => {
   const response = await axios.delete(`${API_URL}/admin/recruiters/${id}`, {
-    headers: { Authorization: `Bearer ${getToken()}` },
+    headers: { Authorization: `Bearer ${getToken()}`,'ngrok-skip-browser-warning': 'true' },
   });
   return response.data;
 };
@@ -102,15 +110,16 @@ const deleteRecruiter = async (id) => {
 // Get all jobs with recruiter names
 const getAllJobs = async () => {
   const response = await axios.get(`${API_URL}/job`, {
-    headers: { Authorization: `Bearer ${getToken()}` },
+    headers: { Authorization: `Bearer ${getToken()}`,'ngrok-skip-browser-warning': 'true' },
   });
+  console.log(response)
   return response.data;
 };
 
 // Send welcome email to recruiter
 const sendWelcomeEmail = async (recruiterId) => {
   const response = await axios.post(`${API_URL}/admin/send-welcome-email/${recruiterId}`, {}, {
-    headers: { Authorization: `Bearer ${getToken()}` },
+    headers: { Authorization: `Bearer ${getToken()}`,'ngrok-skip-browser-warning': 'true' },
   });
   return response.data;
 };
@@ -119,7 +128,7 @@ const sendWelcomeEmail = async (recruiterId) => {
 // resendWelcomeEmail: (id) => api.post(`/admin/recruiters/${id}/resend-welcome`),
 const resendWelcomeEmail=async (id)=>{
     const response = await axios.post(`${API_URL}/admin/recruiters/${id}/resend-welcome`, {}, {
-        headers: { Authorization: `Bearer ${getToken()}` },
+        headers: { Authorization: `Bearer ${getToken()}`,'ngrok-skip-browser-warning': 'true' },
     });
     return response.data;
 }
