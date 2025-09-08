@@ -1245,7 +1245,7 @@ const RecruiterDashboard = () => {
                   <Typography variant="h3" fontWeight="700" sx={{ mt: 1, mb: 2 }}>{totalJobs}</Typography>
                   <Box display="flex" alignItems="center">
                     <TrendingUpIcon sx={{ mr: 1 }} />
-                    <Typography variant="body2">+15% from last month</Typography>
+                    <Typography variant="body2">0</Typography>
                   </Box>
                 </Box>
               </Card>
@@ -1277,7 +1277,9 @@ const RecruiterDashboard = () => {
                   <Typography variant="h3" fontWeight="700" sx={{ mt: 1, mb: 2 }}>{activeJobs}</Typography>
                   <Box display="flex" alignItems="center">
                     <ActiveIcon sx={{ mr: 1 }} />
-                    <Typography variant="body2">{Math.round((activeJobs/totalJobs)*100)}% of total</Typography>
+                    {/* <Typography variant="body2">{Math.round((activeJobs/totalJobs)*100)}% of total</Typography> */}
+                                        <Typography variant="body2">0</Typography>
+
                   </Box>
                 </Box>
               </Card>
@@ -1308,7 +1310,9 @@ const RecruiterDashboard = () => {
                   <Typography variant="h3" fontWeight="700" sx={{ mt: 1, mb: 2 }}>{closedJobs}</Typography>
                   <Box display="flex" alignItems="center">
                     <InactiveIcon sx={{ mr: 1 }} />
-                    <Typography variant="body2">{Math.round((closedJobs/totalJobs)*100)}% of total</Typography>
+                    {/* <Typography variant="body2">{Math.round((closedJobs/totalJobs)*100)}% of total</Typography> */}
+                                        <Typography variant="body2">0</Typography>
+
                   </Box>
                 </Box>
               </Card>

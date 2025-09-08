@@ -131,7 +131,7 @@ import { themes } from '../theme/themes';
 import { ThemeProvider as CustomThemeProvider, useAppTheme } from '../context/ThemeContext';
 import AtsChatbot from '../components/ChatBoat';
 
-const drawerWidth = 100;
+const drawerWidth = 70;
 
 const LayoutContent = ({ children }) => {
   const { currentThemeName } = useAppTheme();
