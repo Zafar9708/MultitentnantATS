@@ -288,7 +288,7 @@ const PublishOptionsForm = ({
   recruiters, 
   selectedRecruiters, 
   setSelectedRecruiters,
-  isAdmin,
+  userRole, // Changed from isAdmin to userRole
   loading
 }) => {
   const [publishOptions, setPublishOptions] = useState({
@@ -296,6 +296,13 @@ const PublishOptionsForm = ({
     internalEmployees: initialOptions.internalEmployees || false,
     referToEmployees: initialOptions.referToEmployees || false
   });
+
+  const isAdmin = userRole === 'admin'; 
+
+  console.log('PublishOptionsForm - userRole:', userRole);
+  console.log('PublishOptionsForm - isAdmin:', isAdmin);
+  console.log('PublishOptionsForm - recruiters:', recruiters);
+  console.log('PublishOptionsForm - selectedRecruiters:', selectedRecruiters);
 
   const handlePublish = async () => {
     await onPublish(publishOptions);
@@ -345,22 +352,31 @@ const PublishOptionsForm = ({
       </Typography>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, flex: 1 }}>
-        {isAdmin ? (
+        {isAdmin ? ( // This should now work correctly
           <>
             <Typography variant="subtitle1" sx={{ mt: 2, fontWeight: 500, color: 'primary.main' }}>
               Assign to Recruiters
             </Typography>
             
-            {recruiters.length > 0 ? (
+            {recruiters && recruiters.length > 0 ? (
               <Autocomplete
                 multiple
                 options={recruiters}
-                value={selectedRecruiters}
+                value={selectedRecruiters || []}
                 onChange={(event, newValue) => {
+                  console.log('Selected recruiters changed:', newValue);
                   setSelectedRecruiters(newValue);
                 }}
-                getOptionLabel={(option) => option.username || option.email || option.name || ''}
-                isOptionEqualToValue={(option, value) => option._id === value._id}
+                getOptionLabel={(option) => {
+                  const label = option.username || option.email || option.name || 'Unknown Recruiter';
+                  console.log('Option label:', label, 'for option:', option);
+                  return label;
+                }}
+                isOptionEqualToValue={(option, value) => {
+                  const isEqual = option._id === value._id;
+                  console.log('Comparing:', option, value, 'isEqual:', isEqual);
+                  return isEqual;
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -396,6 +412,7 @@ const PublishOptionsForm = ({
           </Alert>
         )}
 
+        {/* Rest of the component remains the same */}
         <Typography variant="subtitle1" sx={{ mt: 3, fontWeight: 500, color: 'primary.main' }}>
           Publishing Options
         </Typography>
@@ -473,7 +490,7 @@ const PublishOptionsForm = ({
             variant="contained" 
             color="primary" 
             onClick={handlePublish}
-            disabled={loading || (isAdmin && selectedRecruiters.length === 0 && !isEditMode)}
+            disabled={loading || (isAdmin && (!selectedRecruiters || selectedRecruiters.length === 0) && !isEditMode)}
             sx={{ minWidth: 120, fontWeight: 600 }}
           >
             {isEditMode ? "Update Changes" : "Publish"}

@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/clients';
+// const API_BASE_URL = 'https://3b0deba4a892.ngrok-free.app/api/v1/clients';
 
 // export const fetchClients = async () => {
 //   try {
@@ -36,7 +36,7 @@
 // services/Jobs/clientService.js
 import axios from 'axios';
 
-const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/clients';
+const API_BASE_URL = 'https://3b0deba4a892.ngrok-free.app/api/v1/clients';
 
 export const fetchClients = async () => {
   try {

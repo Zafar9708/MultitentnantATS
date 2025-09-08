@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://f0937721124b.ngrok-free.app/api/v1/job';
+// const API_BASE_URL = 'https://3b0deba4a892.ngrok-free.app/api/v1/job';
 
 // const getAuthHeaders = () => {
 //   const token = localStorage.getItem('token');
@@ -24,7 +24,7 @@
 // services/Jobs/jobCreationService.js
 import axios from 'axios';
 
-const API_URL = 'https://f0937721124b.ngrok-free.app/api/v1';
+const API_URL = 'https://3b0deba4a892.ngrok-free.app/api/v1';
 
 // Create axios instance with default config
 const api = axios.create({
