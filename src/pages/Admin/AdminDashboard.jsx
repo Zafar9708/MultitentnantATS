@@ -422,11 +422,14 @@ const AdminDashboard = () => {
         backgroundColor: theme.palette.background.default,
         minHeight: '100vh',
         maxWidth: '100%',
-        overflowX: 'hidden'
+        overflowX: 'hidden',
+        marginRight:"50px"
+        
+        
         
       }}>
         {/* Header */}
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={4} mr={6}>
           <Box>
             <Typography variant="h4" fontWeight="700" color="text.primary" gutterBottom>
               Admin Dashboard
@@ -747,7 +750,7 @@ const AdminDashboard = () => {
         {/* Horizontal Layout */}
         <Grid container spacing={3} >
           {/* Left Column - Recruiters */}
-          <Grid item xs={12} md={6} width={'100%'}>
+          <Grid item xs={12} md={6} mr={6} width={'100%'}>
             <Card sx={{ 
               height: '100%',
               borderRadius: 3,
@@ -759,6 +762,7 @@ const AdminDashboard = () => {
                 justifyContent="space-between" 
                 alignItems="center" 
                 p={3}
+               
                 sx={{
                   borderBottom: `1px solid ${theme.palette.divider}`
                 }}
@@ -945,144 +949,188 @@ const AdminDashboard = () => {
           </Grid>
 
           {/* Right Column - Jobs */}
-          <Grid item xs={12} md={6} >
-            <Card sx={{ 
-              height: '100%',
-              borderRadius: 3,
-              boxShadow: theme.shadows[1],
-              backgroundColor: theme.palette.background.paper
-            }}>
-              <Box 
-                display="flex" 
-                justifyContent="space-between" 
-                alignItems="center" 
-                p={3}
-                sx={{
-                  borderBottom: `1px solid ${theme.palette.divider}`
-                }}
-              >
-                <Typography variant="h5" fontWeight="600">Job Postings</Typography>
-                <TextField
-                  size="small"
-                  placeholder="Search jobs..."
-                  variant="outlined"
-                  value={searchJob}
-                  onChange={(e) => setSearchJob(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchIcon color="action" />
-                      </InputAdornment>
-                    ),
-                    style: {
-                      borderRadius: 8,
-                      backgroundColor: theme.palette.background.default
-                    }
-                  }}
-                  sx={{ width: 300 }}
-                />
-              </Box>
-              <Box sx={{ p: 2, maxHeight: 'calc(100vh - 400px)', overflowY: 'auto' }}>
-                <Grid container spacing={2}>
-                  {filteredJobs.length > 0 ? (
-                    filteredJobs.map((job) => {
-                      const targetHireDate = job.jobFormId?.targetHireDate 
-                        ? new Date(job.jobFormId.targetHireDate).toLocaleDateString() 
-                        : 'Not set';
-                      const isActive = job.status === 'Active' && 
-                        (!job.jobFormId?.targetHireDate || new Date(job.jobFormId.targetHireDate) >= new Date());
-                      const recruiterName = getRecruiterName(job.userId);
+          <Grid item xs={12} md={6}>
+  <Card
+    sx={{
+      height: "100%",
+      borderRadius: 3,
+      boxShadow: theme.shadows[1],
+      backgroundColor: theme.palette.background.paper,
+      display: "flex",
+      flexDirection: "column",
+    }}
+  >
+    {/* Header */}
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      p={3}
+      sx={{
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      }}
+    >
+      <Typography variant="h5" fontWeight="600">
+        Job Postings
+      </Typography>
+      <TextField
+        size="small"
+        placeholder="Search jobs..."
+        variant="outlined"
+        value={searchJob}
+        onChange={(e) => setSearchJob(e.target.value)}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon color="action" />
+            </InputAdornment>
+          ),
+          style: {
+            borderRadius: 8,
+            backgroundColor: theme.palette.background.default,
+          },
+        }}
+        sx={{ width: 250 }}
+      />
+    </Box>
 
-                      return (
-                        <Grid item xs={12} key={job._id} width={'20%'} ml={'40px'}>
-                          <Card sx={{ 
-                            p: 2.5,
-                            borderRadius: 2,
-                            borderLeft: `4px solid ${isActive ? theme.palette.success.main : theme.palette.error.main}`,
-                            '&:hover': {
-                              boxShadow: theme.shadows[4],
-                              transform: 'translateY(-2px)'
-                            },
-                            transition: 'all 0.2s',
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between'
-                          }}>
-                            <Box>
-                              <Typography variant="h6" fontWeight="600" gutterBottom>
-                                {job.jobTitle}
-                              </Typography>
-                              
-                              <Box display="flex" alignItems="center" flexWrap="wrap" gap={1} mb={1.5}>
-                                <Chip
-                                  label={job.department}
-                                  size="small"
-                                  variant="outlined"
-                                  sx={{ 
-                                    borderColor: theme.palette.primary.main,
-                                    color: theme.palette.primary.dark
-                                  }}
-                                />
-                                <Chip
-                                  label={job.jobFormId?.jobType || 'Full-time'}
-                                  size="small"
-                                  variant="outlined"
-                                  sx={{ 
-                                    borderColor: theme.palette.secondary.main,
-                                    color: theme.palette.secondary.dark
-                                  }}
-                                />
-                                <Chip
-                                  label={job.status}
-                                  size="small"
-                                  sx={{ 
-                                    backgroundColor: isActive ? theme.palette.success.light : theme.palette.error.light,
-                                    color: isActive ? theme.palette.success.dark : theme.palette.error.dark,
-                                    fontWeight: 500
-                                  }}
-                                />
-                              </Box>
-                              
-                              <Box display="flex" flexDirection="column" gap={0.8} mt={1.5}>
-                                <Typography variant="body2" color="text.secondary">
-                                  <Box component="span" fontWeight="500">Job ID:</Box> {job.jobName}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  <Box component="span" fontWeight="500">Openings:</Box> {job.jobFormId?.openings || 0}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  <Box component="span" fontWeight="500">Target Hire:</Box> {targetHireDate}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  <Box component="span" fontWeight="500">Created by:</Box> {recruiterName}
-                                </Typography>
-                                
-                              </Box>
-                            </Box> 
-                            
-                            <Box textAlign="right" mt={2}>
-                              <Typography variant="caption" color="text.secondary">
-                                Created: {new Date(job.createdAt).toLocaleDateString()}
-                              </Typography>
-                            </Box>
-                          </Card>
-                        </Grid>
-                      );
-                    })
-                  ) : (
-                    <Grid item xs={12}>
-                      <Box textAlign="center" py={4}>
-                        <Typography variant="body1" color="text.secondary">
-                          No jobs found
-                        </Typography>
-                      </Box>
-                    </Grid>
-                  )}
-                </Grid>
-              </Box>
-            </Card>
+    {/* Content */}
+    <Box sx={{ p: 3, flex: 1, overflowY: "auto" }}>
+      <Grid container spacing={2}>
+        {filteredJobs.length > 0 ? (
+          filteredJobs.map((job) => {
+            const targetHireDate = job.jobFormId?.targetHireDate
+              ? new Date(job.jobFormId.targetHireDate).toLocaleDateString()
+              : "Not set";
+            const isActive =
+              job.status === "Active" &&
+              (!job.jobFormId?.targetHireDate ||
+                new Date(job.jobFormId.targetHireDate) >= new Date());
+            const recruiterName = getRecruiterName(job.userId);
+
+            return (
+              <Grid item xs={12} sm={6} md={6} key={job._id}>
+                <Card
+                  sx={{
+                    p: 2.5,
+                    borderRadius: 2,
+                    borderLeft: `4px solid ${
+                      isActive
+                        ? theme.palette.success.main
+                        : theme.palette.error.main
+                    }`,
+                    "&:hover": {
+                      boxShadow: theme.shadows[6],
+                      transform: "translateY(-4px)",
+                    },
+                    transition: "all 0.25s ease-in-out",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      variant="h6"
+                      fontWeight="600"
+                      gutterBottom
+                      sx={{ color: theme.palette.text.primary }}
+                    >
+                      {job.jobTitle}
+                    </Typography>
+
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      flexWrap="wrap"
+                      gap={1}
+                      mb={2}
+                    >
+                      <Chip
+                        label={job.department}
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                          borderColor: theme.palette.primary.main,
+                          color: theme.palette.primary.dark,
+                        }}
+                      />
+                      <Chip
+                        label={job.jobFormId?.jobType || "Full-time"}
+                        size="small"
+                        variant="outlined"
+                        sx={{
+                          borderColor: theme.palette.secondary.main,
+                          color: theme.palette.secondary.dark,
+                        }}
+                      />
+                      <Chip
+                        label={job.status}
+                        size="small"
+                        sx={{
+                          backgroundColor: isActive
+                            ? theme.palette.success.light
+                            : theme.palette.error.light,
+                          color: isActive
+                            ? theme.palette.success.dark
+                            : theme.palette.error.dark,
+                          fontWeight: 500,
+                        }}
+                      />
+                    </Box>
+
+                    <Box display="flex" flexDirection="column" gap={1}>
+                      <Typography variant="body2" color="text.secondary">
+                        <Box component="span" fontWeight="500">
+                          Job ID:
+                        </Box>{" "}
+                        {job.jobName}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        <Box component="span" fontWeight="500">
+                          Openings:
+                        </Box>{" "}
+                        {job.jobFormId?.openings || 0}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        <Box component="span" fontWeight="500">
+                          Target Hire:
+                        </Box>{" "}
+                        {targetHireDate}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        <Box component="span" fontWeight="500">
+                          Created by:
+                        </Box>{" "}
+                        {recruiterName}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box textAlign="right" mt={2}>
+                    <Typography variant="caption" color="text.secondary">
+                      Created: {new Date(job.createdAt).toLocaleDateString()}
+                    </Typography>
+                  </Box>
+                </Card>
+              </Grid>
+            );
+          })
+        ) : (
+          <Grid item xs={12}>
+            <Box textAlign="center" py={4}>
+              <Typography variant="body1" color="text.secondary">
+                No jobs found
+              </Typography>
+            </Box>
           </Grid>
+        )}
+      </Grid>
+    </Box>
+  </Card>
+</Grid>
+
         </Grid>
 
         {/* Add/Edit Recruiter Dialog */}

@@ -1,4 +1,7 @@
 
+
+
+
 // import React, { useState, useEffect } from 'react';
 // import {
 //   Box,
@@ -306,9 +309,9 @@
 //   }
 
 //   return (
-//     <Box sx={{ p: 3, minHeight: '100vh',  backgroundColor: theme.palette.background.default }}>
+//     <Box sx={{ p: 1, minHeight: '100vh',  backgroundColor: theme.palette.background.default,  mr:5 }}>
 //       {/* Header */}
-//       <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+//       <Box display="flex" justifyContent="space-between" alignItems="center" mb={4} mr={5}>
 //         <Box>
 //           <Typography variant="h4" fontWeight="700" color="text.primary" sx={{ mb: 0.5 }}>
 //             Organization Management
@@ -348,18 +351,18 @@
 //         </Box>
 //       </Box>
 
-//       <Grid container spacing={3}>
+//       <Grid container spacing={3} width={'100%'}>
 //         {/* Left Column - 70% width */}
-//         <Grid item xs={12} md={8}>
+//         <Grid item xs={12} md={8} width={'100%'} >
 //           {/* Stats Cards */}
-//           <Grid container spacing={3} sx={{ mb: 3 }}>
+//           <Grid container spacing={3}   width={'100%'} sx={{ mb: 3 }}>
 //             {[
 //               { title: 'Total Tenants', value: totalTenants, color: 'primary', icon: <TrendingUpIcon />, trend: '+12% from last month' },
 //               { title: 'Active Tenants', value: activeTenants, color: 'success', icon: <ActiveIcon />, trend: `${Math.round((activeTenants/totalTenants)*100)}% of total` },
 //               { title: 'Inactive Tenants', value: inactiveTenants, color: 'error', icon: <InactiveIcon />, trend: `${Math.round((inactiveTenants/totalTenants)*100)}% of total` },
 //               { title: 'Growth Rate', value: '+22%', color: 'warning', icon: <BarChartIcon />, trend: 'Quarterly increase' }
 //             ].map((stat, index) => (
-//               <Grid item xs={12} sm={6} md={3} key={index}>
+//               <Grid item xs={12} sm={6} md={3} key={index} width={'23%'}>
 //                 <Card sx={{ 
 //                   p: 2, height: '100%', borderRadius: 3,
 //                   background: `linear-gradient(195deg, ${theme.palette[stat.color].main}, ${theme.palette[stat.color].dark})`,
@@ -383,9 +386,9 @@
 //           </Grid>
 
 //           {/* Search and Filter Row */}
-//           <Card sx={{ p: 2, mb: 3, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper }}>
+//           <Card sx={{ p: 2,  mb: 3, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper,mr:3.5 }}>
 //             <Grid container spacing={2} alignItems="center">
-//               <Grid item xs={12} md={6}>
+//               <Grid item xs={12} md={6} width={'50%'}>
 //                 <TextField
 //                   fullWidth placeholder="Search tenants by name or domain..."
 //                   variant="outlined" size="small" value={searchTerm}
@@ -396,7 +399,7 @@
 //                   }}
 //                 />
 //               </Grid>
-//               <Grid item xs={6} md={3}>
+//               <Grid item xs={6} md={3} width={'20%'}>
 //                 <FormControl fullWidth size="small">
 //                   <InputLabel>Time Filter</InputLabel>
 //                   <Select value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)} label="Time Filter" sx={{ borderRadius: 8 }}>
@@ -408,7 +411,7 @@
 //                   </Select>
 //                 </FormControl>
 //               </Grid>
-//               <Grid item xs={6} md={3}>
+//               <Grid item xs={6} md={3} width={'20%'}>
 //                 <FormControl fullWidth size="small">
 //                   <InputLabel>Status Filter</InputLabel>
 //                   <Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} label="Status Filter" sx={{ borderRadius: 8 }}>
@@ -422,11 +425,11 @@
 //           </Card>
 
 //           {/* Activity Charts */}
-//           <Grid container spacing={4} sx={{ mb: 3 }}>
-//             <Grid item xs={12} md={6}>
+//           <Grid container spacing={4} sx={{ mb: 3 }} display={'flex'} flexDirection={'row'} gap={'35px'} mr={2}>
+//             <Grid item xs={12} md={6} width={'48%'}>
 //               <Card sx={{ p: 3, height: 320, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper }}>
 //                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-//                   <Typography variant="h6" fontWeight="600">Tenant Activity</Typography>
+//                   <Typography variant="h6" fontWeight="600">Admin Activity</Typography>
 //                   <Box display="flex" alignItems="center">
 //                     <Chip label="Monthly" size="small" sx={{ mr: 1, backgroundColor: theme.palette.action.selected }} />
 //                     <IconButton size="small"><MoreIcon /></IconButton>
@@ -454,7 +457,7 @@
 //                 </ResponsiveContainer>
 //               </Card>
 //             </Grid>
-//             <Grid item xs={12} md={6}>
+//             <Grid item xs={12} md={6} width={'48%'}>
 //               <Card sx={{ p: 3, height: 320, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper }}>
 //                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
 //                   <Typography variant="h6" fontWeight="600">Status Distribution</Typography>
@@ -477,9 +480,9 @@
 //           </Grid>
 
 //           {/* Tenants Table */}
-//           <Card sx={{ p: 0, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper, overflow: 'hidden' }}>
+//           <Card sx={{ p: 0, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper, overflow: 'hidden',mr:3 }}>
 //             <Box display="flex" justifyContent="space-between" alignItems="center" p={3} sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}>
-//               <Typography variant="h6" fontWeight="600">Tenant List</Typography>
+//               <Typography variant="h6" fontWeight="600">Admin List</Typography>
 //               <Box display="flex" alignItems="center" gap={1}>
 //                 <Typography variant="body2" color="text.secondary">Showing {filteredTenants.length} of {tenants.length} tenants</Typography>
 //                 <Chip label={`${Math.round((filteredTenants.length/tenants.length)*100)}%`} size="small" sx={{ backgroundColor: theme.palette.action.selected, fontWeight: 500 }} />
@@ -563,7 +566,7 @@
 //         </Grid>
 
 //         {/* Right Column - 30% width */}
-//         <Grid item xs={12} md={4}>
+//         <Grid item xs={12} md={4} width={'100%'} mr={3}>
 //           {/* Recent Activity */}
 //           <Card sx={{ p: 0, mb: 3, height: 400, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper }}>
 //             <Box display="flex" justifyContent="space-between" alignItems="center" p={3} sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}>
@@ -596,7 +599,7 @@
 //           {/* Latest Tenants */}
 //           <Card sx={{ p: 0, mb: 3, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper }}>
 //             <Box display="flex" justifyContent="space-between" alignItems="center" p={3} sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}>
-//               <Typography variant="h6" fontWeight="600">Latest Tenants</Typography>
+//               <Typography variant="h6" fontWeight="600">Latest Admin</Typography>
 //               <IconButton size="small"><MoreIcon /></IconButton>
 //             </Box>
 //             <Box sx={{ maxHeight: 300, overflowY: 'auto', p: 2 }}>
@@ -637,23 +640,23 @@
 //               <Typography variant="h6" fontWeight="600">Quick Actions</Typography>
 //               <IconButton size="small"><MoreIcon /></IconButton>
 //             </Box>
-//             <Grid container spacing={1} sx={{ p: 2 }}>
-//               <Grid item xs={6}>
+//             <Grid container spacing={1} sx={{ p: 2, gap: 5} }>
+//               <Grid item xs={6} width={'22%'}>
 //                 <Button fullWidth variant="contained" startIcon={<AddIcon />} onClick={handleAddDialogOpen} sx={{ mb: 1, py: 1.5, borderRadius: 2, backgroundColor: theme.palette.primary.main, '&:hover': { backgroundColor: theme.palette.primary.dark }, boxShadow: theme.shadows[1] }}>
 //                   Add Tenant
 //                 </Button>
 //               </Grid>
-//               <Grid item xs={6}>
+//               <Grid item xs={6} width={'22%'}>
 //                 <Button fullWidth variant="outlined" startIcon={<FilterIcon />} sx={{ mb: 1, py: 1.5, borderRadius: 2, borderColor: theme.palette.divider, '&:hover': { backgroundColor: theme.palette.action.hover, borderColor: theme.palette.primary.main } }}>
 //                   Filter
 //                 </Button>
 //               </Grid>
-//               <Grid item xs={6}>
+//               <Grid item xs={6} width={'22%'}>
 //                 <Button fullWidth variant="outlined" startIcon={<SettingsIcon />} sx={{ py: 1.5, borderRadius: 2, borderColor: theme.palette.divider, '&:hover': { backgroundColor: theme.palette.action.hover, borderColor: theme.palette.primary.main } }}>
 //                   Settings
 //                 </Button>
 //               </Grid>
-//               <Grid item xs={6}>
+//               <Grid item xs={6} width={'22%'}>
 //                 <Button fullWidth variant="outlined" startIcon={<PeopleIcon />} sx={{ py: 1.5, borderRadius: 2, borderColor: theme.palette.divider, '&:hover': { backgroundColor: theme.palette.action.hover, borderColor: theme.palette.primary.main } }}>
 //                   Users
 //                 </Button>
@@ -745,10 +748,6 @@
 // };
 
 // export default SuperAdminDashboard;
-
-//---shikha code 
-
-
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -852,21 +851,38 @@ const SuperAdminDashboard = () => {
   const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
   const [newTenantLink, setNewTenantLink] = useState('');
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [viewTenantDialogOpen, setViewTenantDialogOpen] = useState(false);
+  const [selectedTenant, setSelectedTenant] = useState(null);
   const navigate = useNavigate();
 
-  // Sample data
-  const activityData = [
-    { name: 'Jan', active: 12, inactive: 5 },
-    { name: 'Feb', active: 18, inactive: 3 },
-    { name: 'Mar', active: 22, inactive: 2 },
-    { name: 'Apr', active: 25, inactive: 1 },
-    { name: 'May', active: 28, inactive: 0 },
-    { name: 'Jun', active: 32, inactive: 1 },
-  ];
+  // Generate real-time data from tenants
+  const generateActivityData = () => {
+    const now = new Date();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    return months.slice(0, 6).map((month, index) => {
+      const monthIndex = (now.getMonth() - 5 + index + 12) % 12;
+      const activeCount = tenants.filter(t => {
+        const created = new Date(t.createdAt);
+        return created.getMonth() === monthIndex && t.isActive;
+      }).length;
+      
+      const inactiveCount = tenants.filter(t => {
+        const created = new Date(t.createdAt);
+        return created.getMonth() === monthIndex && !t.isActive;
+      }).length;
+      
+      return {
+        name: months[monthIndex],
+        active: activeCount,
+        inactive: inactiveCount
+      };
+    });
+  };
 
   const statusData = [
-    { name: 'Active', value: 75 },
-    { name: 'Inactive', value: 25 },
+    { name: 'Active', value: tenants.filter(t => t.isActive).length },
+    { name: 'Inactive', value: tenants.filter(t => !t.isActive).length },
   ];
 
   const COLORS = [theme.palette.success.main, theme.palette.error.main];
@@ -906,8 +922,14 @@ const SuperAdminDashboard = () => {
   const activeTenants = tenants.filter(t => t.isActive).length;
   const inactiveTenants = tenants.filter(t => !t.isActive).length;
 
-  const handleEditTenant = (tenantId) => navigate(`/superadmin/tenants/edit/${tenantId}`);
-  const handleViewTenant = (tenantId) => navigate(`/superadmin/tenants/${tenantId}`);
+  const handleEditTenant = (tenantId) => {
+    navigate(`/superadmin/tenants/edit/${tenantId}`);
+  };
+
+  const handleViewTenant = (tenant) => {
+    setSelectedTenant(tenant);
+    setViewTenantDialogOpen(true);
+  };
 
   const confirmDelete = (tenant) => {
     setTenantToDelete(tenant);
@@ -922,6 +944,7 @@ const SuperAdminDashboard = () => {
       setSnackbar({ open: true, message: 'Tenant deleted successfully', severity: 'success' });
     } catch (err) {
       setError(err.message);
+      setSnackbar({ open: true, message: 'Failed to delete tenant', severity: 'error' });
     }
   };
 
@@ -934,6 +957,7 @@ const SuperAdminDashboard = () => {
       setSnackbar({ open: true, message: `Tenant ${!currentStatus ? 'activated' : 'deactivated'} successfully`, severity: 'success' });
     } catch (err) {
       setError(err.message);
+      setSnackbar({ open: true, message: 'Failed to update tenant status', severity: 'error' });
     }
   };
 
@@ -1010,13 +1034,14 @@ const SuperAdminDashboard = () => {
         fetchTenants();
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to create tenant');
+        setSnackbar({ open: true, message: 'Failed to create tenant', severity: 'error' });
       }
     }
   };
 
-  const handleResendWelcomeEmail = async (tenantId) => {
+  const handleResendWelcomeEmail = async (tenant) => {
     try {
-      const response = await resendWelcomeEmail(tenantId);
+      const response = await resendWelcomeEmail(tenant._id);
       setSnackbar({ 
         open: true, 
         message: 'Welcome email resent successfully', 
@@ -1024,6 +1049,9 @@ const SuperAdminDashboard = () => {
       });
       setNewTenantLink(response.data.loginLink);
       setShowWelcomeDialog(true);
+      
+      // Open email client with pre-filled email
+      window.location.href = `mailto:${tenant.email}?subject=Welcome to Our Platform&body=Hello, here is your login link: ${response.data.loginLink}`;
     } catch (err) {
       console.error('Error resending welcome email:', err);
       setSnackbar({ 
@@ -1057,9 +1085,9 @@ const SuperAdminDashboard = () => {
   }
 
   return (
-    <Box sx={{ p: 1, minHeight: '100vh',  backgroundColor: theme.palette.background.default }}>
+    <Box sx={{ p: 1, minHeight: '100vh',  backgroundColor: theme.palette.background.default,  mr:5 }}>
       {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4} mr={5}>
         <Box>
           <Typography variant="h4" fontWeight="700" color="text.primary" sx={{ mb: 0.5 }}>
             Organization Management
@@ -1134,7 +1162,7 @@ const SuperAdminDashboard = () => {
           </Grid>
 
           {/* Search and Filter Row */}
-          <Card sx={{ p: 2,  mb: 3, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper }}>
+          <Card sx={{ p: 2,  mb: 3, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper,mr:3.5 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={12} md={6} width={'50%'}>
                 <TextField
@@ -1173,7 +1201,7 @@ const SuperAdminDashboard = () => {
           </Card>
 
           {/* Activity Charts */}
-          <Grid container spacing={4} sx={{ mb: 3 }} display={'flex'} flexDirection={'row'} gap={'35px'}>
+          <Grid container spacing={4} sx={{ mb: 3 }} display={'flex'} flexDirection={'row'} gap={'35px'} mr={2}>
             <Grid item xs={12} md={6} width={'48%'}>
               <Card sx={{ p: 3, height: 320, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -1184,7 +1212,7 @@ const SuperAdminDashboard = () => {
                   </Box>
                 </Box>
                 <ResponsiveContainer width="100%" height="85%">
-                  <AreaChart data={activityData}>
+                  <AreaChart data={generateActivityData()}>
                     <defs>
                       <linearGradient id="colorActive" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor={theme.palette.success.main} stopOpacity={0.8}/>
@@ -1228,7 +1256,7 @@ const SuperAdminDashboard = () => {
           </Grid>
 
           {/* Tenants Table */}
-          <Card sx={{ p: 0, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper, overflow: 'hidden' }}>
+          <Card sx={{ p: 0, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper, overflow: 'hidden',mr:3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" p={3} sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}>
               <Typography variant="h6" fontWeight="600">Tenant List</Typography>
               <Box display="flex" alignItems="center" gap={1}>
@@ -1276,7 +1304,12 @@ const SuperAdminDashboard = () => {
                       <TableCell>
                         <Box display="flex" alignItems="center">
                           <Tooltip title={tenant.isActive ? 'Active' : 'Inactive'}>
-                            <Switch checked={tenant.isActive} onChange={() => toggleStatus(tenant._id, tenant.isActive)} color={tenant.isActive ? 'success' : 'error'} sx={{ '& .MuiSwitch-thumb': { backgroundColor: tenant.isActive ? theme.palette.success.main : theme.palette.error.main } }} />
+                            <Switch 
+                              checked={tenant.isActive} 
+                              onChange={() => toggleStatus(tenant._id, tenant.isActive)} 
+                              color={tenant.isActive ? 'success' : 'error'} 
+                              sx={{ '& .MuiSwitch-thumb': { backgroundColor: tenant.isActive ? theme.palette.success.main : theme.palette.error.main } }} 
+                            />
                           </Tooltip>
                           <Chip label={tenant.isActive ? 'Active' : 'Inactive'} size="small" sx={{ ml: 1, backgroundColor: tenant.isActive ? theme.palette.success.light : theme.palette.error.light, color: tenant.isActive ? theme.palette.success.dark : theme.palette.error.dark, fontWeight: 500 }} />
                         </Box>
@@ -1284,17 +1317,17 @@ const SuperAdminDashboard = () => {
                       <TableCell align="right">
                         <Box display="flex" justifyContent="flex-end" gap={1}>
                           <Tooltip title="Resend Welcome Email">
-                            <IconButton onClick={() => handleResendWelcomeEmail(tenant._id)} size="small" sx={{ backgroundColor: theme.palette.action.hover, color: theme.palette.info.main, '&:hover': { backgroundColor: theme.palette.info.main, color: 'white' } }}>
+                            <IconButton onClick={() => handleResendWelcomeEmail(tenant)} size="small" sx={{ backgroundColor: theme.palette.action.hover, color: theme.palette.info.main, '&:hover': { backgroundColor: theme.palette.info.main, color: 'white' } }}>
                               <EmailIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="View Details">
-                            <IconButton onClick={() => handleViewTenant(tenant._id)} size="small" sx={{ backgroundColor: theme.palette.action.hover, color: theme.palette.primary.main, '&:hover': { backgroundColor: theme.palette.primary.main, color: 'white' } }}>
+                            <IconButton onClick={() => handleViewTenant(tenant)} size="small" sx={{ backgroundColor: theme.palette.action.hover, color: theme.palette.primary.main, '&:hover': { backgroundColor: theme.palette.primary.main, color: 'white' } }}>
                               <VisibilityIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Edit Tenant">
-                            <IconButton onClick={() => handleEditTenant(tenant._id)} size="mall" sx={{ backgroundColor: theme.palette.action.hover, color: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.secondary.main, color: 'white' } }}>
+                            <IconButton onClick={() => handleEditTenant(tenant._id)} size="small" sx={{ backgroundColor: theme.palette.action.hover, color: theme.palette.secondary.main, '&:hover': { backgroundColor: theme.palette.secondary.main, color: 'white' } }}>
                               <EditIcon fontSize="small" />
                             </IconButton>
                           </Tooltip>
@@ -1314,7 +1347,7 @@ const SuperAdminDashboard = () => {
         </Grid>
 
         {/* Right Column - 30% width */}
-        <Grid item xs={12} md={4} width={'100%'}>
+        <Grid item xs={12} md={4} width={'100%'} mr={3}>
           {/* Recent Activity */}
           <Card sx={{ p: 0, mb: 3, height: 400, borderRadius: 3, boxShadow: theme.shadows[1], backgroundColor: theme.palette.background.paper }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" p={3} sx={{ borderBottom: `1px solid ${theme.palette.divider}` }}>
@@ -1373,7 +1406,7 @@ const SuperAdminDashboard = () => {
                   </Box>
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Typography variant="caption" color="text.secondary">Created: {new Date(tenant.createdAt).toLocaleDateString()}</Typography>
-                    <Button size="small" onClick={() => handleViewTenant(tenant._id)} sx={{ textTransform: 'none', color: theme.palette.primary.main, fontWeight: 500 }}>
+                    <Button size="small" onClick={() => handleViewTenant(tenant)} sx={{ textTransform: 'none', color: theme.palette.primary.main, fontWeight: 500 }}>
                       View Details
                     </Button>
                   </Box>
@@ -1443,6 +1476,68 @@ const SuperAdminDashboard = () => {
             </Button>
           </DialogActions>
         </form>
+      </Dialog>
+
+      {/* Tenant Details Dialog */}
+      <Dialog open={viewTenantDialogOpen} onClose={() => setViewTenantDialogOpen(false)} maxWidth="md" fullWidth PaperProps={{ sx: { borderRadius: 3, p: 3 } }}>
+        <DialogTitle sx={{ fontWeight: 700, p: 0, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
+          <BusinessIcon color="primary" />
+          {selectedTenant?.name} Details
+        </DialogTitle>
+        <DialogContent sx={{ p: 0, mb: 3 }}>
+          {selectedTenant && (
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom>Company Name</Typography>
+                <Typography variant="body1" gutterBottom>{selectedTenant.name}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom>Domain</Typography>
+                <Typography variant="body1" gutterBottom>{selectedTenant.domain}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom>Email</Typography>
+                <Typography variant="body1" gutterBottom>{selectedTenant.email}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom>Status</Typography>
+                <Chip 
+                  label={selectedTenant.isActive ? 'Active' : 'Inactive'} 
+                  size="small" 
+                  sx={{
+                    backgroundColor: selectedTenant.isActive ? theme.palette.success.light : theme.palette.error.light,
+                    color: selectedTenant.isActive ? theme.palette.success.dark : theme.palette.error.dark, 
+                    fontWeight: 500 
+                  }} 
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom>Created Date</Typography>
+                <Typography variant="body1" gutterBottom>{new Date(selectedTenant.createdAt).toLocaleDateString()}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom>Last Updated</Typography>
+                <Typography variant="body1" gutterBottom>{new Date(selectedTenant.updatedAt).toLocaleDateString()}</Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider sx={{ my: 2 }} />
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom>Additional Information</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  This tenant has been active since {new Date(selectedTenant.createdAt).toLocaleDateString()}. 
+                  {selectedTenant.isActive ? ' Currently active and receiving services.' : ' Currently inactive and not receiving services.'}
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ p: 0 }}>
+          <Button onClick={() => setViewTenantDialogOpen(false)} variant="outlined" sx={{ borderRadius: 2, textTransform: 'none', px: 3, py: 1, borderColor: theme.palette.divider, '&:hover': { borderColor: theme.palette.primary.main } }}>
+            Close
+          </Button>
+          <Button onClick={() => handleEditTenant(selectedTenant?._id)} variant="contained" sx={{ borderRadius: 2, textTransform: 'none', px: 3, py: 1 }}>
+            Edit Tenant
+          </Button>
+        </DialogActions>
       </Dialog>
 
       {/* Welcome Dialog with Login Link */}

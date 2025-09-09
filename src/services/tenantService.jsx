@@ -103,7 +103,7 @@ export const createTenant = async (tenantData) => {
 
 // Update tenant status
 export const updateTenantStatus = async (id, isActive) => {
-  const response = await axios.patch(`${API_URL}/${id}/status`, { isActive }, {
+  const response = await axios.patch(`${API_URL}/${id}`, { isActive }, {
     headers: { Authorization: `Bearer ${getToken()}` },
   });
   return response.data;

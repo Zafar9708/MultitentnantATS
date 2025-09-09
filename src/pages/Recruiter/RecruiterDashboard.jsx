@@ -1144,6 +1144,7 @@ const RecruiterDashboard = () => {
     <Box sx={{
       height: '100%', 
       minHeight: '100vh',
+      marginRight:'40px',
     //   backgroundColor: theme.palette.background.default,
       backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05))'
     }}>
@@ -1155,7 +1156,7 @@ const RecruiterDashboard = () => {
       )}
 
       {/* Header */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4} mr={6}>
         <Box>
           <Typography variant="h4" fontWeight="700" color="text.primary" sx={{ mb: 0.5 }}>
             Recruiter Dashboard
@@ -1323,6 +1324,7 @@ const RecruiterDashboard = () => {
           <Card sx={{ 
             p: 2, 
             mb: 3, 
+            mr:5,
             borderRadius: 3,
             boxShadow: theme.shadows[1],
             backgroundColor: theme.palette.background.paper,
@@ -1381,6 +1383,7 @@ const RecruiterDashboard = () => {
           {/* Jobs Table */}
           <Card sx={{ 
             p: 0, 
+            mr:5,
             borderRadius: 3,
             boxShadow: theme.shadows[1],
             backgroundColor: theme.palette.background.paper,
@@ -1507,7 +1510,7 @@ const RecruiterDashboard = () => {
         </Grid>
 
         {/* Right Column - 30% width */}
-        <Grid item xs={12} md={4} display={'flex'} gap={'35px'} flexDirection={'row'} width={'100%'}>
+        <Grid item xs={12} md={4} mr={3} display={'flex'} gap={'35px'} flexDirection={'row'} width={'100%'}>
           {/* Job Status Distribution */}
           <Card sx={{ 
             p: 3,
@@ -1596,6 +1599,7 @@ const RecruiterDashboard = () => {
           {/* Quick Actions */}
           <Card sx={{ 
             p: 3,
+            mr:4,
             width:'100%',
             borderRadius: 3,
             boxShadow: theme.shadows[1],

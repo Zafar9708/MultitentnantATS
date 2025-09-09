@@ -180,10 +180,13 @@ import Unauthorized from '../pages/Unauthorized';
 import { useUser } from '../contexts/UserContext';
 
 // Create a wrapper component for routes that need MainLayout
-const LayoutWrapper = ({ children }) => {
+const LayoutWrapper = ({ children,width }) => {
+  console.log("width",width)
+  console.log("children",children)
   return (
-    <MainLayout>
+    <MainLayout width={width}  >
       {children}
+      
     </MainLayout>
   );
 };
@@ -203,7 +206,7 @@ const AppRoutes = () => {
       {/* Superadmin routes */}
       <Route path="/superadmin/*" element={
         <ProtectedRoute allowedRoles={['superadmin']}>
-          <LayoutWrapper>
+          <LayoutWrapper width={35}>
             <DashboardPage />
           </LayoutWrapper>
         </ProtectedRoute>
@@ -212,7 +215,7 @@ const AppRoutes = () => {
       {/* Admin routes */}
       <Route path="/tenant/:tenantId/*" element={
         <ProtectedRoute allowedRoles={['admin']}>
-          <LayoutWrapper>
+          <LayoutWrapper width={40}>
             <DashboardPage />
           </LayoutWrapper>
         </ProtectedRoute>
@@ -221,7 +224,7 @@ const AppRoutes = () => {
       {/* Recruiter routes */}
       <Route path="/recruiter/:tenantId/*" element={
         <ProtectedRoute allowedRoles={['recruiter']}>
-          <LayoutWrapper>
+          <LayoutWrapper width={40}>
             <DashboardPage />
           </LayoutWrapper>
         </ProtectedRoute>
@@ -323,13 +326,17 @@ const AppRoutes = () => {
       <Route
         path="/admin/dashboard"
         element={
+
           <ProtectedRoute >
-            <LayoutWrapper>
+            <LayoutWrapper  >
               <AdminDashboard />
             </LayoutWrapper>
           </ProtectedRoute>
+
         }
+       
       />
+      
     </Routes>
   );
 };
