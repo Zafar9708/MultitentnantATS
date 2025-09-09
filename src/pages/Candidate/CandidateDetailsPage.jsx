@@ -1774,7 +1774,7 @@ const CandidateDetailsPage = () => {
   const [editNoteId, setEditNoteId] = React.useState(null);
   const [editNoteText, setEditNoteText] = React.useState('');
 
-  const hiringStages = ['Sourced', 'Screening', 'Interview', 'Preboarding', 'Hired', 'Rejected', 'Archived'];
+  const hiringStages = ['Sourced', 'Screening', 'Interview','Rejected', 'Preboarding', 'Hired',  'Archived'];
 
   const { data: candidateData, isLoading, error } = useQuery({
     queryKey: ['candidate', id],
@@ -2590,6 +2590,7 @@ const CandidateDetailsPage = () => {
                 data={`https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}#toolbar=1&navpanes=0&scrollbar=1`}
                 type="application/pdf"
                 style={{ width: '100%', height: '100%' }}
+                
               >
                 <Box textAlign="center" pt={4}>
                   <Typography variant="h6" color="textSecondary">

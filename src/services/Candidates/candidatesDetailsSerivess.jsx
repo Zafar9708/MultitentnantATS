@@ -143,8 +143,11 @@ export const candidateService = {
 
   // Preview resume
   previewResume: (id) => {
+    const token=localStorage.getItem('token')
     return apiClient.get(`/candidates/preview-resume/${id}`,{
-       headers: {'ngrok-skip-browser-warning': 'true'
+       headers: { 
+         Authorization: `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'true'
        }
 
     }, {

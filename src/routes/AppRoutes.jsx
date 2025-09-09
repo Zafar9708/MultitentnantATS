@@ -181,8 +181,7 @@ import { useUser } from '../contexts/UserContext';
 
 // Create a wrapper component for routes that need MainLayout
 const LayoutWrapper = ({ children,width }) => {
-  console.log("width",width)
-  console.log("children",children)
+ 
   return (
     <MainLayout width={width}  >
       {children}
@@ -202,6 +201,9 @@ const AppRoutes = () => {
       <Route path="/jobs" element={<JobsPage />} />
       <Route path="/feedback/:interviewId/:interviewerId" element={<FeedbackForm />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="/reset-password" element={<ForgotPasswordForm/>} />
+
+     
 
       {/* Superadmin routes */}
       <Route path="/superadmin/*" element={
@@ -215,7 +217,7 @@ const AppRoutes = () => {
       {/* Admin routes */}
       <Route path="/tenant/:tenantId/*" element={
         <ProtectedRoute allowedRoles={['admin']}>
-          <LayoutWrapper width={40}>
+          <LayoutWrapper width={20}>
             <DashboardPage />
           </LayoutWrapper>
         </ProtectedRoute>
@@ -224,7 +226,7 @@ const AppRoutes = () => {
       {/* Recruiter routes */}
       <Route path="/recruiter/:tenantId/*" element={
         <ProtectedRoute allowedRoles={['recruiter']}>
-          <LayoutWrapper width={40}>
+          <LayoutWrapper width={20}>
             <DashboardPage />
           </LayoutWrapper>
         </ProtectedRoute>
@@ -291,8 +293,8 @@ const AppRoutes = () => {
         path="/all/candidates/*"
         element={
           <ProtectedRoute allowedRoles={['admin', 'recruiter']}>
-            <LayoutWrapper>
-              <CandidatesTab />
+            <LayoutWrapper >
+              <CandidatesTab  />
             </LayoutWrapper>
           </ProtectedRoute>
         }
