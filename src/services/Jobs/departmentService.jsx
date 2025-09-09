@@ -1,7 +1,7 @@
 
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://811f85ba2921.ngrok-free.app/api/v1/departments';
+// const API_BASE_URL = 'https://d2a4e1c61a3c.ngrok-free.app/api/v1/departments';
 
 // export const fetchDepartments=async ()=>{
 //     try{
@@ -23,7 +23,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'https://811f85ba2921.ngrok-free.app/api/v1/departments';
+const API_BASE_URL = 'https://d2a4e1c61a3c.ngrok-free.app/api/v1/departments';
 
 export const fetchDepartments = async () => {
   try {

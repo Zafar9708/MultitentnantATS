@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-// const API_URL = 'https://811f85ba2921.ngrok-free.app/api/v1';
+// const API_URL = 'https://d2a4e1c61a3c.ngrok-free.app/api/v1';
 
 // const getToken = () => localStorage.getItem('token');
 
@@ -57,7 +57,7 @@
 
 import axios from 'axios';
 
-const API_URL = 'https://811f85ba2921.ngrok-free.app/api/v1';
+const API_URL = 'https://d2a4e1c61a3c.ngrok-free.app/api/v1';
 
 const getToken = () => localStorage.getItem('token');
 

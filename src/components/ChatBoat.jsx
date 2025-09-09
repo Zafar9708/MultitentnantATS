@@ -63,7 +63,7 @@
 //     try {
 //       setIsLoading(true);
 //       const token=localStorage.getItem('token');
-//       const response = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/job',{
+//       const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/job',{
 //         headers:{
 //             Authorization:`Bearer ${token}`
 //         }
@@ -86,7 +86,7 @@
 //   try {
 //     setIsLoading(true);
 //     const token = localStorage.getItem('token');
-//     const response = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/candidates', {
+//     const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates', {
 //       headers: {
 //         Authorization: `Bearer ${token}`
 //       }
@@ -110,7 +110,7 @@
 //   try {
 //     setIsLoading(true);
 //     const token = localStorage.getItem('token');
-//     const response = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/interviews/interviews/schedule', {
+//     const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/interviews/interviews/schedule', {
 //       headers: {
 //         Authorization: `Bearer ${token}`
 //       }
@@ -606,7 +606,7 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/job', {
+      const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/job', {
         headers: {
           Authorization: `Bearer ${token}`,
          'ngrok-skip-browser-warning': 'true'
@@ -631,7 +631,7 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/candidates', {
+      const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates', {
         headers: {
           Authorization: `Bearer ${token}`,
          'ngrok-skip-browser-warning': 'true'
@@ -655,7 +655,7 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/interviews/interviews/schedule', {
+      const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/interviews/interviews/schedule', {
         headers: {
           Authorization: `Bearer ${token}`,
         'ngrok-skip-browser-warning': 'true'
@@ -679,7 +679,7 @@ const AtsChatbot = () => {
     try {
       setIsLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/offline/interviews', {
+      const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/offline/interviews', {
         headers: {
           Authorization: `Bearer ${token}`,
                   'ngrok-skip-browser-warning': 'true'
