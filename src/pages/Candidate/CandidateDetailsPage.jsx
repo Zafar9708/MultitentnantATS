@@ -1576,6 +1576,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { styled } from '@mui/material/styles';
 import { candidateService, externalServices } from '../../services/Candidates/candidatesDetailsSerivess';
+import axios from 'axios';
 
 const GradientCard = styled(Card)(({ theme }) => ({
   background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
@@ -1751,7 +1752,19 @@ const downloadCandidateResume = async (id) => {
 };
 
 const previewCandidateResume = async (id) => {
-  const response = await candidateService.previewResume(id);
+  const token = localStorage.getItem("token");
+
+  const response = await axios.get(
+    `https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
+      },
+      responseType: "blob", 
+    }
+  );
+
   return response;
 };
 
@@ -1774,7 +1787,7 @@ const CandidateDetailsPage = () => {
   const [editNoteId, setEditNoteId] = React.useState(null);
   const [editNoteText, setEditNoteText] = React.useState('');
 
-  const hiringStages = ['Sourced', 'Screening', 'Interview','Rejected', 'Preboarding', 'Hired',  'Archived'];
+  const hiringStages = ['Sourced', 'Screening', 'Interview', 'Preboarding', 'Hired', 'Rejected', 'Archived'];
 
   const { data: candidateData, isLoading, error } = useQuery({
     queryKey: ['candidate', id],
@@ -1786,18 +1799,16 @@ const CandidateDetailsPage = () => {
   const { data: stageHistoryData } = useQuery({
     queryKey: ['candidateStageHistory', id],
     queryFn: () => fetchCandidateStageHistory(id),
-    enabled: tabValue === 2 // Only fetch when cooling period tab is active
+    enabled: tabValue === 2
   });
 
   const { data: messagesData } = useQuery({
     queryKey: ['candidateMessages', id],
     queryFn: () => fetchCandidateMessages(id),
-    enabled: tabValue === 4 // Only fetch when messages tab is active
+    enabled: tabValue === 4
   });
 
-  const {
-    data: remarksData,
-  } = useQuery({
+  const { data: remarksData } = useQuery({
     queryKey: ['candidateRemarks', id],
     queryFn: () => fetchCandidateRemarks(id),
     enabled: !!id,
@@ -1948,44 +1959,21 @@ const CandidateDetailsPage = () => {
     }
   };
 
- const handlePreviewResume = async () => {
-  if (!candidate?.resume) {
-    setSnackbarMessage('No resume available to preview');
-    setSnackbarSeverity('error');
-    setSnackbarOpen(true);
-    return;
-  }
-
+  const handlePreviewResume = async () => {
   setIsResumeLoading(true);
   try {
-    const response = await candidateService.previewResume(id, {
-      headers: {
-        'ngrok-skip-browser-warning': 'true'
-      }
-    });
-    
-    const blob = new Blob([response.data], { type: 'application/pdf' });
-    const url = window.URL.createObjectURL(blob);
-    
-    // Open in new tab with proper headers
-    const newWindow = window.open('', '_blank');
-    newWindow.document.write(`
-      <html>
-        <head><title>${candidate.firstName}'s Resume</title></head>
-        <body style="margin: 0;">
-          <embed 
-            width="100%" 
-            height="100%" 
-            src="${url}#toolbar=1&navpanes=1&scrollbar=1" 
-            type="application/pdf"
-          />
-        </body>
-      </html>
-    `);
+    const response = await previewCandidateResume(id);
+
+    // create blob URL
+    const blob = new Blob([response.data], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(blob);
+
+    // open in new tab
+    window.open(fileURL, "_blank");
   } catch (error) {
-    console.error('Preview error:', error);
-    setSnackbarMessage(error.response?.data?.error || 'Failed to preview resume');
-    setSnackbarSeverity('error');
+    console.error("Preview error:", error);
+    setSnackbarMessage("Failed to preview resume");
+    setSnackbarSeverity("error");
     setSnackbarOpen(true);
   } finally {
     setIsResumeLoading(false);
@@ -2052,6 +2040,7 @@ const CandidateDetailsPage = () => {
         content: newMessage,
         sender: 'Admin',
         sent: true
+        
       });
 
       setNewMessage('');

@@ -532,7 +532,9 @@ import {
   ListItemText,
   ListItemIcon,
   Divider,
-  Grid
+  Grid,
+  Card,
+  CardContent
 } from '@mui/material';
 import {
   Send as SendIcon,
@@ -552,14 +554,17 @@ import {
   MeetingRoom as OfflineIcon,
   CalendarToday as DateIcon,
   AccessTime as TimeIcon,
-  People as InterviewersIcon
+  People as InterviewersIcon,
+  Email as EmailIcon,
+  Phone as PhoneIcon,
+  Badge as BadgeIcon
 } from '@mui/icons-material';
 import axios from 'axios';
 
 const AtsChatbot = () => {
   const [messages, setMessages] = useState([
     {
-      text: "Hello! I'm your ATS assistant. I can help you with application status, job openings, interview schedules, and other questions about our hiring process.",
+      text: "Hello! I'm your ATS assistant. I can help you with application status, job openings, interview schedules, recruiters information, and other questions about our hiring process.",
       sender: 'bot',
       timestamp: new Date()
     }
@@ -583,10 +588,8 @@ const AtsChatbot = () => {
   const formatLocation = (location) => {
     if (!location) return 'Location not specified';
     
-    // Handle case where location might be a string
     if (typeof location === 'string') return location;
     
-    // Handle case where location is an object
     const { address, building, floor } = location;
     let locationString = address || '';
     
@@ -609,8 +612,7 @@ const AtsChatbot = () => {
       const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/job', {
         headers: {
           Authorization: `Bearer ${token}`,
-         'ngrok-skip-browser-warning': 'true'
-
+          'ngrok-skip-browser-warning': 'true'
         }
       });
       if (response.data && response.data.jobs) {
@@ -634,8 +636,7 @@ const AtsChatbot = () => {
       const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates', {
         headers: {
           Authorization: `Bearer ${token}`,
-         'ngrok-skip-browser-warning': 'true'
-
+          'ngrok-skip-browser-warning': 'true'
         }
       });
       if (response.data && response.data.candidates) {
@@ -650,6 +651,29 @@ const AtsChatbot = () => {
     }
   };
 
+  // Fetch recruiters data
+  const fetchRecruiters = async () => {
+    try {
+      setIsLoading(true);
+      const token = localStorage.getItem('token');
+      const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/admin/recruiters', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'true'
+        }
+      });
+      if (response.data && response.data.recruiters) {
+        return response.data.recruiters;
+      }
+      return [];
+    } catch (error) {
+      console.error('Error fetching recruiters:', error);
+      return [];
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Fetch online interviews data
   const fetchOnlineInterviews = async () => {
     try {
@@ -658,8 +682,7 @@ const AtsChatbot = () => {
       const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/interviews/interviews/schedule', {
         headers: {
           Authorization: `Bearer ${token}`,
-        'ngrok-skip-browser-warning': 'true'
-
+          'ngrok-skip-browser-warning': 'true'
         }
       });
       if (response.data && response.data.data) {
@@ -682,8 +705,7 @@ const AtsChatbot = () => {
       const response = await axios.get('https://d2a4e1c61a3c.ngrok-free.app/api/v1/offline/interviews', {
         headers: {
           Authorization: `Bearer ${token}`,
-                  'ngrok-skip-browser-warning': 'true'
-
+          'ngrok-skip-browser-warning': 'true'
         }
       });
       if (response.data && response.data.data) {
@@ -1001,15 +1023,36 @@ const AtsChatbot = () => {
           reply = `We currently have ${candidatesData.length} candidate(s) in the system. Here are a few of them:`;
           richContent = (
             <Box sx={{ mt: 1 }}>
-              <List dense sx={{ maxHeight: 150, overflow: 'auto' }}>
+              <List dense sx={{ maxHeight: 200, overflow: 'auto' }}>
                 {candidatesData.slice(0, 5).map((candidate, index) => (
                   <ListItem key={index} divider>
                     <ListItemIcon>
                       <PersonIcon color="primary" fontSize="small" />
                     </ListItemIcon>
                     <ListItemText 
-                      primary={candidate.name} 
-                      secondary={`Skills: ${candidate.skills?.join(', ') || 'N/A'}`}
+                      primary={candidate.name || `${candidate.firstName} ${candidate.lastName}`}
+                      secondary={
+                        <Box>
+                          <Box display="flex" alignItems="center" mb={0.5}>
+                            <EmailIcon fontSize="small" sx={{ mr: 0.5, fontSize: '14px' }} />
+                            <Typography variant="caption">{candidate.email}</Typography>
+                          </Box>
+                          {candidate.phone && (
+                            <Box display="flex" alignItems="center" mb={0.5}>
+                              <PhoneIcon fontSize="small" sx={{ mr: 0.5, fontSize: '14px' }} />
+                              <Typography variant="caption">{candidate.phone}</Typography>
+                            </Box>
+                          )}
+                          {candidate.skills && candidate.skills.length > 0 && (
+                            <Box display="flex" alignItems="center">
+                              <BadgeIcon fontSize="small" sx={{ mr: 0.5, fontSize: '14px' }} />
+                              <Typography variant="caption">
+                                Skills: {candidate.skills.join(', ')}
+                              </Typography>
+                            </Box>
+                          )}
+                        </Box>
+                      }
                     />
                   </ListItem>
                 ))}
@@ -1025,6 +1068,59 @@ const AtsChatbot = () => {
           reply = "Currently, there are no candidates in the system.";
         }
         intent = 'candidate.list';
+      } else if (message.includes('recruiter') || message.includes('recruiters') || message.includes('hr')) {
+        const recruitersData = await fetchRecruiters();
+        if (recruitersData.length > 0) {
+          reply = `We have ${recruitersData.length} recruiter(s) in our system. Here are their details:`;
+          richContent = (
+            <Box sx={{ mt: 1 }}>
+              <Grid container spacing={1}>
+                {recruitersData.slice(0, 3).map((recruiter, index) => (
+                  <Grid item xs={12} key={index}>
+                    <Card variant="outlined" sx={{ p: 1.5 }}>
+                      <Box display="flex" alignItems="center" mb={1}>
+                        <PersonIcon color="primary" sx={{ mr: 1 }} />
+                        <Typography variant="subtitle2" fontWeight="bold">
+                          {recruiter.username}
+                        </Typography>
+                      </Box>
+                      <Box display="flex" alignItems="center" mb={0.5}>
+                        <EmailIcon fontSize="small" sx={{ mr: 0.5, fontSize: '14px' }} />
+                        <Typography variant="body2">{recruiter.email}</Typography>
+                      </Box>
+                      {recruiter.phoneNumber && (
+                        <Box display="flex" alignItems="center" mb={0.5}>
+                          <PhoneIcon fontSize="small" sx={{ mr: 0.5, fontSize: '14px' }} />
+                          <Typography variant="body2">{recruiter.phoneNumber}</Typography>
+                        </Box>
+                      )}
+                      <Box display="flex" alignItems="center">
+                        <WorkIcon fontSize="small" sx={{ mr: 0.5, fontSize: '14px' }} />
+                        <Typography variant="body2">
+                          Experience: {recruiter.experience} years
+                        </Typography>
+                      </Box>
+                      <Box display="flex" alignItems="center" mt={0.5}>
+                        <BadgeIcon fontSize="small" sx={{ mr: 0.5, fontSize: '14px' }} />
+                        <Typography variant="body2" color={recruiter.isActive ? 'success.main' : 'error.main'}>
+                          Status: {recruiter.isActive ? 'Active' : 'Inactive'}
+                        </Typography>
+                      </Box>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+              {recruitersData.length > 3 && (
+                <Typography variant="caption" sx={{ fontStyle: 'italic', mt: 1, display: 'block' }}>
+                  ...and {recruitersData.length - 3} more recruiters
+                </Typography>
+              )}
+            </Box>
+          );
+        } else {
+          reply = "Currently, there are no recruiters in the system.";
+        }
+        intent = 'recruiter.list';
       } else if (message.includes('list') && message.includes('job')) {
         const jobsData = await fetchJobs();
         if (jobsData.length > 0) {
@@ -1103,7 +1199,8 @@ const AtsChatbot = () => {
     { text: 'Total interviews scheduled', icon: <ScheduleIcon />, intent: 'interview.all' },
     { text: 'Online interviews', icon: <OnlineIcon />, intent: 'interview.online' },
     { text: 'Offline interviews', icon: <OfflineIcon />, intent: 'interview.offline' },
-    { text: 'How many candidates are there?', icon: <PersonIcon />, intent: 'candidate.list' }, 
+    { text: 'How many candidates are there?', icon: <PersonIcon />, intent: 'candidate.list' },
+    { text: 'Show me all recruiters', icon: <PersonIcon />, intent: 'recruiter.list' },
   ];
 
   const handleSuggestionClick = (question) => {
@@ -1188,6 +1285,7 @@ const AtsChatbot = () => {
                       borderRadius: message.sender === 'user' 
                         ? '18px 18px 4px 18px' 
                         : '18px 18px 18px 4px',
+                      maxWidth: '100%',
                     }}
                   >
                     <Typography variant="body2">{message.text}</Typography>
