@@ -122,7 +122,7 @@
 //     await fetchNotes();
 
 //     if (jobId) {
-//       const jobResponse = await axios.get(`https://3b0deba4a892.ngrok-free.app/api/v1/job/${jobId}`, {
+//       const jobResponse = await axios.get(`https://811f85ba2921.ngrok-free.app/api/v1/job/${jobId}`, {
 //         headers: {
 //           'Authorization': `Bearer ${token}`
 //         }
@@ -1122,7 +1122,7 @@
 //         if (jobId) {
 //           // Fetch job details
 //           try {
-//             const jobResponse = await axios.get(`https://3b0deba4a892.ngrok-free.app/api/v1/job/${jobId}`, {
+//             const jobResponse = await axios.get(`https://811f85ba2921.ngrok-free.app/api/v1/job/${jobId}`, {
 //               headers: {
 //                 'Authorization': `Bearer ${token}`
 //               }
@@ -1134,7 +1134,7 @@
 
 //           // Fetch total candidates for this job
 //           try {
-//             const candidatesResponse = await axios.get(`https://3b0deba4a892.ngrok-free.app/api/v1/candidates/job/${jobId}`, {
+//             const candidatesResponse = await axios.get(`https://811f85ba2921.ngrok-free.app/api/v1/candidates/job/${jobId}`, {
 //               headers: {
 //                 'Authorization': `Bearer ${token}`
 //               }
@@ -1172,17 +1172,17 @@
 //         try {
 //           const token= localStorage.getItem('token');
 //           const [onlineInterviewsRes, offlineInterviewsRes, upcomingInterviewsRes] = await Promise.all([
-//             axios.get('https://3b0deba4a892.ngrok-free.app/api/v1/interviews/upcoming',{
+//             axios.get('https://811f85ba2921.ngrok-free.app/api/v1/interviews/upcoming',{
 //               headers:{
 //                 Authorization:`Bearer ${token}`
 //               }
 //             }),
-//             axios.get('https://3b0deba4a892.ngrok-free.app/api/v1/offline/interviews/upcoming',{
+//             axios.get('https://811f85ba2921.ngrok-free.app/api/v1/offline/interviews/upcoming',{
 //               headers:{
 //                 Authorization:`Bearer ${token}`
 //               }
 //             }),
-//             axios.get('https://3b0deba4a892.ngrok-free.app/api/v1/interviews/upcoming',{
+//             axios.get('https://811f85ba2921.ngrok-free.app/api/v1/interviews/upcoming',{
 //               headers: {
 //                 Authorization: `Bearer ${token}`
 //               }
@@ -2118,7 +2118,7 @@ const Dashboard = () => {
         if (jobId) {
           // Fetch job details
           try {
-            const jobResponse = await axios.get(`https://3b0deba4a892.ngrok-free.app/api/v1/job/${jobId}`, {
+            const jobResponse = await axios.get(`https://811f85ba2921.ngrok-free.app/api/v1/job/${jobId}`, {
               headers: {
                 'Authorization': `Bearer ${token}`,
                  'ngrok-skip-browser-warning': 'true'
@@ -2132,7 +2132,7 @@ const Dashboard = () => {
 
           // Fetch total candidates for this job
           try {
-            const candidatesResponse = await axios.get(`https://3b0deba4a892.ngrok-free.app/api/v1/candidates/job/${jobId}`, {
+            const candidatesResponse = await axios.get(`https://811f85ba2921.ngrok-free.app/api/v1/candidates/job/${jobId}`, {
               headers: {
                 'Authorization': `Bearer ${token}`,
                  'ngrok-skip-browser-warning': 'true'
@@ -2171,14 +2171,14 @@ const Dashboard = () => {
         try {
           const token = localStorage.getItem('token');
           const [onlineInterviewsRes, offlineInterviewsRes] = await Promise.all([
-            axios.get('https://3b0deba4a892.ngrok-free.app/api/v1/interviews/upcoming', {
+            axios.get('https://811f85ba2921.ngrok-free.app/api/v1/interviews/upcoming', {
               headers: {
                 Authorization: `Bearer ${token}`,
                 'ngrok-skip-browser-warning': 'true'
 
               }
             }),
-            axios.get('https://3b0deba4a892.ngrok-free.app/api/v1/offline/interviews/upcoming', {
+            axios.get('https://811f85ba2921.ngrok-free.app/api/v1/offline/interviews/upcoming', {
               headers: {
                 Authorization: `Bearer ${token}`,
                 'ngrok-skip-browser-warning': 'true'

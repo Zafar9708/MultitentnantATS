@@ -32,10 +32,10 @@
 //     useEffect(() => {
 //         const fetchData = async () => {
 //             try {
-//                 const stagesResponse = await axios.get('https://3b0deba4a892.ngrok-free.app/api/v1/stages/all');
+//                 const stagesResponse = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/stages/all');
 //                 setStageOptions(stagesResponse.data);
 
-//                 const rejectionResponse = await axios.get('https://3b0deba4a892.ngrok-free.app/api/v1/stages/rejection-types');
+//                 const rejectionResponse = await axios.get('https://811f85ba2921.ngrok-free.app/api/v1/stages/rejection-types');
 //                 setRejectionTypes(rejectionResponse.data);
 //             } catch (err) {
 //                 console.error("Error fetching data:", err);
@@ -282,7 +282,7 @@ import {
 import axios from 'axios';
 
 // Use a consistent base URL
-const API_BASE_URL = 'https://3b0deba4a892.ngrok-free.app/api/v1';
+const API_BASE_URL = 'https://811f85ba2921.ngrok-free.app/api/v1';
 
 const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
     const [newStage, setNewStage] = useState("");

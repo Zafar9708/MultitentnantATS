@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://3b0deba4a892.ngrok-free.app/api/v1/auth';
+const API_URL = 'https://811f85ba2921.ngrok-free.app/api/v1/auth';
 
 const userApi = axios.create({
   baseURL: API_URL,
