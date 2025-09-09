@@ -505,8 +505,8 @@ const CandidatesTab = () => {
             showSnackbar("Candidate stage updated successfully!");
             setMoveDialogOpen(false);
         } catch (error) {
-            console.error("Error updating candidate stage:", error);
-            showSnackbar(error.message, "error");
+            console.error("Error updating candidate stage:");
+            showSnackbar(success.message, "error");
         }
     };
 

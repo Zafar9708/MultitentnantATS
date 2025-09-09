@@ -2576,7 +2576,9 @@ const CandidateDetailsPage = () => {
             ) : (
               // Use object tag instead of iframe for better PDF handling
               <object
-                data={`https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}#toolbar=1&navpanes=0&scrollbar=1`}
+                // data={`https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}#toolbar=1&navpanes=0&scrollbar=1`}
+                // data={"Click on Preview Button to Preview Candidate Resume"}
+
                 type="application/pdf"
                 style={{ width: '100%', height: '100%' }}
                 

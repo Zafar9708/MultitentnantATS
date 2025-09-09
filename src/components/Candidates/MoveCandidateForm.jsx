@@ -277,7 +277,8 @@ import {
     Typography,
     Divider,
     Box,
-    Avatar
+    Avatar,
+    CircularProgress
 } from "@mui/material";
 import axios from 'axios';
 
@@ -290,6 +291,7 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
     const [rejectionTypes, setRejectionTypes] = useState([]);
     const [comment, setComment] = useState("");
     const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
     const [rejectionType, setRejectionType] = useState("");
     const [showAddRejection, setShowAddRejection] = useState(false);
@@ -300,16 +302,18 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
         const fetchData = async () => {
             if (!open) return;
 
+            // Reset states when dialog opens
+            setSuccess(false);
+            setError("");
             setFetchLoading(true);
+            
             try {
                 // Fetch stages
                 const stagesResponse = await axios.get(`${API_BASE_URL}/stages/all`, {
                     headers: {
                         'ngrok-skip-browser-warning': 'true'
                     }
-
                 });
-                console.log("Stages API response:", stagesResponse.data);
 
                 // Handle different response structures
                 let stagesData = [];
@@ -328,9 +332,7 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
                     headers: {
                         'ngrok-skip-browser-warning': 'true'
                     }
-
                 });
-                console.log("Rejection types API response:", rejectionResponse.data);
 
                 // Handle different response structures for rejection types
                 let rejectionData = [];
@@ -371,7 +373,6 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
                 headers: {
                     'ngrok-skip-browser-warning': 'true'
                 },
-
                 type: newRejectionType
             });
 
@@ -407,6 +408,7 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
 
         setLoading(true);
         setError("");
+        setSuccess(false);
 
         try {
             const response = await axios.put(`${API_BASE_URL}/stages/move/${candidate._id}`, {
@@ -415,17 +417,23 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
                 ...(isRejectedStage && { rejectionType })
             });
 
+            // Clear any previous errors and set success
+            setError("");
+            setSuccess(true);
+            
             if (onMoveComplete) {
                 onMoveComplete(response.data.candidate);
             }
-
-            onClose();
-            setRejectionType("");
-            setShowAddRejection(false);
-            setComment("");
+            
+            // Wait a moment to show success message before closing
+            setTimeout(() => {
+                handleClose();
+            }, 1500);
+            
         } catch (err) {
             console.error(err);
             setError(err.response?.data?.error || "Something went wrong while moving the candidate.");
+            setSuccess(false);
         } finally {
             setLoading(false);
         }
@@ -437,6 +445,8 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
         setShowAddRejection(false);
         setComment("");
         setError("");
+        setSuccess(false);
+        setLoading(false);
         onClose();
     };
 
@@ -446,155 +456,182 @@ const MoveCandidateForm = ({ open, onClose, candidate, onMoveComplete }) => {
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
             <DialogTitle>Move Candidate</DialogTitle>
             <DialogContent>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                    <Avatar sx={{ mr: 2, bgcolor: "primary.main" }}>
-                        {candidate.firstName?.charAt(0)}
-                    </Avatar>
-                    <Typography variant="h6">
-                        {`${candidate.firstName} ${candidate.middleName || ''} ${candidate.lastName}`}
-                    </Typography>
-                </Box>
-
-                <Divider sx={{ my: 2 }} />
-
-                {fetchLoading ? (
-                    <Typography>Loading stages...</Typography>
+                {loading ? (
+                    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 200 }}>
+                        <CircularProgress />
+                        <Typography variant="body1" sx={{ ml: 2 }}>
+                            Updating candidate stage...
+                        </Typography>
+                    </Box>
+                ) : success ? (
+                    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 200, flexDirection: "column" }}>
+                        <Typography variant="h6" color="primary" sx={{ mb: 2 }}>
+                            Candidate moved successfully!
+                        </Typography>
+                        <Typography variant="body2">
+                            The candidate has been moved to the new stage.
+                        </Typography>
+                    </Box>
                 ) : (
                     <>
-                        <Typography variant="subtitle2" sx={{ mb: 1 }}>Current Stage</Typography>
-                        <TextField
-                            value={candidate.stage?.name || "Sourced"}
-                            fullWidth
-                            margin="normal"
-                            disabled
-                            sx={{ mb: 3 }}
-                        />
+                        <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                            <Avatar sx={{ mr: 2, bgcolor: "primary.main" }}>
+                                {candidate.firstName?.charAt(0)}
+                            </Avatar>
+                            <Typography variant="h6">
+                                {`${candidate.firstName} ${candidate.middleName || ''} ${candidate.lastName}`}
+                            </Typography>
+                        </Box>
 
-                        <Typography variant="subtitle2" sx={{ mb: 1 }}>Select New Stage</Typography>
-                        <FormControl fullWidth margin="normal">
-                            <InputLabel>New Stage</InputLabel>
-                            <Select
-                                value={newStage}
-                                onChange={(e) => {
-                                    setNewStage(e.target.value);
-                                    const selected = stageOptions.find(stage => stage._id === e.target.value);
-                                    if (selected?.name !== "Rejected") {
-                                        setRejectionType("");
-                                        setShowAddRejection(false);
-                                    }
-                                }}
-                                label="New Stage"
-                            >
-                                {Array.isArray(stageOptions) && stageOptions.length > 0 ? (
-                                    stageOptions.map((option) => (
-                                        <MenuItem key={option._id} value={option._id}>
-                                            {option.name}
-                                        </MenuItem>
-                                    ))
-                                ) : (
-                                    <MenuItem disabled>No stages available</MenuItem>
-                                )}
-                            </Select>
-                        </FormControl>
+                        <Divider sx={{ my: 2 }} />
 
-                        {stageOptions.find(stage => stage._id === newStage)?.name === "Rejected" && (
+                        {fetchLoading ? (
+                            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 100 }}>
+                                <CircularProgress size={24} sx={{ mr: 2 }} />
+                                <Typography>Loading stages...</Typography>
+                            </Box>
+                        ) : (
                             <>
-                                <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>
-                                    Rejection Type
-                                </Typography>
+                                <Typography variant="subtitle2" sx={{ mb: 1 }}>Current Stage</Typography>
+                                <TextField
+                                    value={candidate.stage?.name || "Sourced"}
+                                    fullWidth
+                                    margin="normal"
+                                    disabled
+                                    sx={{ mb: 3 }}
+                                />
+
+                                <Typography variant="subtitle2" sx={{ mb: 1 }}>Select New Stage</Typography>
                                 <FormControl fullWidth margin="normal">
-                                    <InputLabel>Select rejection type</InputLabel>
+                                    <InputLabel>New Stage</InputLabel>
                                     <Select
-                                        value={rejectionType}
+                                        value={newStage}
                                         onChange={(e) => {
-                                            if (e.target.value === '__add__') {
-                                                setShowAddRejection(true);
-                                            } else {
-                                                setRejectionType(e.target.value);
+                                            setNewStage(e.target.value);
+                                            const selected = stageOptions.find(stage => stage._id === e.target.value);
+                                            if (selected?.name !== "Rejected") {
+                                                setRejectionType("");
+                                                setShowAddRejection(false);
                                             }
                                         }}
-                                        label="Select rejection type"
+                                        label="New Stage"
                                     >
-                                        {Array.isArray(rejectionTypes) && rejectionTypes.length > 0 ? (
-                                            rejectionTypes.map((type) => (
-                                                <MenuItem key={type} value={type}>
-                                                    {type}
+                                        {Array.isArray(stageOptions) && stageOptions.length > 0 ? (
+                                            stageOptions.map((option) => (
+                                                <MenuItem key={option._id} value={option._id}>
+                                                    {option.name}
                                                 </MenuItem>
                                             ))
                                         ) : (
-                                            <MenuItem disabled>No rejection types available</MenuItem>
+                                            <MenuItem disabled>No stages available</MenuItem>
                                         )}
-                                        <MenuItem value="__add__" sx={{ fontStyle: 'italic', color: 'primary.main' }}>
-                                            + Add New Rejection Type
-                                        </MenuItem>
                                     </Select>
                                 </FormControl>
 
-                                {showAddRejection && (
-                                    <Box sx={{ mt: 2, display: 'flex', gap: 1, alignItems: 'center' }}>
-                                        <TextField
-                                            fullWidth
-                                            value={newRejectionType}
-                                            onChange={(e) => setNewRejectionType(e.target.value)}
-                                            label="New Rejection Type"
-                                            variant="outlined"
-                                            size="small"
-                                        />
-                                        <Button
-                                            variant="contained"
-                                            onClick={handleAddRejectionType}
-                                            disabled={!newRejectionType.trim()}
-                                            size="small"
-                                        >
-                                            Add
-                                        </Button>
-                                        <Button
-                                            variant="outlined"
-                                            onClick={() => {
-                                                setShowAddRejection(false);
-                                                setNewRejectionType("");
-                                            }}
-                                            size="small"
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </Box>
+                                {stageOptions.find(stage => stage._id === newStage)?.name === "Rejected" && (
+                                    <>
+                                        <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>
+                                            Rejection Type
+                                        </Typography>
+                                        <FormControl fullWidth margin="normal">
+                                            <InputLabel>Select rejection type</InputLabel>
+                                            <Select
+                                                value={rejectionType}
+                                                onChange={(e) => {
+                                                    if (e.target.value === '__add__') {
+                                                        setShowAddRejection(true);
+                                                    } else {
+                                                        setRejectionType(e.target.value);
+                                                    }
+                                                }}
+                                                label="Select rejection type"
+                                            >
+                                                {Array.isArray(rejectionTypes) && rejectionTypes.length > 0 ? (
+                                                    rejectionTypes.map((type) => (
+                                                        <MenuItem key={type} value={type}>
+                                                            {type}
+                                                        </MenuItem>
+                                                    ))
+                                                ) : (
+                                                    <MenuItem disabled>No rejection types available</MenuItem>
+                                                )}
+                                                <MenuItem value="__add__" sx={{ fontStyle: 'italic', color: 'primary.main' }}>
+                                                    + Add New Rejection Type
+                                                </MenuItem>
+                                            </Select>
+                                        </FormControl>
+
+                                        {showAddRejection && (
+                                            <Box sx={{ mt: 2, display: 'flex', gap: 1, alignItems: 'center' }}>
+                                                <TextField
+                                                    fullWidth
+                                                    value={newRejectionType}
+                                                    onChange={(e) => setNewRejectionType(e.target.value)}
+                                                    label="New Rejection Type"
+                                                    variant="outlined"
+                                                    size="small"
+                                                />
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={handleAddRejectionType}
+                                                    disabled={!newRejectionType.trim()}
+                                                    size="small"
+                                                >
+                                                    Add
+                                                </Button>
+                                                <Button
+                                                    variant="outlined"
+                                                    onClick={() => {
+                                                        setShowAddRejection(false);
+                                                        setNewRejectionType("");
+                                                    }}
+                                                    size="small"
+                                                >
+                                                    Cancel
+                                                </Button>
+                                            </Box>
+                                        )}
+                                    </>
                                 )}
+
+                                <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>
+                                    Comment {stageOptions.find(stage => stage._id === newStage)?.name !== "Rejected" && "(Optional)"}
+                                </Typography>
+                                <TextField
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    fullWidth
+                                    multiline
+                                    rows={3}
+                                    margin="normal"
+                                    placeholder="Add comment about this stage change..."
+                                />
                             </>
                         )}
 
-                        <Typography variant="subtitle2" sx={{ mt: 3, mb: 1 }}>
-                            Comment {stageOptions.find(stage => stage._id === newStage)?.name !== "Rejected" && "(Optional)"}
-                        </Typography>
-                        <TextField
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            fullWidth
-                            multiline
-                            rows={3}
-                            margin="normal"
-                            placeholder="Add comment about this stage change..."
-                        />
+                        {error && (
+                            <Typography color="error" sx={{ mt: 2 }}>
+                                {error}
+                            </Typography>
+                        )}
                     </>
-                )}
-
-                {error && (
-                    <Typography color="error" sx={{ mt: 2 }}>
-                        {error}
-                    </Typography>
                 )}
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button
-                    onClick={handleSubmit}
-                    variant="contained"
-                    disabled={loading || !newStage || fetchLoading ||
-                        (stageOptions.find(stage => stage._id === newStage)?.name === "Rejected" && !rejectionType)
-                    }
-                >
-                    {loading ? "Moving..." : "Move"}
+                <Button onClick={handleClose} disabled={loading}>
+                    {success ? 'Close' : 'Cancel'}
                 </Button>
+                {!success && (
+                    <Button
+                        onClick={handleSubmit}
+                        variant="contained"
+                        disabled={loading || !newStage || fetchLoading ||
+                            (stageOptions.find(stage => stage._id === newStage)?.name === "Rejected" && !rejectionType)
+                        }
+                    >
+                        {loading ? <CircularProgress size={24} /> : "Move"}
+                    </Button>
+                )}
             </DialogActions>
         </Dialog>
     );
