@@ -149,7 +149,7 @@ const AdminDashboard = () => {
   const jobStatusData = [
     { name: 'Active', value: activeJobs.length },
     { name: 'Closed', value: jobs.filter(j => j.status === 'Closed').length },
-    { name: 'Draft', value: jobs.filter(j => j.status === 'Draft').length },
+    // { name: 'Draft', value: jobs.filter(j => j.status === 'Draft').length },
   ];
 
   const COLORS = [theme.palette.success.main, theme.palette.error.main, theme.palette.warning.main];

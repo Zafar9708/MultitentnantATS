@@ -178,6 +178,7 @@ import AdminDashboard from '../pages/Admin/AdminDashboard';
 // import Unauthorized from '../pages/Unauthorized';
 import Unauthorized from '../pages/Unauthorized';
 import { useUser } from '../contexts/UserContext';
+import Profile from '../pages/Profile';
 
 // Create a wrapper component for routes that need MainLayout
 const LayoutWrapper = ({ children,width }) => {
@@ -202,6 +203,21 @@ const AppRoutes = () => {
       <Route path="/feedback/:interviewId/:interviewerId" element={<FeedbackForm />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="/reset-password" element={<ForgotPasswordForm/>} />
+      {/* <Route path="/profile" element={<Profile />} /> */}
+
+
+      
+      <Route
+        path='/profile'
+        element={
+          <ProtectedRoute>
+            <LayoutWrapper>
+              <Profile />
+            </LayoutWrapper>
+          </ProtectedRoute>
+        }
+      />
+
 
      
 

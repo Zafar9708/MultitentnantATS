@@ -1787,7 +1787,7 @@ const CandidateDetailsPage = () => {
   const [editNoteId, setEditNoteId] = React.useState(null);
   const [editNoteText, setEditNoteText] = React.useState('');
 
-  const hiringStages = ['Sourced', 'Screening', 'Interview', 'Preboarding', 'Hired', 'Rejected', 'Archived'];
+  const hiringStages = ['Sourced', 'Screening', 'Interview','Rejected', 'Preboarding', 'Hired',  'Archived'];
 
   const { data: candidateData, isLoading, error } = useQuery({
     queryKey: ['candidate', id],
