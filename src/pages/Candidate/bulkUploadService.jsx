@@ -1,7 +1,7 @@
 // src/services/Candidates/bulkUploadService.js
 import axios from 'axios';
 
-const API_URL = "https://d2a4e1c61a3c.ngrok-free.app"
+const API_URL = "https://93de38340e46.ngrok-free.app"
 ;
 
 // Download Excel template

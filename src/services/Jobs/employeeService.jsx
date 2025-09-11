@@ -1,6 +1,6 @@
 // import axios from 'axios';
 
-// const API_BASE_URL = 'https://d2a4e1c61a3c.ngrok-free.app/api/v1/employees';
+// const API_BASE_URL = 'https://93de38340e46.ngrok-free.app/api/v1/employees';
 // const getAuthHeaders = () => {
 //   const token = localStorage.getItem('token');
 //   return {
@@ -39,7 +39,7 @@
 
 import axios from 'axios';
 
-const API_BASE_URL = 'https://d2a4e1c61a3c.ngrok-free.app/api/v1/employees';
+const API_BASE_URL = 'https://93de38340e46.ngrok-free.app/api/v1/employees';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');

@@ -200,7 +200,7 @@
 //   const token = localStorage.getItem("token");
 
 //   const response = await axios.get(
-//     `https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/${id}`,
+//     `https://93de38340e46.ngrok-free.app/api/v1/candidates/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -215,7 +215,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/${id}/stage-history`,
+//     `https://93de38340e46.ngrok-free.app/api/v1/candidates/${id}/stage-history`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -263,7 +263,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/download-resume/${id}`,
+//     `https://93de38340e46.ngrok-free.app/api/v1/candidates/download-resume/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -279,7 +279,7 @@
 //   const token = localStorage.getItem("token");
   
 //   const response = await axios.get(
-//     `https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
+//     `https://93de38340e46.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
 //     {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
@@ -883,7 +883,7 @@
 //                         </Box>
 //                       ) : (
 //                         <iframe
-//                           src={`https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
+//                           src={`https://93de38340e46.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}`}
 //                           style={{ width: '100%', height: '100%', border: 'none' }}
 //                           title="Resume Viewer"
 //                         />
@@ -1755,7 +1755,7 @@ const previewCandidateResume = async (id) => {
   const token = localStorage.getItem("token");
 
   const response = await axios.get(
-    `https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
+    `https://93de38340e46.ngrok-free.app/api/v1/candidates/preview-resume/${id}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -1996,7 +1996,7 @@ const CandidateDetailsPage = () => {
       return;
     }
 
-    const resumeUrl = `https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${id}`;
+    const resumeUrl = `https://93de38340e46.ngrok-free.app/api/v1/candidates/preview-resume/${id}`;
 
     try {
       if (method === 'native' && navigator.share) {
@@ -2576,7 +2576,7 @@ const CandidateDetailsPage = () => {
             ) : (
               // Use object tag instead of iframe for better PDF handling
               <object
-                // data={`https://d2a4e1c61a3c.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}#toolbar=1&navpanes=0&scrollbar=1`}
+                // data={`https://93de38340e46.ngrok-free.app/api/v1/candidates/preview-resume/${candidate._id}#toolbar=1&navpanes=0&scrollbar=1`}
                 // data={"Click on Preview Button to Preview Candidate Resume"}
 
                 type="application/pdf"
